@@ -19,7 +19,7 @@ public class login extends javax.swing.JFrame {
     lblAcceso.setText("LOGIN - " + rol.toUpperCase()); // Para que sepa qué rol eligió
     
      // 1. Cargamos la imagen (ajusta "/farma/" si tu paquete tiene otro nombre)
-         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/medicamento.png"));
+         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/farma/medicamento.png"));
 
 // 2. La escalamos al tamaño exacto de tu jLabel6
          Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(jLabel7.getWidth(), jLabel7.getHeight(), Image.SCALE_SMOOTH);
@@ -120,15 +120,11 @@ public class login extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addContainerGap(42, Short.MAX_VALUE))))
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addContainerGap(42, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(160, 160, 160)
                         .addComponent(jButton1)
@@ -157,7 +153,7 @@ public class login extends javax.swing.JFrame {
 
         jLabel5.setText("INGRESAR CREDENCIALES ");
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Screenshot 2026-05-13 at 6.11.32 PM.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farma/medicamento.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

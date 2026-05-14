@@ -13,12 +13,12 @@ public class inicio extends javax.swing.JFrame {
     public inicio() {
         initComponents();
         // 1. Cargamos la imagen (ajusta "/farma/" si tu paquete tiene otro nombre)
-         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/medicamento.png"));
+         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/farma/medicamento.png"));
 
-// 2. La escalamos al tamaño exacto de tu jLabel6
+        // 2. La escalamos al tamaño exacto de tu jLabel6
          Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(jLabel6.getWidth(), jLabel6.getHeight(), Image.SCALE_SMOOTH);
 
-// 3. La ponemos en el label
+        // 3. La ponemos en el label
          jLabel6.setIcon(new ImageIcon(imagenEscalada));
     }
 
@@ -41,7 +41,6 @@ public class inicio extends javax.swing.JFrame {
         setBackground(new java.awt.Color(204, 204, 204));
 
         jButton1.setBackground(new java.awt.Color(153, 204, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hombre-reparador.png"))); // NOI18N
         jButton1.setText("Administrador");
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -74,7 +73,7 @@ public class inicio extends javax.swing.JFrame {
 
         jLabel5.setText("© 2026 FARMA CONTROL - Soluciones Integrales de Salud");
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Screenshot 2026-05-13 at 6.11.32 PM.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farma/medicamento.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -102,9 +102,6 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="cc" red="99" type="rgb"/>
         </Property>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/hombre-reparador.png"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Administrador"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -172,7 +169,7 @@
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Screenshot 2026-05-13 at 6.11.32&#x202f;PM.png"/>
+          <Image iconType="3" name="/farma/medicamento.png"/>
         </Property>
       </Properties>
     </Component>

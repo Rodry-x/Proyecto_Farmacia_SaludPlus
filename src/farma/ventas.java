@@ -106,15 +106,25 @@ public class ventas extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tblVenta);
 
+        jButton1.setBackground(new java.awt.Color(102, 0, 204));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Limpiar Lista");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
+        jButton2.setBackground(new java.awt.Color(0, 153, 153));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Reembolso");
 
+        jButton3.setBackground(new java.awt.Color(204, 0, 0));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Eliminar productos");
 
+        jButton4.setBackground(new java.awt.Color(0, 153, 255));
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("consultar stock ");
 
+        jButton5.setBackground(new java.awt.Color(0, 153, 0));
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Elegir medio de pago ");
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 204));
