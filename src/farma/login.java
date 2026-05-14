@@ -203,66 +203,44 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+ database.Conexion objetoConexion = new database.Conexion();
+    java.sql.Connection cn = objetoConexion.conectar();
 
-   String user = txtUsuario.getText().trim();
-    String pass = new String(txtPassword.getPassword());
+    if (cn != null) {
+        try {
+            // Vamos a pedirle a Java que nos liste TODO lo que ve en la tabla
+            String sqlDebug = "SELECT username, password_hash FROM Usuarios";
+            java.sql.PreparedStatement pstDebug = cn.prepareStatement(sqlDebug);
+            java.sql.ResultSet rsDebug = pstDebug.executeQuery();
 
-    // 1. VALIDACIÓN DE CAMPOS VACÍOS (Primero lo primero)
-   //  if (user.isEmpty() || pass.isEmpty()) {
-   //      javax.swing.JOptionPane.showMessageDialog(this, "Debe completar todos los campos de usuario y contraseña");
-   //      return; // Detiene el código aquí para que no intente conectar a la DB
-   //  }
+            System.out.println("--- REVISIÓN DE TABLA REAL ---");
+            while (rsDebug.next()) {
+                System.out.println("Usuario en DB: [" + rsDebug.getString("username") + "] | Clave en DB: [" + rsDebug.getString("password_hash") + "]");
+            }
+            System.out.println("------------------------------");
 
-    // 2. INTENTO DE CONEXIÓN
-   //  database.Conexion objetoConexion = new database.Conexion();
-   //  java.sql.Connection cn = objetoConexion.conectar();
-
- //    if (cn != null) {
-       //  try {
-            // 3. VALIDACIÓN DE ROL (Admin != Cajero)
-            // Convertimos el rol recibido a su ID de la base de datos
-           //  int idRolBuscado = (rolRecibido.equals("Administrador")) ? 1 : 2;
-
-            // La consulta busca que coincidan: Usuario + Clave + ROL
-           //  String sql = "SELECT nombres FROM Usuarios WHERE username=? AND password_hash=? AND id_rol=?";
-           //  java.sql.PreparedStatement pst = cn.prepareStatement(sql);
-           //  pst.setString(1, user);
-           //  pst.setString(2, pass);
-           //  pst.setInt(3, idRolBuscado);
-
-          //   java.sql.ResultSet rs = pst.executeQuery();
-
-            // 4. RESULTADO DE LA BÚSQUEDA
-          //   if (rs.next()) {
-                // Si entra aquí, todo coincidió (incluyendo el rol)
-           //      String nombre = rs.getString("nombres");
-          //       javax.swing.JOptionPane.showMessageDialog(this, "Acceso exitoso. Bienvenido " + nombre);
-                
-                // Aquí abrirías el menú principal
-          //       this.dispose(); 
-          //   } else {
-          //       // Si no hay resultados, avisamos específicamente
-          //       javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña no encontrados para el rol de " + rolRecibido);
-          //   }
+            // Ahora el login normal
+            String user = txtUsuario.getText().trim();
+            String pass = new String(txtPassword.getPassword());
             
-        //     cn.close(); // Cerramos conexión
+            String sql = "SELECT nombres FROM Usuarios WHERE LTRIM(RTRIM(username)) = ? AND LTRIM(RTRIM(password_hash)) = ?";
+            java.sql.PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setString(1, user);
+            pst.setString(2, pass);
+            java.sql.ResultSet rs = pst.executeQuery();
 
-      //   } catch (Exception e) {
-        //     javax.swing.JOptionPane.showMessageDialog(this, "Error al consultar datos: " + e.getMessage());
-      //   }
-   //  } else {
-        // Solo sale este mensaje si el driver o el servidor de tu amigo fallan
-       //  javax.swing.JOptionPane.showMessageDialog(this, "Error: No se pudo establecer conexión con el servidor de SaludPlus");
-  //   }
-    // Código temporal en el botón Aceptar para seguir trabajando:
-    if (user.equals("admin") && pass.equals("123")) {
-        ventas menu = new ventas();
-        menu.setVisible(true);
-        this.dispose();
-    } else {
-       javax.swing.JOptionPane.showMessageDialog(this, "Simulación: Datos incorrectos");
-       
-           }
+            if (rs.next()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Bienvenido " + rs.getString("nombres"));
+                new ventas().setVisible(true);
+                this.dispose();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "No coincide. Revisa la consola abajo.");
+            }
+            cn.close();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
