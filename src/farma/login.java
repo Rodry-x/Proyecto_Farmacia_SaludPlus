@@ -1,4 +1,7 @@
+package farma;
 
+
+import farma.ventas;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
