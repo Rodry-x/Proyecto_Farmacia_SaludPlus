@@ -12,7 +12,7 @@ public class Conexion {
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=FarmaciaSaludPlus;encrypt=true;trustServerCertificate=true;";
     private static final String USER = "sa"; // Usuario de SQL Server
-    private static final String PASS = "123456"; // La clave de SQL Server
+    private static final String PASS = "PasswordSeguro123!"; // La clave de SQL Server
 
     public Connection conectar() {
         Connection cn = null;
