@@ -15,13 +15,13 @@ import javax.swing.JLabel;
 public class Usar_imagenes {
     public static void pintarImagen(JLabel lbl, String nombre) {
     ImageIcon imagen = new ImageIcon(
-        Usar_imagenes.class.getResource("/farma/imagenes/" + nombre)
+        Usar_imagenes.class.getResource("/imagenes/" + nombre)
     );
 
     ImageIcon icono = new ImageIcon(
         imagen.getImage().getScaledInstance(
-            lbl.getWidth(),
-            lbl.getHeight(),
+            100,
+            80,
             Image.SCALE_SMOOTH
         )
     );

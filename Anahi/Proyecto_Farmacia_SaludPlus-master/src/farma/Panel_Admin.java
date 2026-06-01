@@ -4,6 +4,9 @@
  */
 package farma;
 
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+
 /**
  *
  * @author jhonlyjuniorgarciapitoy
@@ -17,6 +20,20 @@ public class Panel_Admin extends javax.swing.JFrame {
      */
     public Panel_Admin() {
         initComponents();
+        imagenes.Usar_imagenes.pintarImagen(lbl_usuario, "perfil.png");
+        
+        setSize(1200, 800);
+        
+    }
+    private void MostrarPanel(JPanel p){
+        p.setSize(823, 748);
+        p.setLocation(0, 0);
+        
+        content_ADMIN.removeAll();
+        content_ADMIN.add(p, BorderLayout.CENTER);
+        content_ADMIN.revalidate();
+        content_ADMIN.repaint();
+        
     }
 
     /**
@@ -27,22 +44,107 @@ public class Panel_Admin extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jPanel2 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        lbl_usuario = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        content_ADMIN = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 670, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 373, Short.MAX_VALUE)
-        );
+        jPanel2.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel2.setPreferredSize(new java.awt.Dimension(350, 640));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel6.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel6.setPreferredSize(new java.awt.Dimension(350, 250));
+        jPanel6.setLayout(new java.awt.GridBagLayout());
+
+        jButton1.setText("Atrás");
+        jButton1.setPreferredSize(new java.awt.Dimension(96, 27));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel6.add(jButton1, gridBagConstraints);
+
+        lbl_usuario.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lbl_usuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 150;
+        gridBagConstraints.ipady = 150;
+        jPanel6.add(lbl_usuario, gridBagConstraints);
+
+        jPanel2.add(jPanel6, java.awt.BorderLayout.PAGE_START);
+
+        jPanel1.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton2.setBackground(new java.awt.Color(51, 153, 255));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("GESTION USUARIOS");
+        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 350, 90));
+
+        jButton3.setBackground(new java.awt.Color(51, 153, 255));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("CONTROL DE INVENTARIO");
+        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton3.setPreferredSize(new java.awt.Dimension(141, 27));
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 350, 90));
+
+        jButton4.setBackground(new java.awt.Color(51, 153, 255));
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("REPORTE y CIERRE");
+        jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton4.addActionListener(this::jButton4ActionPerformed);
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 350, 90));
+
+        jButton5.setBackground(new java.awt.Color(51, 153, 255));
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jButton5.setText("PROVEEDORES");
+        jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton5.addActionListener(this::jButton5ActionPerformed);
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 350, 90));
+
+        jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.LINE_START);
+
+        content_ADMIN.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(content_ADMIN, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        GESTIO_USUARIOS_ADMIN p_usuarios = new GESTIO_USUARIOS_ADMIN();
+        MostrarPanel(p_usuarios);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        CONTROL_INVENTARIO_ADMIN p_inventario = new CONTROL_INVENTARIO_ADMIN();
+        MostrarPanel(p_inventario);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        REPORTES_CIERRE_ADMIN p_reportes = new REPORTES_CIERRE_ADMIN();
+        MostrarPanel(p_reportes);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        PROVEEDORES_ADMIN p_admin = new PROVEEDORES_ADMIN();
+        MostrarPanel(p_admin);
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +172,15 @@ public class Panel_Admin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel content_ADMIN;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel lbl_usuario;
     // End of variables declaration//GEN-END:variables
 }
