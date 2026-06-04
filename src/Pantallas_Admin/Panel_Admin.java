@@ -4,7 +4,7 @@
  */
 package Pantallas_Admin;
 
-import Pantallas_Admin.REPORTES_CIERRE_ADMIN;
+import Pantallas_Admin.Reportes_y_Estadistica;
 import Pantallas_Admin.PROVEEDORES_ADMIN;
 import Pantallas_Admin.CONTROL_INVENTARIO_ADMIN;
 import Pantallas_Admin.GESTIO_USUARIOS_ADMIN;
@@ -141,7 +141,7 @@ public class Panel_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        REPORTES_CIERRE_ADMIN p_reportes = new REPORTES_CIERRE_ADMIN();
+        Reportes_y_Estadistica p_reportes = new Reportes_y_Estadistica();
         MostrarPanel(p_reportes);
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -149,6 +149,12 @@ public class Panel_Admin extends javax.swing.JFrame {
         PROVEEDORES_ADMIN p_admin = new PROVEEDORES_ADMIN();
         MostrarPanel(p_admin);
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    public void limpiarPanelCentral() {
+        content_ADMIN.removeAll();
+        content_ADMIN.revalidate();
+        content_ADMIN.repaint();
+    }
 
     /**
      * @param args the command line arguments
