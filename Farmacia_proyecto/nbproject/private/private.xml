@@ -9,7 +9,6 @@
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/ClienteDAO.java</file>
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/database/ConectarBaseDatos.java</file>
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/database/TestConexion.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/REPORTES_CIERRE_ADMIN.java</file>
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/PROVEEDORES_ADMIN.java</file>
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/GESTIO_USUARIOS_ADMIN.java</file>
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/CREAR_PROVEEDOR_ADMIN.java</file>
@@ -24,6 +23,7 @@
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Inicio_Cajero/VentanaRegistrarCliente.java</file>
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/Usuario.java</file>
             <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/UsuarioDAO.java</file>
+            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/Panel_Admin.java</file>
         </group>
     </open-files>
 </project-private>

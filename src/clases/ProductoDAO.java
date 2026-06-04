@@ -55,4 +55,51 @@ public class ProductoDAO {
         }
         return lista;
     }
+    
+    public Producto buscarPorCodigoExacto(String codigo) {
+    String sql = "SELECT p.codigo_producto, p.nombre, p.descripcion, c.nombre_categoria, " +
+                 "p.precio_venta, p.stock_actual, p.stock_minimo, p.fecha_vencimiento " +
+                 "FROM Productos p " +
+                 "INNER JOIN Categorias c ON p.id_categoria = c.id_categoria " +
+                 "WHERE p.codigo_producto = ?";
+
+    try (Connection con = db.conectar();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        
+        ps.setString(1, codigo);
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return new Producto(
+                    rs.getString("codigo_producto"),
+                    rs.getString("nombre"),
+                    rs.getString("descripcion"),
+                    rs.getString("nombre_categoria"),
+                    rs.getDouble("precio_venta"),
+                    rs.getInt("stock_actual"),
+                    rs.getInt("stock_minimo"),
+                    rs.getString("fecha_vencimiento")
+                );
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("❌ Error al buscar producto por código: " + e.getMessage());
+    }
+    return null; // Retorna null si no existe
+   }
+    
+    public void descontarStock(String codigo, int cantidadVendida) {
+    String sql = "UPDATE Productos SET stock_actual = stock_actual - ? WHERE codigo_producto = ?";
+    
+    try (Connection con = db.conectar();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        
+        ps.setInt(1, cantidadVendida);
+        ps.setString(2, codigo);
+        ps.executeUpdate();
+        
+    } catch (SQLException e) {
+        System.out.println("❌ Error al descontar stock: " + e.getMessage());
+    }
+}
 }
