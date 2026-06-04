@@ -1,6 +1,5 @@
 package clases;
 
-import clases.Cliente;
 import database.ConectarBaseDatos;
 import java.sql.*;
 

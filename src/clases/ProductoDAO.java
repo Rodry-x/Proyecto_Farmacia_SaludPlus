@@ -13,7 +13,6 @@ public class ProductoDAO {
         List<Producto> lista = new ArrayList<>();
         String filtroLimpio = (filtro == null) ? "" : filtro.trim();
         
-        // SQL ajustado a los campos que me indicaste
         String sql = "SELECT p.codigo_producto, p.nombre, p.descripcion, c.nombre_categoria, " +
                      "p.precio_venta, p.stock_actual, p.stock_minimo, p.fecha_vencimiento " +
                      "FROM Productos p " +
@@ -21,7 +20,6 @@ public class ProductoDAO {
         
         boolean tieneFiltro = !filtroLimpio.isEmpty();
         if (tieneFiltro) {
-            // Buscamos en Nombre, Código o Descripción
             sql += " WHERE p.nombre LIKE ? OR p.codigo_producto LIKE ? OR p.descripcion LIKE ?";
         }
 

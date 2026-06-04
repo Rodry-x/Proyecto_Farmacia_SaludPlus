@@ -21,6 +21,8 @@ public class Producto {
         this.stockMinimo = stockMinimo;
         this.vencimiento = vencimiento;
     }
+    public Producto() {
+    }
 
     // Getters
     public String getCodigo() { return codigo; }

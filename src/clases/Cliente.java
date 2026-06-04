@@ -13,7 +13,9 @@ public class Cliente {
         this.telefono = telefono;
         this.correo = correo;
     }
-
+    // Ejemplo para Producto.java
+    public Cliente() {
+    }
     // Métodos de encapsulamiento (Getters)
     public String getDniRuc() { return dniRuc; }
     public String getNombreCompleto() { return nombreCompleto; }
