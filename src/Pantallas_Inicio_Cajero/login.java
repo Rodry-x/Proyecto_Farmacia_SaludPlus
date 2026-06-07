@@ -67,6 +67,7 @@ public class login extends javax.swing.JFrame {
         txtUsuario.addActionListener(this::txtUsuarioActionPerformed);
 
         txtPassword.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 153), 1, true));
+        txtPassword.addActionListener(this::txtPasswordActionPerformed);
 
         jLabel1.setFont(new java.awt.Font("Arial Narrow", 0, 13)); // NOI18N
         jLabel1.setText("Usuario");
@@ -295,6 +296,10 @@ String user = txtUsuario.getText().trim();
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
         
     }//GEN-LAST:event_txtUsuarioActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordActionPerformed
 
     public static void main(String args[]) {
     
