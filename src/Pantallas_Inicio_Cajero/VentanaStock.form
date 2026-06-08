@@ -46,9 +46,9 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanelSuperior" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="scrollTablaStock" min="-2" pref="894" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="scrollTablaStock" min="-2" pref="995" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -105,13 +105,15 @@
               <Font name="Helvetica Neue" size="14" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="6" rowCount="4">
+              <Table columnCount="8" rowCount="4">
                 <Column editable="true" title="C&#xd3;DIGO" type="java.lang.Object"/>
                 <Column editable="true" title="PRODUCTO" type="java.lang.Object"/>
                 <Column editable="true" title="CATEGOR&#xcd;A" type="java.lang.Object"/>
-                <Column editable="true" title="PRECIO" type="java.lang.Object"/>
-                <Column editable="true" title="VENCIMIENTO" type="java.lang.Object"/>
+                <Column editable="true" title="PRECIO COMPRA" type="java.lang.Object"/>
+                <Column editable="true" title="PRECIO VENTA" type="java.lang.Object"/>
                 <Column editable="true" title="STOCK" type="java.lang.Object"/>
+                <Column editable="true" title="STOCK M&#xcd;N" type="java.lang.Object"/>
+                <Column editable="true" title="VENCIMIENTO" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -186,7 +188,7 @@
                       </Group>
                       <Component id="jButton1" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="150" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

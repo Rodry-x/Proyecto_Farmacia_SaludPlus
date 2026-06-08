@@ -1,21 +1,21 @@
 package Pantallas_Inicio_Cajero;
-
 import Pantallas_Admin.Panel_Admin;
+import clases.Usuario;
+import clases.UsuarioDAO;
+import javax.swing.JOptionPane;
+
 
 public class login extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(login.class.getName());
-    public String rolRecibido;
+        private final String rolRecibido;
+        private final UsuarioDAO usuarioDAO = new UsuarioDAO();
     
         public login(String rol) {
             
             initComponents();
-            txtPassword.addActionListener(evt -> jButton1ActionPerformed(evt));
             this.rolRecibido = rol;
-            this.setLocationRelativeTo(null); // Centra la ventana en tu Mac
-            lblAcceso.setText("LOGIN - " + rol.toUpperCase()); // Para que sepa qué rol eligió
-            
-           
+            this.setLocationRelativeTo(null);
+            lblAcceso.setText("LOGIN - " + rol.toUpperCase());        
         }
 
     @SuppressWarnings("unchecked")
@@ -260,31 +260,30 @@ public class login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 String user = txtUsuario.getText().trim();
-    String pass = new String(txtPassword.getPassword());
+        String pass = new String(txtPassword.getPassword());
 
-    if (user.isEmpty() || pass.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Debe completar todos los campos");
-        return;
-    }
-
-    int idRolBuscado = (rolRecibido.equals("ADMINISTRADOR")) ? 1 : 2;
-    clases.UsuarioDAO dao = new clases.UsuarioDAO();
-    clases.Usuario usuarioLogueado = dao.validarUsuario(user, pass, idRolBuscado);
-
-    if (usuarioLogueado != null) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Acceso exitoso. Bienvenido " + usuarioLogueado.getNombres());
-        
-        if (idRolBuscado == 1) {
-            new Pantallas_Admin.Panel_Admin().setVisible(true);
-        } else {
-            new Pantallas_Inicio_Cajero.PantallaCajero().setVisible(true);
+        if (user.isEmpty() || pass.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos los campos");
+            return;
         }
-        this.dispose();
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
-        txtPassword.setText("");
-        txtPassword.requestFocus();
-    }
+
+        int idRolBuscado = rolRecibido.equalsIgnoreCase("ADMINISTRADOR") ? 1 : 2;
+        
+        // --- PARA DEPURACIÓN (Si no entra, revisa tu consola) ---
+        System.out.println("Intentando login como: " + rolRecibido + " (Buscando ID Rol: " + idRolBuscado + ")");
+        
+        // Llamada al DAO que ya configuramos con la validación de estado y rol
+        Usuario usuarioLogueado = usuarioDAO.validarUsuario(user, pass, idRolBuscado);
+
+        if (usuarioLogueado != null) {
+            JOptionPane.showMessageDialog(this, "Acceso exitoso. Bienvenido " + usuarioLogueado.getNombres());
+            abrirPantallaPrincipal(idRolBuscado);
+        } else {
+            // Mensaje informativo pero seguro
+            JOptionPane.showMessageDialog(this, "Acceso denegado: Usuario/contraseña incorrectos o cuenta inactiva.");
+            txtPassword.setText("");
+            txtPassword.requestFocus();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
@@ -298,9 +297,18 @@ String user = txtUsuario.getText().trim();
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPasswordActionPerformed
 
+    }//GEN-LAST:event_txtPasswordActionPerformed
+    
+    private void abrirPantallaPrincipal(int idRol) {
+        if (idRol == 1) {
+            new Panel_Admin().setVisible(true);
+        } else {
+            new Pantallas_Inicio_Cajero.PantallaCajero().setVisible(true);
+        }
+        this.dispose();
+    }
+    
     public static void main(String args[]) {
     
     }

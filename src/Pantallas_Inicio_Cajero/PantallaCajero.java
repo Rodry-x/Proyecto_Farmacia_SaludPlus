@@ -4,7 +4,6 @@ import clases.Cliente;
 import clases.Producto;
 import clases.ProductoDAO;
 import clases.VentaDAO;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.BoxLayout;
@@ -32,7 +31,7 @@ public class PantallaCajero extends javax.swing.JFrame {
             
             if (p != null) {
                 // Usamos tu método existente para agregar al carrito
-                agregarProductoAVenta(p.getCodigo(), p.getNombre(), p.getPrecio());
+                agregarProductoAVenta(p.getCodigo(), p.getNombre(), p.getPrecioVenta());
                 
                 // Opcional: Feedback visual de que funcionó
                 // podrias poner un sonido o un pequeño log
@@ -54,43 +53,39 @@ private void configurarEstadoInicial() {
     panelCarrito.setLayout(new BoxLayout(panelCarrito, BoxLayout.Y_AXIS));
     jScrollPane1.setViewportView(panelCarrito);
 
-    // --- CORRECCIÓN AQUÍ ---
-    // En lugar de crear: javax.swing.JPopupMenu menu = new javax.swing.JPopupMenu();
-    // Usaremos el que ya declaraste arriba como: menuSugerencias
-    
     javax.swing.DefaultListModel<String> modelo = new javax.swing.DefaultListModel<>();
     javax.swing.JList<String> lista = new javax.swing.JList<>(modelo);
     
-    menuSugerencias.setFocusable(false); // Usamos la variable de clase
+    menuSugerencias.setFocusable(false);
     javax.swing.JScrollPane scrollMenu = new javax.swing.JScrollPane(lista);
     scrollMenu.setBorder(null); 
     scrollMenu.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
-    menuSugerencias.removeAll(); // Limpiamos el que ya existe
+    menuSugerencias.removeAll();
     menuSugerencias.add(scrollMenu);
 
     txtBuscarProducto.addKeyListener(new java.awt.event.KeyAdapter() {
         @Override
         public void keyReleased(java.awt.event.KeyEvent evt) {
             String texto = txtBuscarProducto.getText().trim();
-            // Asegúrate de usar menuSugerencias aquí también
             if (texto.isEmpty()) { menuSugerencias.setVisible(false); return; }
 
             new Thread(() -> {
-                List<Producto> res = new ProductoDAO().obtenerCatalogo(texto);
+                // LLAMADA ACTUALIZADA: Usando tu nuevo método optimizado
+                List<Producto> res = new ProductoDAO().obtenerSugerenciasParaCajero(texto);
+                
                 java.awt.EventQueue.invokeLater(() -> {
                     if (!txtBuscarProducto.getText().trim().equals(texto)) return;
                     productosSugeridos = res;
                     modelo.clear();
 
                     if (res != null && !res.isEmpty()) {
-                       int pos = txtBuscarProducto.getCaretPosition();
-    
-                       // Aquí está la corrección:
-                       res.forEach(p -> modelo.addElement(p.getFormatoBusqueda())); 
-    
-                      menuSugerencias.setPopupSize(txtBuscarProducto.getWidth(), 140);
-                      // ... el resto de tu código igual ...
+                        int pos = txtBuscarProducto.getCaretPosition();
+                        
+                        // Asegúrate de que el método getFormatoBusqueda esté en tu clase Producto
+                        res.forEach(p -> modelo.addElement(p.getNombre() + " - S/. " + p.getPrecioVenta())); 
+                        
+                        menuSugerencias.setPopupSize(txtBuscarProducto.getWidth(), 140);
                         if (!menuSugerencias.isShowing()) {
                             menuSugerencias.show(txtBuscarProducto, 0, txtBuscarProducto.getHeight());
                         }
@@ -103,25 +98,22 @@ private void configurarEstadoInicial() {
         }
     });
 
-    // Asegúrate de cambiar 'menu' por 'menuSugerencias' también en el MouseListener
     lista.addMouseListener(new java.awt.event.MouseAdapter() {
         @Override
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             int i = lista.getSelectedIndex();
             if (i != -1 && productosSugeridos != null && i < productosSugeridos.size()) {
                 Producto p = productosSugeridos.get(i);
-                agregarProductoAVenta(p.getCodigo(), p.getNombre(), p.getPrecio());
+                // Ahora usamos el objeto Producto que ya trae los datos básicos
+                agregarProductoAVenta(p.getCodigo(), p.getNombre(), p.getPrecioVenta());
                 txtBuscarProducto.setText("");
                 modelo.clear();
-                menuSugerencias.setVisible(false); // Aquí también
+                menuSugerencias.setVisible(false);
                 txtBuscarProducto.requestFocus();
             }
         }
     });
 }
-
-
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -296,7 +288,7 @@ private void configurarEstadoInicial() {
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
         jLabel4.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        jLabel4.setText("DNI Cliente:");
+        jLabel4.setText("DNI/RUC  Cliente:");
 
         txtDniCliente.addActionListener(this::txtDniClienteActionPerformed);
 
@@ -377,7 +369,6 @@ private void configurarEstadoInicial() {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelVentaLayout.createSequentialGroup()
                         .addGroup(panelVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -496,18 +487,19 @@ private void configurarEstadoInicial() {
     }//GEN-LAST:event_btnVaciarActionPerformed
 
     private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
-       buscarClientePorDni();
+       buscarCliente();
     }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
     private void txtDniClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDniClienteActionPerformed
-        buscarClientePorDni();
+        buscarCliente();
     }//GEN-LAST:event_txtDniClienteActionPerformed
 
     private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarClienteActionPerformed
-        String dniDigitado = txtDniCliente.getText().trim();
-        VentanaRegistrarCliente modal = new VentanaRegistrarCliente(this, true, dniDigitado);
-        modal.setLocationRelativeTo(this);
-        modal.setVisible(true);
+    String docDigitado = txtDniCliente.getText().trim();
+    // Pasamos el número a la pantalla de registro
+    VentanaRegistrarCliente modal = new VentanaRegistrarCliente(this, true, docDigitado);
+    modal.setLocationRelativeTo(this);
+    modal.setVisible(true);
     }//GEN-LAST:event_btnRegistrarClienteActionPerformed
 
     private void btnStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStockActionPerformed
@@ -567,33 +559,26 @@ VentanaStock vs = new VentanaStock(this, true);
     }
     
     
-public void actualizarTotalesGenerales() {
-        int cantidadTotalProductos = 0;
-        double totalConIGV = 0.0;
+  public void actualizarTotalesGenerales() {
+    int cantidadTotalProductos = 0;
+    double totalConIGV = 0.0;
 
-        for (FilaCarrito fila : productosEnCarrito.values()) {
-            int cantidadFila = fila.getCantidadActual();
-            double precioFila = fila.getPrecioUnitario();
-            
-            cantidadTotalProductos += cantidadFila;
-            totalConIGV += (precioFila * cantidadFila);
-        }
-
-        double subtotal = totalConIGV / 1.18;
-        double igv = totalConIGV - subtotal;
-
-        final int conteoFinal = cantidadTotalProductos;
-        final double subtotalFinal = subtotal;
-        final double igvFinal = igv;
-        final double totalFinal = totalConIGV;
-
-        java.awt.EventQueue.invokeLater(() -> {
-            jLabel3.setText(String.valueOf(conteoFinal));
-            lblSubtotal.setText("S/. " + String.format("%.2f", subtotalFinal));
-            lblIGV.setText("S/. " + String.format("%.2f", igvFinal));
-            lblTotalVenta.setText("S/. " + String.format("%.2f", totalFinal));
-        });
+    for (FilaCarrito fila : productosEnCarrito.values()) {
+        int cantidadFila = fila.getCantidadActual();
+        double precioFila = fila.getPrecioUnitario();
+        cantidadTotalProductos += cantidadFila;
+        totalConIGV += (precioFila * cantidadFila);
     }
+
+    double subtotal = totalConIGV / 1.18;
+    double igv = totalConIGV - subtotal;
+
+    // Actualizamos los labels en la interfaz
+    lblTotalVenta.setText(String.format("S/. %.2f", totalConIGV));
+    lblSubtotal.setText(String.format("S/. %.2f", subtotal));
+    lblIGV.setText(String.format("S/. %.2f", igv));
+    jLabel3.setText(String.valueOf(cantidadTotalProductos));
+  }
 
     
 public void eliminarProductoDeMemoria(String codigoProducto) {
@@ -610,50 +595,51 @@ public void eliminarProductoDeMemoria(String codigoProducto) {
     }
     
     
-private void buscarClientePorDni() {
-        String dni = txtDniCliente.getText().trim(); 
-        if (dni.length() != 8 || !dni.matches("\\d+")) {
-            JOptionPane.showMessageDialog(this, "Ingrese un DNI válido de 8 dígitos.", "DNI Incorrecto", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        lblNombreCliente.setText("Buscando en Azure...");
-        btnRegistrarCliente.setVisible(false); 
-
-        ClienteDAO clienteDao = new ClienteDAO();
-        new Thread(() -> {
-            try {
-                Cliente cliente = clienteDao.buscarPorDni(dni);
-                java.awt.EventQueue.invokeLater(() -> {
-                    if (cliente != null) {
-                        lblNombreCliente.setForeground(java.awt.Color.BLACK);
-                        lblNombreCliente.setText("Cliente: " + cliente.getNombreCompleto());
-                    } else {
-                        lblNombreCliente.setForeground(new java.awt.Color(255, 51, 51)); 
-                        lblNombreCliente.setText("Cliente no registrado");
-                        btnRegistrarCliente.setVisible(true); 
-                    }
-                });
-            } catch (SQLException e) {
-                java.awt.EventQueue.invokeLater(() -> {
-                    lblNombreCliente.setText("Error de conexión");
-                });
-            }
-        }).start();
+private void buscarCliente() {
+    String documento = txtDniCliente.getText().trim();
+    
+    // Validación básica: Solo números y longitud permitida
+    if (!documento.matches("\\d+")) {
+        JOptionPane.showMessageDialog(this, "El documento solo debe contener números.");
+        return;
     }
+    
+    if (documento.length() != 8 && documento.length() != 11) {
+        JOptionPane.showMessageDialog(this, "El documento debe ser de 8 (DNI) o 11 (RUC) dígitos.");
+        return;
+    }
+
+    // Buscamos en la base de datos (asegúrate que tu método en ClienteDAO 
+    // busque por el documento sin importar si es DNI o RUC)
+    Cliente c = new ClienteDAO().buscarPorDocumento(documento); 
+    
+    if (c != null) {
+        lblNombreCliente.setText("Cliente: " + c.getNombres()); // Ajusta según tu clase Cliente
+        btnRegistrarCliente.setVisible(false);
+    } else {
+        lblNombreCliente.setText("Cliente: No encontrado");
+        btnRegistrarCliente.setVisible(true); // Mostramos el botón para registrar
+        JOptionPane.showMessageDialog(this, "Cliente no registrado. Por favor, regístrelo.");
+    }
+}
     
     
 private void generarSiguienteNumeroVenta() {
-        VentaDAO ventaDao = new VentaDAO();
-        new Thread(() -> {
-            try {
-                String numeroBoleta = ventaDao.obtenerSiguienteNumeroVenta();
-                java.awt.EventQueue.invokeLater(() -> lblNumeroVenta.setText(numeroBoleta));
-            } catch (SQLException e) {
-                System.out.println("❌ Error correlativo: " + e.getMessage());
-            }
-        }).start();
-    }
+    VentaDAO ventaDao = new VentaDAO();
+    new Thread(() -> {
+        try {
+            String numeroBoleta = ventaDao.obtenerSiguienteNumeroVenta();
+            java.awt.EventQueue.invokeLater(() -> {
+                if (lblNumeroVenta != null) {
+                    lblNumeroVenta.setText(numeroBoleta);
+                }
+            });
+        } catch (Exception e) { // <-- CAMBIA SQLException POR Exception AQUÍ
+            System.err.println("❌ Error al obtener número de venta: " + e.getMessage());
+            e.printStackTrace(); // Esto te dirá exactamente qué línea falla en la consola
+        }
+    }).start();
+}
 
     public void actualizarInterfazClienteRegistrado(String nombreCliente) {
         lblNombreCliente.setForeground(new java.awt.Color(255, 255, 255)); 

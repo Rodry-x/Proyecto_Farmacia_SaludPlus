@@ -24,8 +24,8 @@ public class VentanaStock extends javax.swing.JDialog {
         cargarDatosDesdeAzure(); // Carga los datos apenas se abre     
         // Suponiendo que tu JTable se llama tabla
 
-tablaStock.getTableHeader().setBackground(miAzul);
-tablaStock.getTableHeader().setForeground(Color.WHITE); // Cambia el color de la letra
+        tablaStock.getTableHeader().setBackground(miAzul);
+        tablaStock.getTableHeader().setForeground(Color.WHITE); // Cambia el color de la letra
     }
 
 
@@ -68,13 +68,13 @@ tablaStock.getTableHeader().setForeground(Color.WHITE); // Cambia el color de la
         tablaStock.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         tablaStock.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "CÓDIGO", "PRODUCTO", "CATEGORÍA", "PRECIO", "VENCIMIENTO", "STOCK"
+                "CÓDIGO", "PRODUCTO", "CATEGORÍA", "PRECIO COMPRA", "PRECIO VENTA", "STOCK", "STOCK MÍN", "VENCIMIENTO"
             }
         ));
         tablaStock.setName("tablaStock"); // NOI18N
@@ -119,7 +119,7 @@ tablaStock.getTableHeader().setForeground(Color.WHITE); // Cambia el color de la
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnFiltroPorVencer))
                     .addComponent(jButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
         jPanelSuperiorLayout.setVerticalGroup(
             jPanelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,8 +144,8 @@ tablaStock.getTableHeader().setForeground(Color.WHITE); // Cambia el color de la
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelSuperior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrollTablaStock, javax.swing.GroupLayout.PREFERRED_SIZE, 894, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 6, Short.MAX_VALUE))))
+                        .addComponent(scrollTablaStock, javax.swing.GroupLayout.PREFERRED_SIZE, 995, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,15 +247,23 @@ private void cargarDatosDesdeAzure() {
     }
 
     private void llenarTabla(List<Producto> lista) {
-        DefaultTableModel model = (DefaultTableModel) tablaStock.getModel();
-        model.setRowCount(0);
-        for (Producto p : lista) {
-            model.addRow(new Object[]{
-                p.getCodigo(), p.getNombre(), p.getCategoria(), 
-                "S/. " + String.format("%.2f", p.getPrecio()), p.getVencimiento(), p.getStock()
-            });
-        }
+    DefaultTableModel model = (DefaultTableModel) tablaStock.getModel();
+    model.setRowCount(0); // Limpia la tabla
+    
+    for (Producto p : lista) {
+        // Asegúrate de que los métodos get coincidan con tu clase Producto
+        model.addRow(new Object[]{
+            p.getCodigo(), 
+            p.getNombre(), 
+            p.getCategoria(), 
+            "S/. " + String.format("%.2f", p.getPrecioCompra()), // Nueva columna
+            "S/. " + String.format("%.2f", p.getPrecioVenta()),  // Nueva columna
+            p.getStock(), 
+            p.getStockMinimo(),                                  // Nueva columna
+            p.getVencimiento()
+        });
     }
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnFiltroPorVencer;
     public javax.swing.JButton btnFiltroStockBajo;

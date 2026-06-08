@@ -7,11 +7,9 @@ import java.sql.SQLException;
 public class ConectarBaseDatos {
     
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    
-    private static final String URL = "jdbc:sqlserver://farmaciasaludplus2026.database.windows.net:1433;databaseName=FarmaciaSaludPlus;encrypt=true;trustServerCertificate=true;loginTimeout=30;";
-    
-    private static final String USER = "adminsql"; 
-    private static final String PASS = "Farmacia2026"; 
+       String URL = "jdbc:sqlserver://localhost:1433;databaseName=FarmaciaSaludPlus2;encrypt=true;trustServerCertificate=true;";
+       String USER = "SA";
+       String PASS = "PasswordSeguro123!";
 
     public Connection conectar() {
         Connection cn = null;

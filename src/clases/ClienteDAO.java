@@ -6,52 +6,56 @@ import java.sql.*;
 public class ClienteDAO {
     private final ConectarBaseDatos db = new ConectarBaseDatos();
 
-    // 🔍 Método para buscar un cliente por su DNI en Azure
-    public Cliente buscarPorDni(String dni) throws SQLException {
-        String sql = "SELECT nombre_completo, telefono, correo FROM Clientes WHERE LOWER(TRIM(dni_ruc)) = LOWER(TRIM(?))";
-        
-        try (Connection con = db.conectar()) {
-            if (con == null) return null;
-            
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setString(1, dni);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        // Si lo encuentra, empaqueta todo en un objeto Cliente y lo devuelve
-                        return new Cliente(
-                            dni,
-                            rs.getString("nombre_completo"),
-                            rs.getString("telefono"),
-                            rs.getString("correo")
-                        );
-                    }
-                }
-            }
-        }
-        return null; // Si no existe en Azure, devuelve null
+    private Cliente mapearCliente(ResultSet rs) throws SQLException {
+        return new Cliente(
+            rs.getInt("id_cliente"), // Capturamos el ID de la base de datos
+            rs.getString("dni"),
+            rs.getString("ruc"),
+            rs.getString("nombres"),
+            rs.getString("apellidos"),
+            rs.getString("telefono")
+        );
     }
 
-    // ➕ ¡NUEVO MÉTODO! Guarda un objeto Cliente mapeado directamente en la base de datos de Azure
-    public boolean insertarCliente(Cliente cliente) throws SQLException {
-        String sql = "INSERT INTO Clientes (dni_ruc, nombre_completo, telefono, correo) VALUES (?, ?, ?, ?)";
+public Cliente buscarPorDocumento(String documento) {
+    // Usamos OR para buscar en ambas columnas con el mismo valor
+    String sql = "SELECT id_cliente, dni, ruc, nombres, apellidos, telefono " +
+                 "FROM Clientes WHERE dni = ? OR ruc = ?";
+    
+    try (Connection con = db.conectar();
+         PreparedStatement ps = con.prepareStatement(sql)) {
         
-        // Estructura auto-cierre try-with-resources para proteger los sockets de Azure
-        try (Connection con = db.conectar()) {
-            if (con == null) {
-                throw new SQLException("La conexión con el servidor de Azure es nula o se encuentra cerrada.");
+        // Asignamos el valor al primer y segundo signo de interrogación
+        ps.setString(1, documento);
+        ps.setString(2, documento);
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return mapearCliente(rs);
             }
+        }
+    } catch (SQLException e) {
+        System.err.println("❌ Error al buscar cliente por DNI/RUC: " + e.getMessage());
+    }
+    return null;
+}
+
+    public boolean insertarCliente(Cliente c) {
+        String sql = "INSERT INTO Clientes (dni, ruc, nombres, apellidos, telefono) VALUES (?, ?, ?, ?, ?)";
+        
+        try (Connection con = db.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                // Mapeamos los atributos encapsulados del objeto Cliente a los comodines (?) de la consulta SQL
-                ps.setString(1, cliente.getDniRuc());
-                ps.setString(2, cliente.getNombreCompleto());
-                ps.setString(3, cliente.getTelefono());
-                ps.setString(4, cliente.getCorreo());
-                
-                // executeUpdate devuelve el número de filas afectadas. Si es mayor a 0, la inserción fue un éxito.
-                int filasAfectadas = ps.executeUpdate();
-                return filasAfectadas > 0;
-            }
+            ps.setString(1, c.getDni());
+            ps.setString(2, c.getRuc());
+            ps.setString(3, c.getNombres());
+            ps.setString(4, c.getApellidos());
+            ps.setString(5, c.getTelefono());
+            
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("❌ Error al insertar cliente: " + e.getMessage());
+            return false;
         }
     }
 }

@@ -1,12 +1,16 @@
 package Pantallas_Admin;
+
 public class CREAR_PROVEEDOR_ADMIN extends javax.swing.JFrame {
     
         private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CREAR_PROVEEDOR_ADMIN.class.getName());
-private PROVEEDORES_ADMIN tablaProveedores;
-    public CREAR_PROVEEDOR_ADMIN(PROVEEDORES_ADMIN tablaProveedores) {
+        private PROVEEDORES_ADMIN tablaProveedores;
+        
+        public CREAR_PROVEEDOR_ADMIN(PROVEEDORES_ADMIN tablaProveedores) {
+           
         initComponents();
         this.tablaProveedores = tablaProveedores;
-         }
+        
+        }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
