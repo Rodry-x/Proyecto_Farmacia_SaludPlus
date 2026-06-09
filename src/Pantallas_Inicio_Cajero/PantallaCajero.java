@@ -22,27 +22,24 @@ public class PantallaCajero extends javax.swing.JFrame {
     }
     
     
-    private void configurarEscaner() {
+   
+private void configurarEscaner() {
+    // Usamos el ActionListener que ya tenías en tu código original
     txtBuscarProducto.addActionListener(e -> {
-        String codigoEscaneado = txtBuscarProducto.getText().trim();
-        if (!codigoEscaneado.isEmpty()) {
-            // Buscamos el producto en la base de datos
-            Producto p = new ProductoDAO().buscarPorCodigoExacto(codigoEscaneado);
-            
-            if (p != null) {
-                // Usamos tu método existente para agregar al carrito
-                agregarProductoAVenta(p.getCodigo(), p.getNombre(), p.getPrecioVenta());
-                
-                // Opcional: Feedback visual de que funcionó
-                // podrias poner un sonido o un pequeño log
-            } else {
-                JOptionPane.showMessageDialog(this, "Producto no encontrado con el código: " + codigoEscaneado);
-            }
-            
-            // Limpieza necesaria para el próximo escaneo
-            txtBuscarProducto.setText("");
-            txtBuscarProducto.requestFocus();
+        String codigo = txtBuscarProducto.getText().trim();
+        if (codigo.isEmpty()) return;
+
+        Producto p = new ProductoDAO().buscarPorCodigoExacto(codigo);
+
+        if (p != null) {
+            agregarProductoAVenta(p.getCodigo(), p.getNombre(), p.getPrecioVenta());
+        } else {
+            // Este es el mensaje que mencionabas
+            JOptionPane.showMessageDialog(this, "El producto con código " + codigo + " no está registrado.");
         }
+
+        txtBuscarProducto.setText("");
+        txtBuscarProducto.requestFocus();
     });
 }
 
