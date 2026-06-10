@@ -1,4 +1,5 @@
 package Pantallas_Inicio_Cajero;
+import Metodos_de_pago.VentanaPago;
 import clases.ClienteDAO;
 import clases.Cliente;
 import clases.Producto;
@@ -12,8 +13,26 @@ import javax.swing.JOptionPane;
 
 public class PantallaCajero extends javax.swing.JFrame {
     
+    private double montoTotalActual = 0.0;
     private final HashMap<String, FilaCarrito> productosEnCarrito = new HashMap<>();
     private java.util.List<Producto> productosSugeridos;
+    private int idClienteSeleccionado = 9;
+  
+
+    // EL MÉTODO DEBE ESTAR AQUÍ, DENTRO DE LA CLASE
+    private void buscarCliente() {
+        String dni = txtDniCliente.getText().trim();
+        Cliente c = new ClienteDAO().buscarPorDocumento(dni); // Usamos el nuevo método
+        
+        if (c != null) {
+            lblNombreCliente.setText("Cliente: " + c.getNombres() + " " + c.getApellidos());
+            this.idClienteSeleccionado = c.getId();
+        } else {
+            lblNombreCliente.setText("Cliente: Genérico");
+            this.idClienteSeleccionado = 9;
+            JOptionPane.showMessageDialog(this, "Cliente no encontrado");
+        }
+    }
     
     public PantallaCajero() {
         initComponents();
@@ -23,9 +42,9 @@ public class PantallaCajero extends javax.swing.JFrame {
     
     
    
-private void configurarEscaner() {
-    // Usamos el ActionListener que ya tenías en tu código original
-    txtBuscarProducto.addActionListener(e -> {
+    private void configurarEscaner() {
+      // Usamos el ActionListener que ya tenías en tu código original
+      txtBuscarProducto.addActionListener(e -> {
         String codigo = txtBuscarProducto.getText().trim();
         if (codigo.isEmpty()) return;
 
@@ -40,28 +59,28 @@ private void configurarEscaner() {
 
         txtBuscarProducto.setText("");
         txtBuscarProducto.requestFocus();
-    });
-}
+        });
+    }
 
-private void configurarEstadoInicial() {
-    btnRegistrarCliente.setVisible(false);
-    generarSiguienteNumeroVenta();
+    private void configurarEstadoInicial() {
+      btnRegistrarCliente.setVisible(false);
+      generarSiguienteNumeroVenta();
     
-    panelCarrito.setLayout(new BoxLayout(panelCarrito, BoxLayout.Y_AXIS));
-    jScrollPane1.setViewportView(panelCarrito);
+      panelCarrito.setLayout(new BoxLayout(panelCarrito, BoxLayout.Y_AXIS));
+      jScrollPane1.setViewportView(panelCarrito);
 
-    javax.swing.DefaultListModel<String> modelo = new javax.swing.DefaultListModel<>();
-    javax.swing.JList<String> lista = new javax.swing.JList<>(modelo);
+      javax.swing.DefaultListModel<String> modelo = new javax.swing.DefaultListModel<>();
+      javax.swing.JList<String> lista = new javax.swing.JList<>(modelo);
     
-    menuSugerencias.setFocusable(false);
-    javax.swing.JScrollPane scrollMenu = new javax.swing.JScrollPane(lista);
-    scrollMenu.setBorder(null); 
-    scrollMenu.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+      menuSugerencias.setFocusable(false);
+      javax.swing.JScrollPane scrollMenu = new javax.swing.JScrollPane(lista);
+      scrollMenu.setBorder(null); 
+      scrollMenu.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
-    menuSugerencias.removeAll();
-    menuSugerencias.add(scrollMenu);
+      menuSugerencias.removeAll();
+      menuSugerencias.add(scrollMenu);
 
-    txtBuscarProducto.addKeyListener(new java.awt.event.KeyAdapter() {
+      txtBuscarProducto.addKeyListener(new java.awt.event.KeyAdapter() {
         @Override
         public void keyReleased(java.awt.event.KeyEvent evt) {
             String texto = txtBuscarProducto.getText().trim();
@@ -92,7 +111,7 @@ private void configurarEstadoInicial() {
                     }
                 });
             }).start();
-        }
+          }
     });
 
     lista.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -124,7 +143,7 @@ private void configurarEstadoInicial() {
         jLabel5 = new javax.swing.JLabel();
         btnEfectivo = new javax.swing.JButton();
         btnCredito = new javax.swing.JButton();
-        btnDebito = new javax.swing.JButton();
+        btnDdebito = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         no = new javax.swing.JLabel();
@@ -194,11 +213,13 @@ private void configurarEstadoInicial() {
         jLabel5.setText("Metodo de Pago ");
 
         btnEfectivo.setText("Efectivo");
+        btnEfectivo.addActionListener(this::btnEfectivoActionPerformed);
 
         btnCredito.setText("Credito");
+        btnCredito.addActionListener(this::btnCreditoActionPerformed);
 
-        btnDebito.setText("Debito");
-        btnDebito.addActionListener(this::btnDebitoActionPerformed);
+        btnDdebito.setText("Debito");
+        btnDdebito.addActionListener(this::btnDdebitoActionPerformed);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
@@ -346,7 +367,7 @@ private void configurarEstadoInicial() {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVentaLayout.createSequentialGroup()
                             .addGroup(panelVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(btnCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnDebito, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnDdebito, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(panelVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(btnBilleterDigital, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -372,7 +393,7 @@ private void configurarEstadoInicial() {
                             .addComponent(btnCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDebito, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnDdebito, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelVentaLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnBilleterDigital, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -510,12 +531,22 @@ VentanaStock vs = new VentanaStock(this, true);
     vs.setVisible(true);
     }//GEN-LAST:event_btnStockActionPerformed
 
-    private void btnDebitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDebitoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDebitoActionPerformed
+    private void btnDdebitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDdebitoActionPerformed
+   if (productosEnCarrito.isEmpty()) { JOptionPane.showMessageDialog(this, "Carrito vacío"); return; }
+    
+    VentanaPago modal = new VentanaPago(this, true, this.montoTotalActual, "Debito", 
+                                        1, this.idClienteSeleccionado, 2, new java.util.ArrayList<>(productosEnCarrito.values()));
+    modal.setLocationRelativeTo(this);
+    modal.setVisible(true);
+    }//GEN-LAST:event_btnDdebitoActionPerformed
 
     private void btnBilleterDigitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBilleterDigitalActionPerformed
-        // TODO add your handling code here:
+    if (productosEnCarrito.isEmpty()) { JOptionPane.showMessageDialog(this, "Carrito vacío"); return; }
+    
+    VentanaPago modal = new VentanaPago(this, true, this.montoTotalActual, "Billetera Digital", 
+                                        1, this.idClienteSeleccionado, 4, new java.util.ArrayList<>(productosEnCarrito.values()));
+    modal.setLocationRelativeTo(this);
+    modal.setVisible(true);
     }//GEN-LAST:event_btnBilleterDigitalActionPerformed
 
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
@@ -530,33 +561,58 @@ VentanaStock vs = new VentanaStock(this, true);
     private void txtBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarProductoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarProductoActionPerformed
-    
-    
-// MÉTODO PÚBLICO CLAVE: VentanaStock llamará a este método al hacer doble clic en una fila
-    public void agregarProductoAVenta(String codigo, String nombre, double precio) {
-        try {
-            if (productosEnCarrito.containsKey(codigo)) {
-                FilaCarrito filaExistente = productosEnCarrito.get(codigo);
-                filaExistente.incrementarDesdeCatálogo();
-            } else {
-                FilaCarrito filaNueva = new FilaCarrito();
-                filaNueva.configureFila(this, codigo, nombre, precio); 
-                
-                productosEnCarrito.put(codigo, filaNueva);
-                panelCarrito.add(filaNueva);
-            }
-            
-            panelCarrito.revalidate();
-            panelCarrito.repaint();
-            actualizarTotalesGenerales();
 
-        } catch (Exception e) {
-            System.out.println("❌ Error al meter el producto: " + e.getMessage());
+    private void btnCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditoActionPerformed
+    if (productosEnCarrito.isEmpty()) { JOptionPane.showMessageDialog(this, "Carrito vacío"); return; }
+    
+    VentanaPago modal = new VentanaPago(this, true, this.montoTotalActual, "Credito", 
+                                        1, this.idClienteSeleccionado, 3, new java.util.ArrayList<>(productosEnCarrito.values()));
+    modal.setLocationRelativeTo(this);
+    modal.setVisible(true);
+    }//GEN-LAST:event_btnCreditoActionPerformed
+
+    private void btnEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEfectivoActionPerformed
+    if (productosEnCarrito.isEmpty()) { JOptionPane.showMessageDialog(this, "Carrito vacío"); return; }
+    
+    VentanaPago modal = new VentanaPago(this, true, this.montoTotalActual, "Efectivo", 
+                                        1, this.idClienteSeleccionado, 1, new java.util.ArrayList<>(productosEnCarrito.values()));
+    modal.setLocationRelativeTo(this);
+    modal.setVisible(true);
+    }//GEN-LAST:event_btnEfectivoActionPerformed
+    
+   
+public void agregarProductoAVenta(String codigo, String nombre, double precio) {
+    try {
+        // 1. Buscamos el producto para obtener su ID real
+        Producto p = new ProductoDAO().buscarPorCodigoExacto(codigo);
+        int idReal = (p != null) ? p.getId() : 0; 
+
+        if (productosEnCarrito.containsKey(codigo)) {
+            // Si ya existe, solo incrementamos
+            productosEnCarrito.get(codigo).incrementarDesdeCatálogo();
+        } else {
+            // Si NO existe, creamos la fila y la configuramos
+            FilaCarrito filaNueva = new FilaCarrito();
+            filaNueva.configureFila(this, idReal, codigo, nombre, precio); 
+            
+            productosEnCarrito.put(codigo, filaNueva);
+            panelCarrito.add(filaNueva);
         }
+        
+        // 2. Refrescamos la interfaz
+        panelCarrito.revalidate();
+        panelCarrito.repaint();
+        actualizarTotalesGenerales();
+
+    } catch (Exception e) {
+        System.out.println("❌ Error en agregarProductoAVenta: " + e.getMessage());
+        e.printStackTrace(); // Esto te ayudará a ver la línea exacta si vuelve a fallar
     }
+}
+
     
     
-  public void actualizarTotalesGenerales() {
+public void actualizarTotalesGenerales() {
     int cantidadTotalProductos = 0;
     double totalConIGV = 0.0;
 
@@ -567,15 +623,17 @@ VentanaStock vs = new VentanaStock(this, true);
         totalConIGV += (precioFila * cantidadFila);
     }
 
+    // Actualizamos la variable global
+    this.montoTotalActual = totalConIGV; 
+
     double subtotal = totalConIGV / 1.18;
     double igv = totalConIGV - subtotal;
 
-    // Actualizamos los labels en la interfaz
     lblTotalVenta.setText(String.format("S/. %.2f", totalConIGV));
     lblSubtotal.setText(String.format("S/. %.2f", subtotal));
     lblIGV.setText(String.format("S/. %.2f", igv));
     jLabel3.setText(String.valueOf(cantidadTotalProductos));
-  }
+}
 
     
 public void eliminarProductoDeMemoria(String codigoProducto) {
@@ -591,34 +649,7 @@ public void eliminarProductoDeMemoria(String codigoProducto) {
         }
     }
     
-    
-private void buscarCliente() {
-    String documento = txtDniCliente.getText().trim();
-    
-    // Validación básica: Solo números y longitud permitida
-    if (!documento.matches("\\d+")) {
-        JOptionPane.showMessageDialog(this, "El documento solo debe contener números.");
-        return;
-    }
-    
-    if (documento.length() != 8 && documento.length() != 11) {
-        JOptionPane.showMessageDialog(this, "El documento debe ser de 8 (DNI) o 11 (RUC) dígitos.");
-        return;
-    }
 
-    // Buscamos en la base de datos (asegúrate que tu método en ClienteDAO 
-    // busque por el documento sin importar si es DNI o RUC)
-    Cliente c = new ClienteDAO().buscarPorDocumento(documento); 
-    
-    if (c != null) {
-        lblNombreCliente.setText("Cliente: " + c.getNombres()); // Ajusta según tu clase Cliente
-        btnRegistrarCliente.setVisible(false);
-    } else {
-        lblNombreCliente.setText("Cliente: No encontrado");
-        btnRegistrarCliente.setVisible(true); // Mostramos el botón para registrar
-        JOptionPane.showMessageDialog(this, "Cliente no registrado. Por favor, regístrelo.");
-    }
-}
     
     
 private void generarSiguienteNumeroVenta() {
@@ -659,7 +690,7 @@ public static void main(String args[]) {
     private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnCobrar;
     private javax.swing.JButton btnCredito;
-    private javax.swing.JButton btnDebito;
+    private javax.swing.JButton btnDdebito;
     private javax.swing.JButton btnEfectivo;
     private javax.swing.JButton btnRegistrarCliente;
     private javax.swing.JToggleButton btnStock;

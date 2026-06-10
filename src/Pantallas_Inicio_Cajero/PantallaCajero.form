@@ -169,7 +169,7 @@
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="btnCredito" min="-2" pref="186" max="-2" attributes="0"/>
-                                  <Component id="btnDebito" alignment="0" min="-2" pref="186" max="-2" attributes="0"/>
+                                  <Component id="btnDdebito" alignment="0" min="-2" pref="186" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -203,7 +203,7 @@
                               <Component id="btnEfectivo" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btnDebito" min="-2" pref="43" max="-2" attributes="0"/>
+                          <Component id="btnDdebito" min="-2" pref="43" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -227,18 +227,24 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Efectivo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEfectivoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCredito">
           <Properties>
             <Property name="text" type="java.lang.String" value="Credito"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCreditoActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnDebito">
+        <Component class="javax.swing.JButton" name="btnDdebito">
           <Properties>
             <Property name="text" type="java.lang.String" value="Debito"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDebitoActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDdebitoActionPerformed"/>
           </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel3">

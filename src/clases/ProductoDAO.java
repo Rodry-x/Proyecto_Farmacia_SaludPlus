@@ -40,38 +40,42 @@ public class ProductoDAO {
         }
         return lista;
     }
-
-    // 2. MÉTODO PARA EL ESCÁNER DEL CAJERO
     public Producto buscarPorCodigoExacto(String codigo) {
-        String sql = "SELECT codigo_producto, nombre, precio_venta FROM Productos WHERE codigo_producto = ?";
-        try (Connection con = db.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, codigo);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Producto p = new Producto();
-                    p.setCodigo(rs.getString("codigo_producto"));
-                    p.setNombre(rs.getString("nombre"));
-                    p.setPrecioVenta(rs.getDouble("precio_venta")); // Uso correcto del setter
-                    return p;
-                }
+    // ¡AÑADIMOS id_producto AL SELECT!
+    String sql = "SELECT id_producto, codigo_producto, nombre, precio_venta FROM Productos WHERE codigo_producto = ?";
+    try (Connection con = db.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, codigo);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                Producto p = new Producto();
+                // ¡AQUÍ ESTABA EL ERROR, FALTA ASIGNAR EL ID!
+                p.setId(rs.getInt("id_producto")); 
+                
+                p.setCodigo(rs.getString("codigo_producto"));
+                p.setNombre(rs.getString("nombre"));
+                p.setPrecioVenta(rs.getDouble("precio_venta"));
+                return p;
             }
-        } catch (SQLException e) {
-            System.err.println("❌ Error en búsqueda exacta: " + e.getMessage());
         }
-        return null;
+    } catch (SQLException e) {
+        System.err.println("❌ Error en búsqueda exacta: " + e.getMessage());
     }
+    return null;
+}
 
-  // 3. MÉTODO PARA SUGERENCIAS DEL CAJERO (Optimizado para SQL Server)
-public List<Producto> obtenerSugerenciasParaCajero(String filtro) {
+    public List<Producto> obtenerSugerenciasParaCajero(String filtro) {
     List<Producto> lista = new ArrayList<>();
-    // Cambiamos LIMIT 10 por SELECT TOP 10
-    String sql = "SELECT TOP 10 codigo_producto, nombre, precio_venta FROM Productos WHERE nombre LIKE ?";
+    // ¡AÑADIMOS id_producto AL SELECT!
+    String sql = "SELECT TOP 10 id_producto, codigo_producto, nombre, precio_venta FROM Productos WHERE nombre LIKE ?";
     
     try (Connection con = db.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
         ps.setString(1, "%" + filtro.trim() + "%");
         try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Producto p = new Producto();
+                // ¡ASIGNAMOS EL ID!
+                p.setId(rs.getInt("id_producto"));
+                
                 p.setCodigo(rs.getString("codigo_producto"));
                 p.setNombre(rs.getString("nombre"));
                 p.setPrecioVenta(rs.getDouble("precio_venta"));
@@ -83,7 +87,6 @@ public List<Producto> obtenerSugerenciasParaCajero(String filtro) {
     }
     return lista;
 }
-
     // Método auxiliar para mapear el objeto completo (Admin)
     private Producto mapearProducto(ResultSet rs) throws SQLException {
         return new Producto(

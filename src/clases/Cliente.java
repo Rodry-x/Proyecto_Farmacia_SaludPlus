@@ -27,4 +27,10 @@ public class Cliente {
     public String getTelefono() { return telefono; }
     
     public String getNombreCompleto() { return nombres + " " + apellidos; }
+    
+    public void setId(int id) { this.id = id; }
+    public void setNombres(String nombres) { this.nombres = nombres; }
+    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
+    
+    public Cliente() {}
 }

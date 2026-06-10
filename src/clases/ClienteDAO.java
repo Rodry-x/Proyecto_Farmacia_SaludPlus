@@ -8,7 +8,7 @@ public class ClienteDAO {
 
     private Cliente mapearCliente(ResultSet rs) throws SQLException {
         return new Cliente(
-            rs.getInt("id_cliente"), // Capturamos el ID de la base de datos
+            rs.getInt("id_cliente"),
             rs.getString("dni"),
             rs.getString("ruc"),
             rs.getString("nombres"),
@@ -16,31 +16,25 @@ public class ClienteDAO {
             rs.getString("telefono")
         );
     }
-
 public Cliente buscarPorDocumento(String documento) {
-    // Usamos OR para buscar en ambas columnas con el mismo valor
-    String sql = "SELECT id_cliente, dni, ruc, nombres, apellidos, telefono " +
-                 "FROM Clientes WHERE dni = ? OR ruc = ?";
-    
-    try (Connection con = db.conectar();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-        
-        // Asignamos el valor al primer y segundo signo de interrogación
-        ps.setString(1, documento);
-        ps.setString(2, documento);
-        
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return mapearCliente(rs);
+        String sql = "SELECT * FROM Clientes WHERE dni = ? OR ruc = ?";
+        try (Connection con = db.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, documento);
+            ps.setString(2, documento);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapearCliente(rs);
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("❌ Error: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.err.println("❌ Error al buscar cliente por DNI/RUC: " + e.getMessage());
+        return null;
     }
-    return null;
-}
 
     public boolean insertarCliente(Cliente c) {
+        
         String sql = "INSERT INTO Clientes (dni, ruc, nombres, apellidos, telefono) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection con = db.conectar();
@@ -58,4 +52,6 @@ public Cliente buscarPorDocumento(String documento) {
             return false;
         }
     }
+    
+ 
 }

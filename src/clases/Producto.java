@@ -2,6 +2,7 @@ package clases;
 
 public class Producto {
     // Campos (mismos nombres que tu lógica de Base de Datos)
+    private int id;
     private String codigo;
     private String nombre;
     private String descripcion;
@@ -43,8 +44,10 @@ public class Producto {
     public int getStock() { return stockActual; }
     public int getStockMinimo() { return stockMinimo; }
     public String getVencimiento() { return vencimiento; }
+    public int getId() {return this.id;}
 
     // SETTERS
+    public void setId(int id) { this.id = id; }
     public void setCodigo(String codigo) { this.codigo = codigo; }
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }

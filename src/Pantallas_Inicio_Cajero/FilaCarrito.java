@@ -2,11 +2,12 @@ package Pantallas_Inicio_Cajero;
 
 
 public class FilaCarrito extends javax.swing.JPanel {
-    
+    private int idProducto;
     private String codigoProducto; // 🔑 ¡NUEVO! Almacena la identidad real del producto
     private double precioUnitario;
     private int cantidadActual = 1;
     private PantallaCajero PantallaCajero; // 🔌 Para avisar si modificamos totales generales
+    private String nombreProducto;
 
     public int getCantidadActual() {
         return this.cantidadActual;
@@ -17,6 +18,22 @@ public class FilaCarrito extends javax.swing.JPanel {
         this.cantidadActual++;
         actualizarValoresFila();
     }
+    
+    public String getNombreProducto() {
+    return this.nombreProducto; // O como se llame tu variable interna que guarda el nombre
+    }
+    
+    public int getIdProducto() {
+    return this.idProducto;
+   }
+    
+    public void setIdProducto(int id) {
+    this.idProducto = id;
+    }
+    
+    public int getCantidad() {
+    return this.cantidadActual;
+   }
     
     public String getName() {
         return lblNombre.getText();
@@ -113,11 +130,14 @@ public class FilaCarrito extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-public void configureFila(PantallaCajero pantalla, String codigo, String nombre, double precio) {
+public void configureFila(PantallaCajero pantalla, int id, String codigo, String nombre, double precio) {
+        this.idProducto = id;
         this.PantallaCajero = pantalla;
         this.codigoProducto = codigo; // Enlazamos el código internamente
         this.precioUnitario = precio;
         this.cantidadActual = 1;
+        this.nombreProducto = nombre;
+       
 
         java.awt.Dimension dim = new java.awt.Dimension(596, 60);
         this.setPreferredSize(dim);
@@ -141,7 +161,7 @@ public void configureFila(PantallaCajero pantalla, String codigo, String nombre,
         if (btnEliminar != null) btnEliminar.setContentAreaFilled(false);
     }
     
-private void actualizarValoresFila() {
+    private void actualizarValoresFila() {
         double subtotalFila = precioUnitario * cantidadActual;
         
         lblCantidad.setText(String.valueOf(cantidadActual));
@@ -193,4 +213,7 @@ private void actualizarValoresFila() {
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JLabel lblSuma;
     // End of variables declaration//GEN-END:variables
+
+    
+    
 }
