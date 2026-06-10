@@ -3,29 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Inicio_Cajero/PantallaCajero.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Inicio_Cajero/VentanaStock.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Inicio_Cajero/FilaCarrito.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/ClienteDAO.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/database/ConectarBaseDatos.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/database/TestConexion.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/PROVEEDORES_ADMIN.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/GESTIO_USUARIOS_ADMIN.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/CREAR_PROVEEDOR_ADMIN.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/CONTROL_INVENTARIO_ADMIN.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/Cliente.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/Producto.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/ProductoDAO.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/VentaDAO.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/Venta.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Inicio_Cajero/login.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Inicio_Cajero/inicio.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Inicio_Cajero/VentanaRegistrarCliente.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/Usuario.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/UsuarioDAO.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/Panel_Admin.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/Pantallas_Admin/Reportes_y_Estadistica.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/ReportesDAO.java</file>
+            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/database/ConectarBaseDatos.java</file>
+            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/database/TestConexion.java</file>
         </group>
     </open-files>
 </project-private>
