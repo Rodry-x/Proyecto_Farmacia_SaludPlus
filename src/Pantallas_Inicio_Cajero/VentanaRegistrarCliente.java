@@ -185,30 +185,33 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
     btnGuardar.setEnabled(false); // Evita doble envío
 
     // Hilo asíncrono
-    new Thread(() -> {
-        try {
-            boolean exito = controlador.insertarCliente(nuevoCliente);
-            
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                btnGuardar.setEnabled(true);
-                if (exito) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "¡Cliente registrado con éxito!");
-                    if (pantallaPadre != null) {
-                        pantallaPadre.actualizarInterfazClienteRegistrado(nombres + " " + apellidos);
-                    }
-                    this.dispose();
-                } else {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar en base de datos.");
+   // Código nuevo compatible con tu ClienteDAO actualizado
+new Thread(() -> {
+    try {
+        // Llamamos al método nuevo que te devuelve el ID real de Azure
+        int idGenerado = controlador.insertarClienteYObtenerId(nuevoCliente);
+        
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            btnGuardar.setEnabled(true);
+            // Si es diferente de -1, significa que se guardó con éxito en la nube
+            if (idGenerado != -1) { 
+                javax.swing.JOptionPane.showMessageDialog(this, "¡Cliente registrado con éxito en Azure!");
+                if (pantallaPadre != null) {
+                    // Le pasa el ID y el nombre a la PantallaCajero principal
+                    pantallaPadre.actualizarInterfazClienteRegistrado(idGenerado, nombres + " " + apellidos);
                 }
-            });
-        } catch (Exception e) {
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                btnGuardar.setEnabled(true);
-                javax.swing.JOptionPane.showMessageDialog(this, "Error crítico: " + e.getMessage());
-            });
-        }
-    }).start();
- 
+                this.dispose();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos. Verifique si el documento ya existe.");
+            }
+        });
+    } catch (Exception e) {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            btnGuardar.setEnabled(true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Error crítico: " + e.getMessage());
+        });
+    }
+}).start();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

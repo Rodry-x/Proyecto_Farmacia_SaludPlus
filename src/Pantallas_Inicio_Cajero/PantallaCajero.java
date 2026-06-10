@@ -1,4 +1,5 @@
 package Pantallas_Inicio_Cajero;
+
 import Metodos_de_pago.VentanaPago;
 import clases.ClienteDAO;
 import clases.Cliente;
@@ -22,18 +23,59 @@ public class PantallaCajero extends javax.swing.JFrame {
 
     // EL MÉTODO DEBE ESTAR AQUÍ, DENTRO DE LA CLASE
     private void buscarCliente() {
-        String dni = txtDniCliente.getText().trim();
-        Cliente c = new ClienteDAO().buscarPorDocumento(dni); // Usamos el nuevo método
-        
-        if (c != null) {
-            lblNombreCliente.setText("Cliente: " + c.getNombres() + " " + c.getApellidos());
-            this.idClienteSeleccionado = c.getId();
+       String documento = txtDniCliente.getText().trim();
+    clases.ClienteDAO clienteDao = new clases.ClienteDAO();
+    
+    try {
+        // Consultamos a SQL Server usando el DAO
+        clases.Cliente cliente = clienteDao.buscarPorDocumento(documento);
+
+        if (cliente != null) {
+            // Caso 1: El cliente SÍ existe en la base de datos
+            this.idClienteSeleccionado = cliente.getId(); // Guardamos el ID para la venta
+            
+            String nombreMostrar = cliente.getNombreCompleto(); 
+            
+            // 🌟 ADAPTACIÓN AQUÍ: Le enviamos el ID y el Nombre tal como lo requiere tu método (int, String)
+            actualizarInterfazClienteRegistrado(cliente.getId(), nombreMostrar);
+            
+            JOptionPane.showMessageDialog(this, 
+                "Cliente seleccionado: " + nombreMostrar, 
+                "Cliente Encontrado", 
+                JOptionPane.INFORMATION_MESSAGE);
+                
         } else {
-            lblNombreCliente.setText("Cliente: Genérico");
-            this.idClienteSeleccionado = 9;
-            JOptionPane.showMessageDialog(this, "Cliente no encontrado");
+            // Caso 2: El cliente NO existe
+            
+            // Hacemos que el botón de registrar aparezca inmediatamente en la pantalla
+            if (btnRegistrarCliente != null) {
+                btnRegistrarCliente.setVisible(true); 
+            }
+            
+            // Cambiamos el label para advertir visualmente al cajero
+            lblNombreCliente.setText("Cliente: No registrado");
+            lblNombreCliente.setForeground(new java.awt.Color(204, 0, 0)); // Texto en Rojo para alertar
+            
+            // Mostramos la ventana emergente preguntando si quiere registrarlo ahora
+            int respuesta = JOptionPane.showConfirmDialog(this, 
+                "El cliente con documento " + documento + " no está registrado.\n¿Desea abrir la ventana de registro ahora?", 
+                "Cliente No Encontrado", 
+                JOptionPane.YES_NO_OPTION, 
+                JOptionPane.QUESTION_MESSAGE);
+
+            if (respuesta == JOptionPane.YES_OPTION) {
+                // Si presiona SÍ, ejecutamos automáticamente el clic del botón registrar
+                btnRegistrarClienteActionPerformed(null);
+            }
         }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Error al consultar el cliente: " + e.getMessage(), 
+            "Error de Base de Datos", 
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
     }
+   }
     
     public PantallaCajero() {
         initComponents();
@@ -316,6 +358,7 @@ public class PantallaCajero extends javax.swing.JFrame {
 
         btnRegistrarCliente.setBackground(new java.awt.Color(0, 102, 204));
         btnRegistrarCliente.setText("Registrar ");
+        btnRegistrarCliente.setName("btnRegistrar"); // NOI18N
         btnRegistrarCliente.addActionListener(this::btnRegistrarClienteActionPerformed);
 
         lblNombreCliente.setText("Cliente: Genérico");
@@ -506,7 +549,20 @@ public class PantallaCajero extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVaciarActionPerformed
 
     private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
-       buscarCliente();
+       
+        String dni = txtDniCliente.getText().trim();
+
+    // Validamos que no esté vacío y tenga el tamaño correcto (DNI 8 o RUC 11)
+    if (dni.isEmpty() || (dni.length() != 8 && dni.length() != 11)) {
+        JOptionPane.showMessageDialog(this, 
+            "Por favor, ingrese un número de DNI (8 dígitos) o RUC (11 dígitos) válido.", 
+            "Formato Incorrecto", 
+            JOptionPane.WARNING_MESSAGE);
+        txtDniCliente.requestFocus();
+        return;
+    }
+        buscarCliente();
+       
     }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
     private void txtDniClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDniClienteActionPerformed
@@ -670,17 +726,19 @@ private void generarSiguienteNumeroVenta() {
     }).start();
 }
 
-    public void actualizarInterfazClienteRegistrado(String nombreCliente) {
-        lblNombreCliente.setForeground(new java.awt.Color(255, 255, 255)); 
-        lblNombreCliente.setText("Cliente: " + nombreCliente);
-        btnRegistrarCliente.setVisible(false); 
-    }
+    // CÓDIGO NUEVO (Copia y pega esto en su lugar)
+        public void actualizarInterfazClienteRegistrado(int idCliente, String nombreCompleto) {
+    // 1. Guardamos el ID devuelto por Azure en la variable de la pantalla
+        this.idClienteSeleccionado = idCliente; 
     
-
-
-
-
+    // 2. Pintamos el nombre en el Label del cajero
+        lblNombreCliente.setText("Cliente: " + nombreCompleto); 
     
+    // Mensaje de control en la consola
+        System.out.println("🚀 [DEBUG] Cliente enlazado al carrito con ID: " + idCliente);
+}
+    
+  
 public static void main(String args[]) {
     java.awt.EventQueue.invokeLater(() -> new PantallaCajero().setVisible(true));
 }
