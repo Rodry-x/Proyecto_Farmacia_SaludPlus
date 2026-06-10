@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 
 
+
 public class PantallaCajero extends javax.swing.JFrame {
     
     private final HashMap<String, FilaCarrito> productosEnCarrito = new HashMap<>();
