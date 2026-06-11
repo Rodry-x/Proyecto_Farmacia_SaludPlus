@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
-
+import java.awt.Component;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 
 public class PantallaCajero extends javax.swing.JFrame {
@@ -343,7 +345,7 @@ public class PantallaCajero extends javax.swing.JFrame {
         btnBilleterDigital.setText("Billetera Digital");
         btnBilleterDigital.addActionListener(this::btnBilleterDigitalActionPerformed);
 
-        btnCobrar.setText("COBRAR");
+        btnCobrar.setText("IMPRIMIR");
         btnCobrar.addActionListener(this::btnCobrarActionPerformed);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
@@ -589,25 +591,125 @@ VentanaStock vs = new VentanaStock(this, true);
     }//GEN-LAST:event_btnStockActionPerformed
 
     private void btnDdebitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDdebitoActionPerformed
-   if (productosEnCarrito.isEmpty()) { JOptionPane.showMessageDialog(this, "Carrito vacío"); return; }
+        if (productosEnCarrito.isEmpty()) { javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío."); return; }
     
-    VentanaPago modal = new VentanaPago(this, true, this.montoTotalActual, "Debito", 
-                                        1, this.idClienteSeleccionado, 2, new java.util.ArrayList<>(productosEnCarrito.values()));
-    modal.setLocationRelativeTo(this);
-    modal.setVisible(true);
+     // ID Método DB (2 = Débito)
+        Metodos_de_pago.VentanaPago modal = new Metodos_de_pago.VentanaPago(
+        this, true, this.montoTotalActual, "Debito", 1, this.idClienteSeleccionado, 2, new java.util.ArrayList<>(productosEnCarrito.values())
+        );
+        modal.setLocationRelativeTo(this);
+        modal.setVisible(true);
     }//GEN-LAST:event_btnDdebitoActionPerformed
 
     private void btnBilleterDigitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBilleterDigitalActionPerformed
-    if (productosEnCarrito.isEmpty()) { JOptionPane.showMessageDialog(this, "Carrito vacío"); return; }
+        if (productosEnCarrito.isEmpty()) { javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío."); return; }
     
-    VentanaPago modal = new VentanaPago(this, true, this.montoTotalActual, "Billetera Digital", 
-                                        1, this.idClienteSeleccionado, 4, new java.util.ArrayList<>(productosEnCarrito.values()));
-    modal.setLocationRelativeTo(this);
-    modal.setVisible(true);
+    // ID Método DB (4 = Billetera Digital)
+        Metodos_de_pago.VentanaPago modal = new Metodos_de_pago.VentanaPago(
+        this, true, this.montoTotalActual, "Billetera Digital", 1, this.idClienteSeleccionado, 4, new java.util.ArrayList<>(productosEnCarrito.values())
+        );
+        modal.setLocationRelativeTo(this);
+        modal.setVisible(true);
     }//GEN-LAST:event_btnBilleterDigitalActionPerformed
 
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
-        // TODO add your handling code here:
+       
+    if (productosEnCarrito.isEmpty()) { 
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay productos en el carrito para visualizar.", "Carrito Vacío", javax.swing.JOptionPane.WARNING_MESSAGE); 
+        return; 
+    }
+    
+    java.util.List<String[]> listaParaVoucher = new java.util.ArrayList<>();
+    
+    // Recorremos los productos internos que pintan tu carrito
+    for (Pantallas_Inicio_Cajero.FilaCarrito prod : productosEnCarrito.values()) {
+        try {
+            String nombreMedicamento = "";
+            String cantidad = "1";
+            String totalFila = "0.00";
+            
+            // Listas temporales para clasificar lo que encontremos
+            java.util.List<String> textosDeLabels = new java.util.ArrayList<>();
+            java.util.List<String> numerosPuros = new java.util.ArrayList<>();
+
+            // Escaneamos las variables de la FilaCarrito
+            for (java.lang.reflect.Field f : prod.getClass().getDeclaredFields()) {
+                f.setAccessible(true);
+                Object valor = f.get(prod);
+                
+                if (valor != null) {
+                    String textoLimpio = valor.toString();
+                    if (valor instanceof javax.swing.JLabel) {
+                        textoLimpio = ((javax.swing.JLabel) valor).getText();
+                    }
+                    
+                    // Limpiamos etiquetas HTML internas si existieran
+                    if (textoLimpio.contains("<html>")) {
+                        textoLimpio = textoLimpio.replaceAll("<[^>]*>", "").trim();
+                    }
+                    
+                    String campoNombre = f.getName().toLowerCase();
+                    
+                    // Clasificación por nombre de variable o contenido
+                    if (campoNombre.contains("cant")) {
+                        cantidad = textoLimpio;
+                    } else if (textoLimpio.contains("S/.") || textoLimpio.contains("s/.")) {
+                        // Es un precio (puede ser el unitario o el total de la fila)
+                        textosDeLabels.add(textoLimpio); 
+                    } else if (!textoLimpio.trim().isEmpty()) {
+                        // Si es un número puro y el campo se asocia a cantidad
+                        if (textoLimpio.matches("\\d+") && campoNombre.contains("cant")) {
+                            cantidad = textoLimpio;
+                        } else {
+                            // Si contiene letras y no es precio, ¡ES EL NOMBRE DEL MEDICAMENTO!
+                            nombreMedicamento = textoLimpio;
+                        }
+                    }
+                }
+            }
+            
+            // --- VALIDACIÓN DE RESPALDO PARA ASIGNAR COLUMNAS ---
+            // Si capturamos precios en 'textosDeLabels', el más alto o el último suele ser el Total de la fila
+            if (!textosDeLabels.isEmpty()) {
+                // Quitamos el prefijo 'S/.' y espacios para quedarnos solo con el número
+                String precioString = textosDeLabels.get(textosDeLabels.size() - 1);
+                precioString = precioString.replace("S/.", "").replace("S/ ", "").replace(",", ".").trim();
+                try {
+                    double p = Double.parseDouble(precioString);
+                    totalFila = String.format("%.2f", p);
+                } catch(Exception e) {
+                    totalFila = precioString;
+                }
+            }
+            
+            // Si por alguna razón el filtro anterior no guardó el nombre, usamos el primer texto que no sea numérico
+            if (nombreMedicamento.isEmpty() && !textosDeLabels.isEmpty()) {
+                for(String txt : textosDeLabels) {
+                    if(!txt.contains("S/.") && !txt.matches("[0-9., ]+")) {
+                        nombreMedicamento = txt;
+                        break;
+                    }
+                }
+            }
+            
+            // Si sigue vacío, le ponemos un indicador seguro
+            if (nombreMedicamento.isEmpty()) {
+                nombreMedicamento = "Medicamento";
+            }
+            
+            // Guardamos los datos ordenados en la matriz: [CANT, DESCRIPCIÓN, TOTAL]
+            listaParaVoucher.add(new String[]{cantidad, nombreMedicamento, totalFila});
+            
+        } catch (Exception e) {
+            listaParaVoucher.add(new String[]{"1", "Medicamento Reg.", "0.00"});
+        }
+    }
+    
+    // Abrimos el Voucher enviándole la lista con textos perfectamente ordenados
+    Metodos_de_pago.VentanaVoucher preview = new Metodos_de_pago.VentanaVoucher(
+        this, true, listaParaVoucher, this.montoTotalActual
+    );
+    preview.setVisible(true);
     }//GEN-LAST:event_btnCobrarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -620,21 +722,25 @@ VentanaStock vs = new VentanaStock(this, true);
     }//GEN-LAST:event_txtBuscarProductoActionPerformed
 
     private void btnCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditoActionPerformed
-    if (productosEnCarrito.isEmpty()) { JOptionPane.showMessageDialog(this, "Carrito vacío"); return; }
+        if (productosEnCarrito.isEmpty()) { javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío."); return; }
     
-    VentanaPago modal = new VentanaPago(this, true, this.montoTotalActual, "Credito", 
-                                        1, this.idClienteSeleccionado, 3, new java.util.ArrayList<>(productosEnCarrito.values()));
-    modal.setLocationRelativeTo(this);
-    modal.setVisible(true);
+    // ID Método DB (3 = Crédito)
+        Metodos_de_pago.VentanaPago modal = new Metodos_de_pago.VentanaPago(
+        this, true, this.montoTotalActual, "Credito", 1, this.idClienteSeleccionado, 3, new java.util.ArrayList<>(productosEnCarrito.values())
+        );
+        modal.setLocationRelativeTo(this);
+        modal.setVisible(true);
     }//GEN-LAST:event_btnCreditoActionPerformed
 
     private void btnEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEfectivoActionPerformed
-    if (productosEnCarrito.isEmpty()) { JOptionPane.showMessageDialog(this, "Carrito vacío"); return; }
+        if (productosEnCarrito.isEmpty()) { javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío."); return; }
     
-    VentanaPago modal = new VentanaPago(this, true, this.montoTotalActual, "Efectivo", 
-                                        1, this.idClienteSeleccionado, 1, new java.util.ArrayList<>(productosEnCarrito.values()));
-    modal.setLocationRelativeTo(this);
-    modal.setVisible(true);
+    // Total, Nombre del Método, ID Usuario (1 por defecto), ID Cliente real, ID Método DB (1 = Efectivo)
+        Metodos_de_pago.VentanaPago modal = new Metodos_de_pago.VentanaPago(
+        this, true, this.montoTotalActual, "Efectivo", 1, this.idClienteSeleccionado, 1, new java.util.ArrayList<>(productosEnCarrito.values())
+        );
+        modal.setLocationRelativeTo(this);
+        modal.setVisible(true);
     }//GEN-LAST:event_btnEfectivoActionPerformed
     
    
@@ -737,7 +843,7 @@ private void generarSiguienteNumeroVenta() {
     // Mensaje de control en la consola
         System.out.println("🚀 [DEBUG] Cliente enlazado al carrito con ID: " + idCliente);
 }
-    
+   
   
 public static void main(String args[]) {
     java.awt.EventQueue.invokeLater(() -> new PantallaCajero().setVisible(true));
