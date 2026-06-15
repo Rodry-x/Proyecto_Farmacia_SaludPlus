@@ -3,22 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/PantallaCajero.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/login.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/inicio.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/VentanaStock.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/FilaCarrito.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/ClienteDAO.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/database/ConectarBaseDatos.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/database/TestConexion.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/clases/Cliente.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/Panel_Admin.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/VentanaRegistrarCliente.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/REPORTES_CIERRE_ADMIN.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/PROVEEDORES_ADMIN.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/GESTIO_USUARIOS_ADMIN.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/CREAR_PROVEEDOR_ADMIN.java</file>
-            <file>file:/Users/jhonlyjuniorgarciapitoy/Anahi/Proyecto_Farmacia_SaludPlus-master/src/farma/CONTROL_INVENTARIO_ADMIN.java</file>
+            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/clases/Cliente.java</file>
+            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/Pantallas_Inicio_Cajero/PantallaCajero.java</file>
+            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/clases/ClienteDAO.java</file>
+            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/Pantallas_Inicio_Cajero/VentanaRegistrarCliente.java</file>
         </group>
     </open-files>
 </project-private>

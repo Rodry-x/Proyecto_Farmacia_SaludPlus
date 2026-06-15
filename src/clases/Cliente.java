@@ -1,22 +1,36 @@
 package clases;
 
 public class Cliente {
-    private String dniRuc;
-    private String nombreCompleto;
+    private int id; // Agregado para consistencia con la BD
+    private String dni;
+    private String ruc;
+    private String nombres;
+    private String apellidos;
     private String telefono;
-    private String correo;
 
-    // Constructor
-    public Cliente(String dniRuc, String nombreCompleto, String telefono, String correo) {
-        this.dniRuc = dniRuc;
-        this.nombreCompleto = nombreCompleto;
+    // Constructor completo
+    public Cliente(int id, String dni, String ruc, String nombres, String apellidos, String telefono) {
+        this.id = id;
+        this.dni = dni;
+        this.ruc = ruc;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
         this.telefono = telefono;
-        this.correo = correo;
     }
 
-    // Métodos de encapsulamiento (Getters)
-    public String getDniRuc() { return dniRuc; }
-    public String getNombreCompleto() { return nombreCompleto; }
+    // Getters
+    public int getId() { return id; }
+    public String getDni() { return dni; }
+    public String getRuc() { return ruc; }
+    public String getNombres() { return nombres; }
+    public String getApellidos() { return apellidos; }
     public String getTelefono() { return telefono; }
-    public String getCorreo() { return correo; }
+    
+    public String getNombreCompleto() { return nombres + " " + apellidos; }
+    
+    public void setId(int id) { this.id = id; }
+    public void setNombres(String nombres) { this.nombres = nombres; }
+    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
+    
+    public Cliente() {}
 }

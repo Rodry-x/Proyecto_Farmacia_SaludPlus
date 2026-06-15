@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class TestConexion {
     public static void main(String[] args) {
@@ -17,8 +18,7 @@ public class TestConexion {
             System.out.println("Java logró entrar a la base de datos FarmaciaSaludPlus.");
             try {
                 conexionLista.close(); // Cerramos la conexión de prueba
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
             }
         } else {
             System.out.println("--- ❌ PRUEBA FALLIDA ---");

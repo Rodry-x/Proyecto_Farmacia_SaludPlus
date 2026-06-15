@@ -1,38 +1,46 @@
-package database;
+package database; // Asegúrate de que coincida con el nombre de tu carpeta de paquete
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConectarBaseDatos {
-    
-    // 1. Mantenemos tu Driver oficial de Microsoft SQL Server
-    private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    
-    // 2. Cambiamos la URL para apuntar a tu 'localhost' (tu máquina) en lugar de Azure, manteniendo tu BD
-    //private static final String URL = "jdbc:sqlserver://farmaciasaludplus2026.database.windows.net:1433;databaseName=FarmaciaSaludPlus;encrypt=true;trustServerCertificate=true;loginTimeout=30;";
-    private static final String URL = "jdbc:sqlserver://adminfarmacia.database.windows.net:1433;databaseName=FarmaciaSaludPlus2;encrypt=true;trustServerCertificate=true;loginTimeout=30;";
-    
-    // 3. Mantenemos tus credenciales reales exactas
-    //private static final String USER = "adminsql"; 
-    private static final String USER = "adminfarmacia";
-    //private static final String PASS = "Farmacia2026"; 
-    private static final String PASS = "Farmacia123";
 
-    public Connection conectar() {
+    // 1. Datos de conexión a tu servidor Azure SQL
+    private static final String SERVIDOR = "adminfarmacia.database.windows.net";
+    private static final String BASE_DATOS = "FarmaciaSaludPlus2";
+    private static final String USUARIO = "adminfarmacia";
+    private static final String CLAVE = "Farmacia123";
+
+    // 2. Cadena de conexión con los parámetros de seguridad de Azure
+    private static final String URL = "jdbc:sqlserver://" + SERVIDOR + ":1433;"
+            + "database=" + BASE_DATOS + ";"
+            + "user=" + USUARIO + ";"
+            + "password=" + CLAVE + ";"
+            + "encrypt=true;"            // Obligatorio para Azure
+            + "trustServerCertificate=true;" // Evita problemas de certificados locales
+            + "loginTimeout=30;";
+
+    /**
+     * Método para conectar a la base de datos en la nube
+     * @return Connection objeto de conexión listo para usar
+     */
+    public static Connection conectar() {
         Connection cn = null;
         try {
-            // Cargar el driver de SQL Server
-            Class.forName(DRIVER);
+            // Cargar el driver moderno de SQL Server
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             
-            // Establecer conexión con tu Docker local
-            cn = DriverManager.getConnection(URL, USER, PASS);
-            System.out.println("🟢 ¡Conexión exitosa a tu Docker local de SQL Server!");
+            // Establecer la conexión
+            cn = DriverManager.getConnection(URL);
+            System.out.println("🚀 ¡Conexión exitosa a la base de datos en la nube (Azure SQL)!");
             
         } catch (ClassNotFoundException e) {
-            System.out.println("Error: No se encontró el driver JDBC de SQL Server. Verifica tus Libraries.");
+            System.err.println("❌ Error: ¡No se encontró el Driver JDBC de SQL Server! Agrega el archivo .jar a las librerías.");
+            e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("❌ Error de conexión al Docker local: " + e.getMessage());
+            System.err.println("❌ Error de SQL al intentar conectar a Azure: " + e.getMessage());
+            e.printStackTrace();
         }
         return cn;
     }
