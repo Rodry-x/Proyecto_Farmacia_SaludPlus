@@ -4,6 +4,9 @@
  */
 package farma;
 
+import database.CInventario_ADMIN;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author manue
@@ -16,6 +19,9 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
     public CONTROL_INVENTARIO_ADMIN() {
         initComponents();
         imagenes.Usar_imagenes.pintarImagen(lbl_logo, "medicamento.png");
+        database.CInventario_ADMIN objetoProductos = new CInventario_ADMIN();
+        objetoProductos.ListarProductos(jTable1,jTextField1);
+        
     }
 
     /**
@@ -35,6 +41,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -66,6 +73,11 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jPanel3.add(jLabel1, gridBagConstraints);
 
         jTextField1.setPreferredSize(new java.awt.Dimension(500, 28));
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -89,6 +101,13 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         gridBagConstraints.gridy = 1;
         jPanel3.add(jPanel4, gridBagConstraints);
 
+        jButton4.setText("BUSCAR");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel3.add(jButton4, gridBagConstraints);
+
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -98,6 +117,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
         jButton1.setText("AGREGAR");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -106,6 +126,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jPanel5.add(jButton1, gridBagConstraints);
 
         jButton2.setText("MODIFICAR");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -114,6 +135,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jPanel5.add(jButton2, gridBagConstraints);
 
         jButton3.setText("ELIMINAR");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -149,11 +171,65 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         add(jPanel6, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       database.CInventario_ADMIN objetoProductos = new CInventario_ADMIN();
+       objetoProductos.ListarProductos(jTable1, jTextField1);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if (fila == -1){
+            JOptionPane.showMessageDialog(
+        null,
+        "Seleccione un producto");
+        return;
+        }
+        MODIFICAR_PRODUCTO_INVENTARIO modificar = new MODIFICAR_PRODUCTO_INVENTARIO();
+        
+        String codigo_producto = jTable1.getValueAt(fila, 0).toString();
+        String nombre_producto = jTable1.getValueAt(fila, 1).toString();
+        String descripcion_producto = jTable1.getValueAt(fila, 2).toString();
+        String categoria = jTable1.getValueAt(fila, 3).toString();
+        String precio_compra = jTable1.getValueAt(fila, 4).toString();
+        String precio_venta = jTable1.getValueAt(fila, 5).toString();
+        java.sql.Date fecha = (java.sql.Date) jTable1.getValueAt(fila, 6);
+        String stock_actual = jTable1.getValueAt(fila, 7).toString();
+        String stock_minimo = jTable1.getValueAt(fila, 8).toString();
+        String proveedor = jTable1.getValueAt(fila, 9).toString();
+        
+        modificar.RecibirDatos(codigo_producto,nombre_producto,descripcion_producto,categoria,precio_compra,precio_venta,fecha,stock_actual,stock_minimo,proveedor);
+        modificar.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if (fila == -1){
+            JOptionPane.showMessageDialog(
+        null,
+        "Seleccione un producto");
+        return;
+        }
+        
+        String codigo_producto = jTable1.getValueAt(fila, 0).toString();
+        database.CInventario_ADMIN objetoProductos = new CInventario_ADMIN();
+        objetoProductos.EliminarProductos(codigo_producto);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AGREGAR_PRODUCTO_INVENTARIO agregar = new AGREGAR_PRODUCTO_INVENTARIO();
+        agregar.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

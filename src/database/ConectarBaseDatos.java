@@ -10,11 +10,14 @@ public class ConectarBaseDatos {
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     
     // 2. Cambiamos la URL para apuntar a tu 'localhost' (tu máquina) en lugar de Azure, manteniendo tu BD
-    private static final String URL = "jdbc:sqlserver://farmaciasaludplus2026.database.windows.net:1433;databaseName=FarmaciaSaludPlus;encrypt=true;trustServerCertificate=true;loginTimeout=30;";
+    //private static final String URL = "jdbc:sqlserver://farmaciasaludplus2026.database.windows.net:1433;databaseName=FarmaciaSaludPlus;encrypt=true;trustServerCertificate=true;loginTimeout=30;";
+    private static final String URL = "jdbc:sqlserver://adminfarmacia.database.windows.net:1433;databaseName=FarmaciaSaludPlus2;encrypt=true;trustServerCertificate=true;loginTimeout=30;";
     
     // 3. Mantenemos tus credenciales reales exactas
-    private static final String USER = "adminsql"; 
-    private static final String PASS = "Farmacia2026"; 
+    //private static final String USER = "adminsql"; 
+    private static final String USER = "adminfarmacia";
+    //private static final String PASS = "Farmacia2026"; 
+    private static final String PASS = "Farmacia123";
 
     public Connection conectar() {
         Connection cn = null;
@@ -34,4 +37,3 @@ public class ConectarBaseDatos {
         return cn;
     }
 }
-
