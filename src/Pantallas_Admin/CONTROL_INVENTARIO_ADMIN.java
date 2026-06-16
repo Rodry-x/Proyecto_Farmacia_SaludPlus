@@ -4,6 +4,9 @@
  */
 package Pantallas_Admin;
 
+import database.DAOInventario_admin;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author manue
@@ -16,6 +19,8 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
     public CONTROL_INVENTARIO_ADMIN() {
         initComponents();
         imagenes.Usar_imagenes.pintarImagen(lbl_logo, "medicamento.png");
+        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        conectar.ListarProductos(jTable1, jTextField1);
     }
 
     /**
@@ -35,6 +40,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -87,7 +93,15 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         jPanel3.add(jPanel4, gridBagConstraints);
+
+        jButton4.setText("BUSCAR");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel3.add(jButton4, gridBagConstraints);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -98,6 +112,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
         jButton1.setText("AGREGAR");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -106,6 +121,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jPanel5.add(jButton1, gridBagConstraints);
 
         jButton2.setText("MODIFICAR");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -114,6 +130,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jPanel5.add(jButton2, gridBagConstraints);
 
         jButton3.setText("ELIMINAR");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -149,11 +166,62 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         add(jPanel6, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        conectar.ListarProductos(jTable1, jTextField1);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AGREGAR_PRODUCTOS_ADMIN pantalla = new AGREGAR_PRODUCTOS_ADMIN();
+        pantalla.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+            int fila = jTable1.getSelectedRow();
+            try{
+                if (fila>=0){
+                String codigo = jTable1.getValueAt(fila, 0).toString();
+                String nombre = jTable1.getValueAt(fila, 1).toString();
+                String descripcion = jTable1.getValueAt(fila, 2).toString();
+                String categoria = jTable1.getValueAt(fila, 3).toString();
+                String proveedor = jTable1.getValueAt(fila, 4).toString();
+                String precioCompra = jTable1.getValueAt(fila, 5).toString();
+                String precioVenta = jTable1.getValueAt(fila, 6).toString();
+                java.sql.Date fecha = (java.sql.Date) jTable1.getValueAt(fila, 7);
+                String stockActual = jTable1.getValueAt(fila, 8).toString();
+                String stockMinimo = jTable1.getValueAt(fila, 9).toString();
+                
+                MODIFICAR_PRODUCTOS_ADMINS modificar = new MODIFICAR_PRODUCTOS_ADMINS();
+                modificar.RecibirProducto(codigo, nombre, descripcion, categoria, proveedor, precioCompra, precioVenta, fecha, stockActual, stockMinimo);
+                modificar.setVisible(true);
+                }                
+            }
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null,"Error al elegir el producto, " + e.toString());
+            }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int fila = jTable1.getSelectedRow();
+        try{
+            if (fila>=0){
+                String codigo = jTable1.getValueAt(fila, 0).toString();
+                DAOInventario_admin conectar = new DAOInventario_admin();
+                conectar.EliminarProductos(codigo);
+                conectar.ListarProductos(jTable1, jTextField1);
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al modificar el producto, " + e.toString());
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
