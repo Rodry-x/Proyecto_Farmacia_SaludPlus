@@ -64,16 +64,18 @@ public class Panel_Admin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(51, 153, 255));
-        jPanel2.setPreferredSize(new java.awt.Dimension(350, 640));
+        jPanel2.setPreferredSize(new java.awt.Dimension(320, 640));
+        jPanel2.setRequestFocusEnabled(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setBackground(new java.awt.Color(51, 153, 255));
         jPanel6.setPreferredSize(new java.awt.Dimension(350, 250));
         jPanel6.setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setText("Atrás");
+        jButton1.setText("ATRÁS");
         jButton1.setPreferredSize(new java.awt.Dimension(96, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel6.add(jButton1, gridBagConstraints);
 
@@ -96,7 +98,7 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton2.setText("GESTION USUARIOS");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton2.addActionListener(this::jButton2ActionPerformed);
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 350, 90));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 320, 90));
 
         jButton3.setBackground(new java.awt.Color(51, 153, 255));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
@@ -104,21 +106,21 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton3.setPreferredSize(new java.awt.Dimension(141, 27));
         jButton3.addActionListener(this::jButton3ActionPerformed);
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 350, 90));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 320, 90));
 
         jButton4.setBackground(new java.awt.Color(51, 153, 255));
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("REPORTE y CIERRE");
         jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton4.addActionListener(this::jButton4ActionPerformed);
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 350, 90));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 320, 90));
 
         jButton5.setBackground(new java.awt.Color(51, 153, 255));
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("PROVEEDORES");
         jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton5.addActionListener(this::jButton5ActionPerformed);
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 350, 90));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 320, 90));
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -136,8 +138,8 @@ public class Panel_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        CONTROL_INVENTARIO_ADMIN p_inventario = new CONTROL_INVENTARIO_ADMIN();
-        MostrarPanel(p_inventario);
+        MENU_INVENTARIO menu = new MENU_INVENTARIO();
+        MostrarPanel(menu);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

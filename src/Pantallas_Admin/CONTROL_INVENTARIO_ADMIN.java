@@ -6,6 +6,8 @@ package Pantallas_Admin;
 
 import database.DAOInventario_admin;
 import javax.swing.JOptionPane;
+import clases.entidad_categoria_inventario;
+import clases.entidad_impuesto_inventario;
 
 /**
  *
@@ -16,12 +18,17 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
     /**
      * Creates new form CONTROL_INVENTARIO_ADMIN
      */
+    private int idProductoSeleccionado = 0;
     public CONTROL_INVENTARIO_ADMIN() {
         initComponents();
-        imagenes.Usar_imagenes.pintarImagen(lbl_logo, "medicamento.png");
+        //imagenes.Usar_imagenes.pintarImagen(lbl_logo, "medicamento.png");
         database.DAOInventario_admin conectar = new DAOInventario_admin();
         conectar.ListarProductos(jTable1, jTextField1);
+        conectar.ListarCategorias(combo_categoria);
+        conectar.ListarImpuestos(combo_impuesto); 
+        text_stockminimo.setEditable(false);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,18 +48,31 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        text_nombre = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        text_descripcion = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        text_stockminimo = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        text_precioventa = new javax.swing.JTextField();
+        combo_categoria = new javax.swing.JComboBox<>();
+        combo_impuesto = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(943, 140));
+        jPanel1.setPreferredSize(new java.awt.Dimension(943, 100));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -63,6 +83,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setPreferredSize(new java.awt.Dimension(578, 53));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -87,7 +108,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 3, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -107,44 +128,13 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setPreferredSize(new java.awt.Dimension(943, 60));
-        jPanel5.setLayout(new java.awt.GridBagLayout());
-
-        jButton1.setText("AGREGAR");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 160, 23, 0);
-        jPanel5.add(jButton1, gridBagConstraints);
-
-        jButton2.setText("MODIFICAR");
-        jButton2.addActionListener(this::jButton2ActionPerformed);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 84, 23, 0);
-        jPanel5.add(jButton2, gridBagConstraints);
-
-        jButton3.setText("ELIMINAR");
-        jButton3.addActionListener(this::jButton3ActionPerformed);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 233, 23, 196);
-        jPanel5.add(jButton3, gridBagConstraints);
-
-        add(jPanel5, java.awt.BorderLayout.PAGE_END);
-
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel7.setBorder(javax.swing.BorderFactory.createEmptyBorder(40, 80, 40, 80));
-        jPanel7.setLayout(new java.awt.BorderLayout());
+        jPanel7.setPreferredSize(new java.awt.Dimension(1546, 576));
+        jPanel7.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(496, 406));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -157,9 +147,144 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel7.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 650;
+        gridBagConstraints.ipady = 150;
+        jPanel7.add(jScrollPane1, gridBagConstraints);
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("REGISTRO DE PRODUCTOS"));
+        jPanel9.setPreferredSize(new java.awt.Dimension(200, 83));
+        jPanel9.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 180;
+        jPanel9.add(text_nombre, gridBagConstraints);
+
+        jLabel2.setText("DESCRIPCIÓN");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel9.add(jLabel2, gridBagConstraints);
+
+        jLabel3.setText("NOMBRE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel9.add(jLabel3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 180;
+        jPanel9.add(text_descripcion, gridBagConstraints);
+
+        jLabel5.setText("STOCK MINIMO");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel9.add(jLabel5, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 180;
+        jPanel9.add(text_stockminimo, gridBagConstraints);
+
+        jLabel6.setText("PRECIO DE VENTA (REF.)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel9.add(jLabel6, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 180;
+        jPanel9.add(text_precioventa, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.ipadx = 180;
+        jPanel9.add(combo_categoria, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 13;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 180;
+        jPanel9.add(combo_impuesto, gridBagConstraints);
+
+        jLabel7.setText("SELECCIONAR CATEGORIA");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel9.add(jLabel7, gridBagConstraints);
+
+        jLabel8.setText("SELECCIONAR IMPUESTO");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel9.add(jLabel8, gridBagConstraints);
+
+        jButton1.setText("GUARDAR");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 15;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 19, 0, 19);
+        jPanel9.add(jButton1, gridBagConstraints);
+
+        jButton2.setText("MODIFICAR");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 15;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(1, 16, 1, 16);
+        jPanel9.add(jButton2, gridBagConstraints);
+
+        jButton3.setText("ELIMINAR");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 16;
+        jPanel9.add(jButton3, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 200;
+        gridBagConstraints.ipady = 100;
+        jPanel7.add(jPanel9, gridBagConstraints);
+
+        jLabel4.setText("* Click para seleccionar el registro");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        jPanel7.add(jLabel4, gridBagConstraints);
 
         jPanel6.add(jPanel7, java.awt.BorderLayout.CENTER);
 
@@ -172,67 +297,78 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AGREGAR_PRODUCTOS_ADMIN pantalla = new AGREGAR_PRODUCTOS_ADMIN();
-        pantalla.setVisible(true);
+        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        conectar.GuardarProductos(text_nombre, text_descripcion, combo_categoria,combo_impuesto, text_precioventa);
+        conectar.ListarProductos(jTable1, jTextField1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int fila = jTable1.getSelectedRow();
+        if(fila >= 0){
+        idProductoSeleccionado = Integer.parseInt(jTable1.getValueAt(fila, 0).toString()
+        );
+        }
+        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        conectar.Seleccionar(jTable1, text_nombre, text_descripcion, text_stockminimo, combo_categoria, combo_impuesto, text_precioventa);
+    }//GEN-LAST:event_jTable1MouseClicked
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-            int fila = jTable1.getSelectedRow();
-            try{
-                if (fila>=0){
-                String codigo = jTable1.getValueAt(fila, 0).toString();
-                String nombre = jTable1.getValueAt(fila, 1).toString();
-                String descripcion = jTable1.getValueAt(fila, 2).toString();
-                String categoria = jTable1.getValueAt(fila, 3).toString();
-                String proveedor = jTable1.getValueAt(fila, 4).toString();
-                String precioCompra = jTable1.getValueAt(fila, 5).toString();
-                String precioVenta = jTable1.getValueAt(fila, 6).toString();
-                java.sql.Date fecha = (java.sql.Date) jTable1.getValueAt(fila, 7);
-                String stockActual = jTable1.getValueAt(fila, 8).toString();
-                String stockMinimo = jTable1.getValueAt(fila, 9).toString();
-                
-                MODIFICAR_PRODUCTOS_ADMINS modificar = new MODIFICAR_PRODUCTOS_ADMINS();
-                modificar.RecibirProducto(codigo, nombre, descripcion, categoria, proveedor, precioCompra, precioVenta, fecha, stockActual, stockMinimo);
-                modificar.setVisible(true);
-                }                
-            }
-            catch(Exception e){
-                JOptionPane.showMessageDialog(null,"Error al elegir el producto, " + e.toString());
-            }
+        if(idProductoSeleccionado == 0){
+        JOptionPane.showMessageDialog(null,"Seleccione un producto");
+        return;
+        }
+        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        conectar.ModificarProducto(String.valueOf(idProductoSeleccionado), text_nombre, text_descripcion, text_stockminimo, combo_categoria, combo_impuesto, text_precioventa);
+        idProductoSeleccionado = 0;
+        text_nombre.setText("");
+        text_descripcion.setText("");
+        text_stockminimo.setText("");
+        text_precioventa.setText("");  
+        text_stockminimo.setEditable(false);
+        conectar.ListarProductos(jTable1, jTextField1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int fila = jTable1.getSelectedRow();
-        try{
-            if (fila>=0){
-                String codigo = jTable1.getValueAt(fila, 0).toString();
-                DAOInventario_admin conectar = new DAOInventario_admin();
-                conectar.EliminarProductos(codigo);
-                conectar.ListarProductos(jTable1, jTextField1);
-            }
+        if(idProductoSeleccionado == 0){
+        JOptionPane.showMessageDialog(null,"Seleccione un producto");
+        return;
         }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Error al modificar el producto, " + e.toString());
-        }
+        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        conectar.EliminarProducto(String.valueOf(idProductoSeleccionado));
+        conectar.ListarProductos(jTable1, jTextField1);
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<entidad_categoria_inventario> combo_categoria;
+    private javax.swing.JComboBox<entidad_impuesto_inventario> combo_impuesto;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbl_logo;
+    private javax.swing.JTextField text_descripcion;
+    private javax.swing.JTextField text_nombre;
+    private javax.swing.JTextField text_precioventa;
+    private javax.swing.JTextField text_stockminimo;
     // End of variables declaration//GEN-END:variables
 }
+
