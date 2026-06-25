@@ -3,10 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/clases/Cliente.java</file>
-            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/Pantallas_Inicio_Cajero/PantallaCajero.java</file>
-            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/clases/ClienteDAO.java</file>
-            <file>file:/C:/Users/DELL/Documents/UPN/-%20PROYEC%20-%20FARMACIA/VERSION%201/Proyecto_Farmacia_SaludPlus/src/Pantallas_Inicio_Cajero/VentanaRegistrarCliente.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/CONTROL_INVENTARIO_ADMIN.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/CONTROL_LOTES_INVENTARIO.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/database/DAOInventario_admin.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/MENU_INVENTARIO.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/clases/entidad_impuesto_inventario.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/database/DAOLotes_inventario_admin.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/database/ConectarBaseDatos.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/clases/entidad_producto_inventario.java</file>
+            <file>file:/C:/Users/manue/OneDrive/Desktop/proyecto_actualizado/Proyecto_Farmacia_SaludPlus/src/clases/entidad_lotes_inventario.java</file>
         </group>
     </open-files>
 </project-private>

@@ -7,10 +7,14 @@ import java.sql.SQLException;
 public class ConectarBaseDatos {
 
     // 1. Datos de conexión a tu servidor Azure SQL
-    private static final String SERVIDOR = "adminfarmacia.database.windows.net";
-    private static final String BASE_DATOS = "FarmaciaSaludPlus2";
-    private static final String USUARIO = "adminfarmacia";
-    private static final String CLAVE = "Farmacia123";
+    //private static final String SERVIDOR = "adminfarmacia.database.windows.net";
+    private static final String SERVIDOR = "trabajo2026.database.windows.net";
+    //private static final String BASE_DATOS = "FarmaciaSaludPlus2";
+    private static final String BASE_DATOS = "Trabajo_final";
+    //private static final String USUARIO = "adminfarmacia";
+    private static final String USUARIO = "Trabajofinal";
+    //private static final String CLAVE = "Farmacia123";
+    private static final String CLAVE = "Trabajo2026";
 
     // 2. Cadena de conexión con los parámetros de seguridad de Azure
     private static final String URL = "jdbc:sqlserver://" + SERVIDOR + ":1433;"

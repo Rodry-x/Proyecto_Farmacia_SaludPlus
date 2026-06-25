@@ -11,19 +11,20 @@ import java.sql.Date;
  * @author manue
  */
 public class entidad_producto_inventario {
-    String codigo_producto;
+    int id_producto;
     String nombre;
     String descripcion;
     int id_categoria;
-    int id_nombre_proveedor;
-    double precio_compra;
-    double precio_venta;
-    Date fecha_vencimiento;
-    int stock_actual;
+    String nombre_categoria;
     int stock_minimo;
+    int stock_general;
+    int id_impuesto;
+    String nombre_impuesto;
+    double porcentaje_impuesto;
+    double precio_venta;
 
-    public String getCodigo_producto() {
-        return codigo_producto;
+    public int getId_producto() {
+        return id_producto;
     }
 
     public String getNombre() {
@@ -38,32 +39,36 @@ public class entidad_producto_inventario {
         return id_categoria;
     }
 
-    public int getId_nombre_proveedor() {
-        return id_nombre_proveedor;
-    }
-
-    public double getPrecio_compra() {
-        return precio_compra;
-    }
-
-    public double getPrecio_venta() {
-        return precio_venta;
-    }
-
-    public Date getFecha_vencimiento() {
-        return fecha_vencimiento;
-    }
-
-    public int getStock_actual() {
-        return stock_actual;
+    public String getNombre_categoria() {
+        return nombre_categoria;
     }
 
     public int getStock_minimo() {
         return stock_minimo;
     }
 
-    public void setCodigo_producto(String codigo_producto) {
-        this.codigo_producto = codigo_producto;
+    public int getStock_general() {
+        return stock_general;
+    }
+
+    public int getId_impuesto() {
+        return id_impuesto;
+    }
+
+    public String getNombre_impuesto() {
+        return nombre_impuesto;
+    }
+
+    public double getPorcentaje_impuesto() {
+        return porcentaje_impuesto;
+    }
+
+    public double getPrecio_venta() {
+        return precio_venta;
+    }
+
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
     }
 
     public void setNombre(String nombre) {
@@ -78,30 +83,32 @@ public class entidad_producto_inventario {
         this.id_categoria = id_categoria;
     }
 
-    public void setId_nombre_proveedor(int id_nombre_proveedor) {
-        this.id_nombre_proveedor = id_nombre_proveedor;
-    }
-
-    public void setPrecio_compra(double precio_compra) {
-        this.precio_compra = precio_compra;
-    }
-
-    public void setPrecio_venta(double precio_venta) {
-        this.precio_venta = precio_venta;
-    }
-
-    public void setFecha_vencimiento(Date fecha_vencimiento) {
-        this.fecha_vencimiento = fecha_vencimiento;
-    }
-
-    public void setStock_actual(int stock_actual) {
-        this.stock_actual = stock_actual;
+    public void setNombre_categoria(String nombre_categoria) {
+        this.nombre_categoria = nombre_categoria;
     }
 
     public void setStock_minimo(int stock_minimo) {
         this.stock_minimo = stock_minimo;
     }
-    
-    
+
+    public void setStock_general(int stock_general) {
+        this.stock_general = stock_general;
+    }
+
+    public void setId_impuesto(int id_impuesto) {
+        this.id_impuesto = id_impuesto;
+    }
+
+    public void setNombre_impuesto(String nombre_impuesto) {
+        this.nombre_impuesto = nombre_impuesto;
+    }
+
+    public void setPorcentaje_impuesto(double porcentaje_impuesto) {
+        this.porcentaje_impuesto = porcentaje_impuesto;
+    }
+
+    public void setPrecio_venta(double precio_venta) {
+        this.precio_venta = precio_venta;
+    }
     
 }
