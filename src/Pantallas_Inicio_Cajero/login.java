@@ -259,31 +259,31 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-String user = txtUsuario.getText().trim();
-        String pass = new String(txtPassword.getPassword());
+                                       
+    String user = txtUsuario.getText().trim();
+    String pass = new String(txtPassword.getPassword());
 
-        if (user.isEmpty() || pass.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe completar todos los campos");
-            return;
-        }
+    if (user.isEmpty() || pass.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe completar todos los campos");
+        return;
+    }
 
-        int idRolBuscado = rolRecibido.equalsIgnoreCase("ADMINISTRADOR") ? 1 : 2;
-        
-        // --- PARA DEPURACIÓN (Si no entra, revisa tu consola) ---
-        System.out.println("Intentando login como: " + rolRecibido + " (Buscando ID Rol: " + idRolBuscado + ")");
-        
-        // Llamada al DAO que ya configuramos con la validación de estado y rol
-        Usuario usuarioLogueado = usuarioDAO.validarUsuario(user, pass, idRolBuscado);
+    // El ID depende de tu tabla ROLES (1 = Administrador, 2 = Cajero)
+    int idRolBuscado = rolRecibido.equalsIgnoreCase("ADMINISTRADOR") ? 1 : 2;
+    
+    // Llamada al DAO que ya configuramos
+    Usuario usuarioLogueado = usuarioDAO.validarUsuario(user, pass, idRolBuscado);
 
-        if (usuarioLogueado != null) {
-            JOptionPane.showMessageDialog(this, "Acceso exitoso. Bienvenido " + usuarioLogueado.getNombres());
-            abrirPantallaPrincipal(idRolBuscado);
-        } else {
-            // Mensaje informativo pero seguro
-            JOptionPane.showMessageDialog(this, "Acceso denegado: Usuario/contraseña incorrectos o cuenta inactiva.");
-            txtPassword.setText("");
-            txtPassword.requestFocus();
-        }
+    if (usuarioLogueado != null) {
+        // CORRECCIÓN AQUÍ: Usamos .getNombre() en lugar de .getNombres()
+        JOptionPane.showMessageDialog(this, "Acceso exitoso. Bienvenido " + usuarioLogueado.getNombre());
+        abrirPantallaPrincipal(idRolBuscado);
+    } else {
+        JOptionPane.showMessageDialog(this, "Acceso denegado: Usuario o contraseña incorrectos.");
+        txtPassword.setText("");
+        txtPassword.requestFocus();
+    }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
