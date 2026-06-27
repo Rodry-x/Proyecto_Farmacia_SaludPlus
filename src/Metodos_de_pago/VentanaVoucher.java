@@ -1,7 +1,9 @@
 package Metodos_de_pago;
 
+import dao.VentaDAO;
 import java.awt.*;
 import java.io.File;
+import java.sql.*;
 import javax.swing.*;
 
 public class VentanaVoucher extends javax.swing.JDialog {
@@ -18,28 +20,80 @@ public class VentanaVoucher extends javax.swing.JDialog {
     private String metodoPago = "";
     private String nombreCliente = "";
     private String nombreCajero = "Cajero de Turno";
+    private String fecha = "";
+    private java.util.List<String[]> listaProductos;
 
-    public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
-    public void setIgv(double igv) { this.igv = igv; }
     public void setVuelto(double vuelto) { this.vuelto = vuelto; }
     public void setMontoRecibido(double montoRecibido) { this.montoRecibido = montoRecibido; }
     public void setNumeroVenta(String numeroVenta) { this.numeroVenta = numeroVenta; }
+    public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
+    public void setIgv(double igv) { this.igv = igv; }
     public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
     public void setNombreCliente(String nombreCliente) { this.nombreCliente = nombreCliente; }
     public void setNombreCajero(String nombreCajero) { this.nombreCajero = nombreCajero; }
 
-    public VentanaVoucher(java.awt.Frame parent, boolean modal, java.util.List<String[]> listaProductos, double total) {
+    public VentanaVoucher(java.awt.Frame parent, boolean modal, int idVenta) {
         super(parent, modal);
-        this.total = total;
         setTitle("Comprobante - SaludPlus");
         setSize(380, 620);
         setLocationRelativeTo(parent);
 
-        construirHTML(listaProductos);
+        cargarDatosDesdeBD(idVenta);
+        construirHTML();
         initComponentesPersonalizados();
     }
 
-    private void construirHTML(java.util.List<String[]> productos) {
+    public VentanaVoucher(java.awt.Frame parent, boolean modal, java.util.List<String[]> listaProductos, double total) {
+        super(parent, modal);
+        this.total = total;
+        this.listaProductos = listaProductos;
+        setTitle("Comprobante - SaludPlus");
+        setSize(380, 620);
+        setLocationRelativeTo(parent);
+
+        construirHTML();
+        initComponentesPersonalizados();
+    }
+
+    private void cargarDatosDesdeBD(int idVenta) {
+        VentaDAO dao = new VentaDAO();
+        Connection con = database.ConectarBaseDatos.conectar();
+        if (con == null) return;
+
+        String sqlVenta = "SELECT v.*, u.nombre + ' ' + u.apellido AS cajero, "
+                        + "c.nombre + ' ' + c.apellido AS cliente, mp.nombre AS metodo "
+                        + "FROM VENTA v "
+                        + "JOIN USUARIOS u ON v.id_usuario = u.id_usuario "
+                        + "JOIN CLIENTES c ON v.id_cliente = c.id_cliente "
+                        + "JOIN METODO_PAGO mp ON v.id_metodopago = mp.id_metodopago "
+                        + "WHERE v.id_venta = ?";
+        try (PreparedStatement ps = con.prepareStatement(sqlVenta)) {
+            ps.setInt(1, idVenta);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    this.numeroVenta = "V" + String.format("%05d", idVenta);
+                    this.subtotal = rs.getDouble("subtotal");
+                    this.igv = rs.getDouble("igv_total");
+                    this.total = rs.getDouble("total_pagar");
+                    this.nombreCliente = rs.getString("cliente");
+                    this.nombreCajero = rs.getString("cajero");
+                    this.metodoPago = rs.getString("metodo");
+                    java.sql.Timestamp ts = rs.getTimestamp("fecha");
+                    if (ts != null) {
+                        this.fecha = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date(ts.getTime()));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al cargar datos de venta: " + e.getMessage());
+        }
+
+        this.listaProductos = dao.obtenerDetalleVenta(idVenta);
+
+        try { if (con != null) con.close(); } catch (SQLException e) { }
+    }
+
+    private void construirHTML() {
         double calcSubtotal = this.subtotal > 0 ? this.subtotal : total / 1.18;
         double calcIgv = this.igv > 0 ? this.igv : total - calcSubtotal;
 
@@ -60,8 +114,7 @@ public class VentanaVoucher extends javax.swing.JDialog {
         if (!numeroVenta.isEmpty()) {
             sb.append("<tr><td style='width:35%; color:#555;'><b>N\u00BA Venta:</b></td><td style='font-weight:bold;'>").append(numeroVenta).append("</td></tr>");
         }
-        String fecha = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
-        sb.append("<tr><td style='color:#555;'><b>Fecha:</b></td><td>").append(fecha).append("</td></tr>");
+        sb.append("<tr><td style='color:#555;'><b>Fecha:</b></td><td>").append(fecha.isEmpty() ? new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) : fecha).append("</td></tr>");
         sb.append("<tr><td style='color:#555;'><b>Cajero:</b></td><td>").append(nombreCajero).append("</td></tr>");
         if (!nombreCliente.isEmpty()) {
             sb.append("<tr><td style='color:#555;'><b>Cliente:</b></td><td>").append(nombreCliente).append("</td></tr>");
@@ -81,15 +134,13 @@ public class VentanaVoucher extends javax.swing.JDialog {
         sb.append("<th align='right' style='width:20%; padding:4px 2px;'>TOTAL</th>");
         sb.append("</tr>");
 
-        if (productos != null && !productos.isEmpty()) {
+        if (this.listaProductos != null && !this.listaProductos.isEmpty()) {
             boolean alt = false;
-            for (String[] prod : productos) {
+            for (String[] prod : this.listaProductos) {
                 String cantidad = prod[0];
                 String descripcion = prod[1];
-                String precioTotal = prod[2];
-                double totalFila = Double.parseDouble(precioTotal);
-                int cant = Integer.parseInt(cantidad);
-                double precioUnit = cant > 0 ? totalFila / cant : 0;
+                double precioUnit = Double.parseDouble(prod[2]);
+                String precioTotal = prod[3];
 
                 String nombreFila = descripcion.length() > 20 ? descripcion.substring(0, 20) : descripcion;
                 String bgColor = alt ? "#F9F9F9" : "white";

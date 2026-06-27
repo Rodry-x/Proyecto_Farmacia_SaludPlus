@@ -110,8 +110,9 @@ public class CarritoService {
             String cantidad = String.valueOf(prod.getCantidad());
             String nombre = prod.getNombreProducto() != null
                 ? prod.getNombreProducto() : "Medicamento";
+            String precioUnit = String.format("%.2f", prod.getPrecioUnitario());
             String totalFila = String.format("%.2f", prod.getTotalFila());
-            lista.add(new String[]{cantidad, nombre, totalFila});
+            lista.add(new String[]{cantidad, nombre, precioUnit, totalFila});
         }
         return lista;
     }

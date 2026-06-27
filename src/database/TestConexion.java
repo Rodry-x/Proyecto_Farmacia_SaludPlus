@@ -4,15 +4,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class TestConexion {
+    
     public static void main(String[] args) {
-        // 1. Creamos el objeto de tu clase Conexion
+        
         ConectarBaseDatos instanciaConexion = new ConectarBaseDatos();
         
-        // 2. Intentamos conectar
         System.out.println("Intentando conectar a SQL Server...");
         Connection conexionLista = instanciaConexion.conectar();
         
-        // 3. Verificamos el resultado
         if (conexionLista != null) {
             System.out.println("--- ✅ PRUEBA SUPERADA ---");
             System.out.println("Java logró entrar a la base de datos FarmaciaSaludPlus.");

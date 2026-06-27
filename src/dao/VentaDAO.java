@@ -5,6 +5,7 @@ import model.Venta;
 import database.ConectarBaseDatos;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VentaDAO {
@@ -78,7 +79,7 @@ public class VentaDAO {
         return "V00001";
     }
 
-    public boolean guardarVentaCompleta(Venta v, List<ItemVenta> productos) {
+    public int guardarVentaCompleta(Venta v, List<ItemVenta> productos) {
         String sqlVenta = "INSERT INTO VENTA (id_cliente, id_usuario, id_metodopago, fecha, subtotal, igv_total, total_pagar) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         String sqlDetalle = "INSERT INTO DETALLE_VENTA (id_venta, id_producto, id_lote, precio_unitario, cantidad, subtotal, igv, total_producto) "
@@ -115,7 +116,7 @@ public class VentaDAO {
                     if (!rs.next()) {
                         con.rollback();
                         System.err.println("ERROR: No se pudo obtener el ID de la venta generado.");
-                        return false;
+                        return -1;
                     }
                     int idVenta = rs.getInt(1);
 
@@ -130,7 +131,7 @@ public class VentaDAO {
                                 if (!rsLote.next()) {
                                     con.rollback();
                                     System.err.println("ERROR: No hay stock disponible para el producto ID=" + prod.getIdProducto());
-                                    return false;
+                                    return -1;
                                 }
                                 int idLote = rsLote.getInt("id_lote");
                                 double porcentajeIGV = rsLote.getDouble("porcentaje");
@@ -162,19 +163,71 @@ public class VentaDAO {
                         }
                     }
                     con.commit();
-                    return true;
+                    return idVenta;
                 }
             } catch (SQLException e) {
                 con.rollback();
                 System.err.println("Error en guardarVentaCompleta: " + e.getMessage());
                 System.err.println("SQL State: " + e.getSQLState() + " | Código: " + e.getErrorCode());
                 e.printStackTrace();
-                return false;
+                return -1;
             }
         } catch (SQLException e) {
             System.err.println("Error de conexion en guardarVentaCompleta: " + e.getMessage());
             System.err.println("SQL State: " + e.getSQLState() + " | Código: " + e.getErrorCode());
-            return false;
+            return -1;
         }
+    }
+
+    public List<String[]> obtenerDetalleVenta(int idVenta) {
+        String sql = "SELECT dv.cantidad, p.nombre, dv.precio_unitario, dv.total_producto "
+                   + "FROM DETALLE_VENTA dv "
+                   + "JOIN PRODUCTOS p ON dv.id_producto = p.id_producto "
+                   + "WHERE dv.id_venta = ?";
+        List<String[]> detalle = new ArrayList<>();
+        try (Connection con = ConectarBaseDatos.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idVenta);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String cantidad = String.valueOf(rs.getInt("cantidad"));
+                    String nombre = rs.getString("nombre");
+                    String precioUnit = String.format("%.2f", rs.getDouble("precio_unitario"));
+                    String totalProducto = String.format("%.2f", rs.getDouble("total_producto"));
+                    detalle.add(new String[]{cantidad, nombre, precioUnit, totalProducto});
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener detalle de venta: " + e.getMessage());
+        }
+        return detalle;
+    }
+
+    public String obtenerNombreCliente(int idCliente) {
+        String sql = "SELECT nombre + ' ' + apellido AS nombre_completo FROM CLIENTES WHERE id_cliente = ?";
+        try (Connection con = ConectarBaseDatos.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idCliente);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getString("nombre_completo");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener nombre del cliente: " + e.getMessage());
+        }
+        return "";
+    }
+
+    public String obtenerDescripcionMetodoPago(int idMetodoPago) {
+        String sql = "SELECT nombre FROM METODO_PAGO WHERE id_metodopago = ?";
+        try (Connection con = ConectarBaseDatos.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idMetodoPago);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getString("nombre");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener metodo de pago: " + e.getMessage());
+        }
+        return "";
     }
 }

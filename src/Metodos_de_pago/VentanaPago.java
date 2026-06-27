@@ -304,31 +304,18 @@ public class VentanaPago extends javax.swing.JDialog {
             totales.subtotal, totales.igv, totales.total);
         VentaDAO dao = new VentaDAO();
 
-        boolean exito = dao.guardarVentaCompleta(nuevaVenta, this.listaProductos);
+        int idVenta = dao.guardarVentaCompleta(nuevaVenta, this.listaProductos);
 
-        if (exito) {
+        if (idVenta > 0) {
             System.out.println("Venta registrada exitosamente. Total: " + util.Formateador.precio(totales.total));
             this.exitosa = true;
             JOptionPane.showMessageDialog(this,
                 "\u00A1Comprobante generado con \u00E9xito!",
                 "Venta Exitosa", JOptionPane.INFORMATION_MESSAGE);
 
-            java.util.List<String[]> listaVoucher = new java.util.ArrayList<>();
-            for (ItemVenta prod : listaProductos) {
-                String cantidad = String.valueOf(prod.getCantidad());
-                String nombre = prod.getNombreProducto();
-                String totalFila = String.format("%.2f", prod.getTotalFila());
-                listaVoucher.add(new String[]{cantidad, nombre, totalFila});
-            }
             VentanaVoucher voucher = new VentanaVoucher(
-                (java.awt.Frame) this.getParent(), true, listaVoucher, this.total
+                (java.awt.Frame) this.getParent(), true, idVenta
             );
-            voucher.setMetodoPago(this.tipoPago);
-            voucher.setSubtotal(totales.subtotal);
-            voucher.setIgv(totales.igv);
-            if (!numeroVenta.isEmpty()) {
-                voucher.setNumeroVenta(numeroVenta);
-            }
             if (tipoPago.equals("Efectivo")) {
                 try {
                     double montoRecibido = Double.parseDouble(entradaDato);
