@@ -2,8 +2,6 @@ package Pantallas_Inicio_Cajero;
 
 public class inicio extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(inicio.class.getName());
-    
     public inicio() {
         initComponents();
     }
@@ -42,7 +40,7 @@ public class inicio extends javax.swing.JFrame {
         btnCajero.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 153), 1, true));
         btnCajero.addActionListener(this::btnCajeroActionPerformed);
 
-        jPanel1.setBackground(new java.awt.Color(31, 94, 157));
+        jPanel1.setBackground(util.Formateador.AZUL_PRINCIPAL);
 
         jButton1.setText("X");
         jButton1.addActionListener(this::jButton1ActionPerformed);

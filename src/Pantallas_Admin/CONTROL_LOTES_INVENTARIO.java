@@ -4,7 +4,7 @@
  */
 package Pantallas_Admin;
 
-import database.DAOLotes_inventario_admin;
+import dao.DAOLotes_inventario_admin;
 import javax.swing.JOptionPane;
 
 /**

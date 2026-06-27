@@ -1,7 +1,7 @@
 package Pantallas_Inicio_Cajero;
 import Pantallas_Admin.Panel_Admin;
-import clases.Usuario;
-import clases.UsuarioDAO;
+import model.Usuario;
+import dao.UsuarioDAO;
 import javax.swing.JOptionPane;
 
 
@@ -46,7 +46,7 @@ public class login extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setUndecorated(true);
 
-        jPanel1.setBackground(new java.awt.Color(31, 94, 157));
+        jPanel1.setBackground(util.Formateador.AZUL_PRINCIPAL);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -107,7 +107,7 @@ public class login extends javax.swing.JFrame {
         jLabel3.setText("FARMA ");
 
         jLabel4.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(31, 94, 157));
+        jLabel4.setForeground(util.Formateador.AZUL_PRINCIPAL);
         jLabel4.setText("SISTEMA INTEGRAL DE FARMACIA ");
 
         jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
@@ -122,7 +122,7 @@ public class login extends javax.swing.JFrame {
         btnAtras.addActionListener(this::btnAtrasActionPerformed);
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(31, 94, 157));
+        jLabel10.setForeground(util.Formateador.AZUL_PRINCIPAL);
         jLabel10.setText("CONTROL");
 
         jPanel4.setBackground(new java.awt.Color(210, 232, 253));
@@ -130,7 +130,7 @@ public class login extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 153), 1, true));
 
-        lblAcceso.setForeground(new java.awt.Color(31, 94, 157));
+        lblAcceso.setForeground(util.Formateador.AZUL_PRINCIPAL);
         lblAcceso.setText("jLabel1");
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
@@ -183,7 +183,7 @@ public class login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setBackground(new java.awt.Color(31, 94, 157));
+        jButton1.setBackground(util.Formateador.AZUL_PRINCIPAL);
         jButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton1.setText("ACEPTAR");
         jButton1.addActionListener(this::jButton1ActionPerformed);
@@ -309,9 +309,7 @@ public class login extends javax.swing.JFrame {
         this.dispose();
     }
     
-    public static void main(String args[]) {
-    
-    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;

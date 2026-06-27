@@ -1,49 +1,67 @@
 package Pantallas_Inicio_Cajero;
 
 import Metodos_de_pago.VentanaPago;
-import clases.ClienteDAO;
-import clases.Cliente;
-import clases.Producto;
-import clases.ProductoDAO;
-import clases.VentaDAO;
-import java.util.HashMap;
+import Metodos_de_pago.VentanaVoucher;
+import service.CajeroService;
+import service.CarritoService;
+import model.Cliente;
+import dao.ClienteDAO;
+import model.ItemCarrito;
+import model.Producto;
+import dao.ProductoDAO;
+import dao.VentaDAO;
+import service.VentaService;
+import java.awt.Color;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
-import java.awt.Component;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
 
 
 public class PantallaCajero extends javax.swing.JFrame {
-    
-    private double montoTotalActual = 0.0;
-    private final HashMap<String, FilaCarrito> productosEnCarrito = new HashMap<>();
+
+    private final CarritoService carritoService = new CarritoService();
     private java.util.List<Producto> productosSugeridos;
     private int idClienteSeleccionado = 9;
+    private int idUsuario = 1;
+    private boolean pagoCompletado = false;
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public void limpiarCarrito() {
+        carritoService.limpiar();
+        panelCarrito.removeAll();
+        this.idClienteSeleccionado = 9;
+        this.pagoCompletado = false;
+        lblNombreCliente.setText("Cliente: Genérico");
+        lblNombreCliente.setForeground(new java.awt.Color(0, 0, 0));
+        actualizarTotalesGenerales();
+        generarSiguienteNumeroVenta();
+        panelCarrito.revalidate();
+        panelCarrito.repaint();
+    }
   
 
     // EL MÉTODO DEBE ESTAR AQUÍ, DENTRO DE LA CLASE
     private void buscarCliente() {
        String documento = txtDniCliente.getText().trim();
-    clases.ClienteDAO clienteDao = new clases.ClienteDAO();
+    dao.ClienteDAO clienteDao = new dao.ClienteDAO();
     
     try {
         // Consultamos a SQL Server usando el DAO
-        clases.Cliente cliente = clienteDao.buscarPorDocumento(documento);
+        model.Cliente cliente = clienteDao.buscarPorDni(documento);
 
         if (cliente != null) {
-            // Caso 1: El cliente SÍ existe en la base de datos
-            this.idClienteSeleccionado = cliente.getId(); // Guardamos el ID para la venta
-            
-            String nombreMostrar = cliente.getNombreCompleto(); 
-            
-            // 🌟 ADAPTACIÓN AQUÍ: Le enviamos el ID y el Nombre tal como lo requiere tu método (int, String)
-            actualizarInterfazClienteRegistrado(cliente.getId(), nombreMostrar);
+            this.idClienteSeleccionado = cliente.getId_cliente();
+
+            String nombreMostrar = cliente.getNombreCompleto();
+
+            actualizarInterfazClienteRegistrado(cliente.getId_cliente(), nombreMostrar);
             
             JOptionPane.showMessageDialog(this, 
                 "Cliente seleccionado: " + nombreMostrar, 
-                "Cliente Encontrado", 
+                "Cliente EnconbtnRegistrarClienteActionPerformedtrado", 
                 JOptionPane.INFORMATION_MESSAGE);
                 
         } else {
@@ -93,12 +111,16 @@ public class PantallaCajero extends javax.swing.JFrame {
         String codigo = txtBuscarProducto.getText().trim();
         if (codigo.isEmpty()) return;
 
-        Producto p = new ProductoDAO().buscarPorCodigoExacto(codigo);
+        Producto p = null;
+        try {
+            p = new ProductoDAO().buscarPorId(Integer.parseInt(codigo));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Código inválido.");
+        }
 
         if (p != null) {
-            agregarProductoAVenta(p.getCodigo(), p.getNombre(), p.getPrecioVenta());
+            agregarProductoAVenta(p.getId_producto(), p.getNombre(), p.getPrecio_venta());
         } else {
-            // Este es el mensaje que mencionabas
             JOptionPane.showMessageDialog(this, "El producto con código " + codigo + " no está registrado.");
         }
 
@@ -133,7 +155,7 @@ public class PantallaCajero extends javax.swing.JFrame {
 
             new Thread(() -> {
                 // LLAMADA ACTUALIZADA: Usando tu nuevo método optimizado
-                List<Producto> res = new ProductoDAO().obtenerSugerenciasParaCajero(texto);
+                List<Producto> res = new ProductoDAO().obtenerSugerencias(texto);
                 
                 java.awt.EventQueue.invokeLater(() -> {
                     if (!txtBuscarProducto.getText().trim().equals(texto)) return;
@@ -144,7 +166,7 @@ public class PantallaCajero extends javax.swing.JFrame {
                         int pos = txtBuscarProducto.getCaretPosition();
                         
                         // Asegúrate de que el método getFormatoBusqueda esté en tu clase Producto
-                        res.forEach(p -> modelo.addElement(p.getNombre() + " - S/. " + p.getPrecioVenta())); 
+                        res.forEach(p -> modelo.addElement(p.getNombre() + " - S/. " + p.getPrecio_venta())); 
                         
                         menuSugerencias.setPopupSize(txtBuscarProducto.getWidth(), 140);
                         if (!menuSugerencias.isShowing()) {
@@ -165,8 +187,7 @@ public class PantallaCajero extends javax.swing.JFrame {
             int i = lista.getSelectedIndex();
             if (i != -1 && productosSugeridos != null && i < productosSugeridos.size()) {
                 Producto p = productosSugeridos.get(i);
-                // Ahora usamos el objeto Producto que ya trae los datos básicos
-                agregarProductoAVenta(p.getCodigo(), p.getNombre(), p.getPrecioVenta());
+                agregarProductoAVenta(p.getId_producto(), p.getNombre(), p.getPrecio_venta());
                 txtBuscarProducto.setText("");
                 modelo.clear();
                 menuSugerencias.setVisible(false);
@@ -213,12 +234,11 @@ public class PantallaCajero extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnVaciar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(31, 94, 157));
+        jPanel1.setBackground(util.Formateador.AZUL_PRINCIPAL);
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -237,7 +257,7 @@ public class PantallaCajero extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(319, 319, 319)
                 .addComponent(jLabel1)
-                .addContainerGap(375, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -448,7 +468,7 @@ public class PantallaCajero extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jScrollPane1.setBackground(new java.awt.Color(31, 94, 157));
+        jScrollPane1.setBackground(util.Formateador.AZUL_PRINCIPAL);
 
         panelCarrito.setBackground(new java.awt.Color(255, 255, 255));
         panelCarrito.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -492,9 +512,6 @@ public class PantallaCajero extends javax.swing.JFrame {
                 .addGap(2, 2, 2))
         );
 
-        jButton2.setText("Ventas");
-        jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -503,14 +520,12 @@ public class PantallaCajero extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnStock, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtBuscarProducto))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnStock, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -519,20 +534,16 @@ public class PantallaCajero extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnStock)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(panelVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -542,12 +553,7 @@ public class PantallaCajero extends javax.swing.JFrame {
 
             
     private void btnVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVaciarActionPerformed
-        productosEnCarrito.clear();
-        panelCarrito.removeAll();
-        actualizarTotalesGenerales(); 
-        generarSiguienteNumeroVenta();
-        panelCarrito.revalidate();
-        panelCarrito.repaint();
+        limpiarCarrito();
     }//GEN-LAST:event_btnVaciarActionPerformed
 
     private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
@@ -573,142 +579,56 @@ public class PantallaCajero extends javax.swing.JFrame {
 
     private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarClienteActionPerformed
     String docDigitado = txtDniCliente.getText().trim();
-    // Pasamos el número a la pantalla de registro
-    VentanaRegistrarCliente modal = new VentanaRegistrarCliente(this, true, docDigitado);
-    modal.setLocationRelativeTo(this);
-    modal.setVisible(true);
+        
+        // 1. Abrimos el modal como bloqueante (true)
+        VentanaRegistrarCliente modal = new VentanaRegistrarCliente(this, true, docDigitado);
+        modal.setLocationRelativeTo(this);
+        modal.setVisible(true);
+        
+        // 2. Al cerrarse el modal, volvemos a intentar la búsqueda 
+        // para traer los datos del cliente recién registrado
+        if (!docDigitado.isEmpty()) {
+            buscarCliente();
+        }
     }//GEN-LAST:event_btnRegistrarClienteActionPerformed
 
     private void btnStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStockActionPerformed
-VentanaStock vs = new VentanaStock(this, true);
-
-    vs.setSize(this.getWidth() - 0, this.getHeight() - 0);
-    int x = this.getX() + 0;        // Un pequeño margen a la izquierda
-    int y = this.getY() + 0;       // "120" es el espacio que bajará desde arriba
-    vs.setLocation(x, y);
-    
-    vs.setVisible(true);
+    VentanaStock modal = new VentanaStock(this, true);
+    modal.setLocationRelativeTo(this);
+    modal.setVisible(true);
     }//GEN-LAST:event_btnStockActionPerformed
 
-    private void btnDdebitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDdebitoActionPerformed
-        if (productosEnCarrito.isEmpty()) { javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío."); return; }
-    
-     // ID Método DB (2 = Débito)
-        Metodos_de_pago.VentanaPago modal = new Metodos_de_pago.VentanaPago(
-        this, true, this.montoTotalActual, "Debito", 1, this.idClienteSeleccionado, 2, new java.util.ArrayList<>(productosEnCarrito.values())
-        );
-        modal.setLocationRelativeTo(this);
-        modal.setVisible(true);
-    }//GEN-LAST:event_btnDdebitoActionPerformed
+    private void btnDdebitoActionPerformed(java.awt.event.ActionEvent evt) {
+    abrirVentanaPago("Tarjeta de Debito");
+}
 
-    private void btnBilleterDigitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBilleterDigitalActionPerformed
-        if (productosEnCarrito.isEmpty()) { javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío."); return; }
-    
-    // ID Método DB (4 = Billetera Digital)
-        Metodos_de_pago.VentanaPago modal = new Metodos_de_pago.VentanaPago(
-        this, true, this.montoTotalActual, "Billetera Digital", 1, this.idClienteSeleccionado, 4, new java.util.ArrayList<>(productosEnCarrito.values())
-        );
-        modal.setLocationRelativeTo(this);
-        modal.setVisible(true);
-    }//GEN-LAST:event_btnBilleterDigitalActionPerformed
+private void btnBilleterDigitalActionPerformed(java.awt.event.ActionEvent evt) {
+    abrirVentanaPago("Billetera Digital");
+}
 
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
        
-    if (productosEnCarrito.isEmpty()) { 
-        javax.swing.JOptionPane.showMessageDialog(this, "No hay productos en el carrito para visualizar.", "Carrito Vacío", javax.swing.JOptionPane.WARNING_MESSAGE); 
+    if (carritoService.isEmpty()) { 
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay productos en el carrito para visualizar.", "Carrito Vac\u00EDo", javax.swing.JOptionPane.WARNING_MESSAGE); 
         return; 
     }
-    
-    java.util.List<String[]> listaParaVoucher = new java.util.ArrayList<>();
-    
-    // Recorremos los productos internos que pintan tu carrito
-    for (Pantallas_Inicio_Cajero.FilaCarrito prod : productosEnCarrito.values()) {
-        try {
-            String nombreMedicamento = "";
-            String cantidad = "1";
-            String totalFila = "0.00";
-            
-            // Listas temporales para clasificar lo que encontremos
-            java.util.List<String> textosDeLabels = new java.util.ArrayList<>();
-            java.util.List<String> numerosPuros = new java.util.ArrayList<>();
-
-            // Escaneamos las variables de la FilaCarrito
-            for (java.lang.reflect.Field f : prod.getClass().getDeclaredFields()) {
-                f.setAccessible(true);
-                Object valor = f.get(prod);
-                
-                if (valor != null) {
-                    String textoLimpio = valor.toString();
-                    if (valor instanceof javax.swing.JLabel) {
-                        textoLimpio = ((javax.swing.JLabel) valor).getText();
-                    }
-                    
-                    // Limpiamos etiquetas HTML internas si existieran
-                    if (textoLimpio.contains("<html>")) {
-                        textoLimpio = textoLimpio.replaceAll("<[^>]*>", "").trim();
-                    }
-                    
-                    String campoNombre = f.getName().toLowerCase();
-                    
-                    // Clasificación por nombre de variable o contenido
-                    if (campoNombre.contains("cant")) {
-                        cantidad = textoLimpio;
-                    } else if (textoLimpio.contains("S/.") || textoLimpio.contains("s/.")) {
-                        // Es un precio (puede ser el unitario o el total de la fila)
-                        textosDeLabels.add(textoLimpio); 
-                    } else if (!textoLimpio.trim().isEmpty()) {
-                        // Si es un número puro y el campo se asocia a cantidad
-                        if (textoLimpio.matches("\\d+") && campoNombre.contains("cant")) {
-                            cantidad = textoLimpio;
-                        } else {
-                            // Si contiene letras y no es precio, ¡ES EL NOMBRE DEL MEDICAMENTO!
-                            nombreMedicamento = textoLimpio;
-                        }
-                    }
-                }
-            }
-            
-            // --- VALIDACIÓN DE RESPALDO PARA ASIGNAR COLUMNAS ---
-            // Si capturamos precios en 'textosDeLabels', el más alto o el último suele ser el Total de la fila
-            if (!textosDeLabels.isEmpty()) {
-                // Quitamos el prefijo 'S/.' y espacios para quedarnos solo con el número
-                String precioString = textosDeLabels.get(textosDeLabels.size() - 1);
-                precioString = precioString.replace("S/.", "").replace("S/ ", "").replace(",", ".").trim();
-                try {
-                    double p = Double.parseDouble(precioString);
-                    totalFila = String.format("%.2f", p);
-                } catch(Exception e) {
-                    totalFila = precioString;
-                }
-            }
-            
-            // Si por alguna razón el filtro anterior no guardó el nombre, usamos el primer texto que no sea numérico
-            if (nombreMedicamento.isEmpty() && !textosDeLabels.isEmpty()) {
-                for(String txt : textosDeLabels) {
-                    if(!txt.contains("S/.") && !txt.matches("[0-9., ]+")) {
-                        nombreMedicamento = txt;
-                        break;
-                    }
-                }
-            }
-            
-            // Si sigue vacío, le ponemos un indicador seguro
-            if (nombreMedicamento.isEmpty()) {
-                nombreMedicamento = "Medicamento";
-            }
-            
-            // Guardamos los datos ordenados en la matriz: [CANT, DESCRIPCIÓN, TOTAL]
-            listaParaVoucher.add(new String[]{cantidad, nombreMedicamento, totalFila});
-            
-        } catch (Exception e) {
-            listaParaVoucher.add(new String[]{"1", "Medicamento Reg.", "0.00"});
-        }
+    if (!pagoCompletado) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Debe seleccionar un m\u00E9todo de pago primero.",
+            "Pago requerido", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
     }
     
-    // Abrimos el Voucher enviándole la lista con textos perfectamente ordenados
+    java.util.List<String[]> listaParaVoucher = carritoService.prepararDatosVoucher();
+    
     Metodos_de_pago.VentanaVoucher preview = new Metodos_de_pago.VentanaVoucher(
-        this, true, listaParaVoucher, this.montoTotalActual
+        this, true, listaParaVoucher, carritoService.getMontoTotal()
     );
+    preview.setNumeroVenta(lblNumeroVenta.getText());
+    String nombreCli = lblNombreCliente.getText().replace("Cliente: ", "");
+    if (nombreCli != null && !nombreCli.isEmpty() && !nombreCli.equals("Gen\u00E9rico")) {
+        preview.setNombreCliente(nombreCli);
+    }
     preview.setVisible(true);
     }//GEN-LAST:event_btnCobrarActionPerformed
 
@@ -721,97 +641,91 @@ VentanaStock vs = new VentanaStock(this, true);
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarProductoActionPerformed
 
-    private void btnCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditoActionPerformed
-        if (productosEnCarrito.isEmpty()) { javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío."); return; }
-    
-    // ID Método DB (3 = Crédito)
-        Metodos_de_pago.VentanaPago modal = new Metodos_de_pago.VentanaPago(
-        this, true, this.montoTotalActual, "Credito", 1, this.idClienteSeleccionado, 3, new java.util.ArrayList<>(productosEnCarrito.values())
-        );
-        modal.setLocationRelativeTo(this);
-        modal.setVisible(true);
-    }//GEN-LAST:event_btnCreditoActionPerformed
+    private void btnCreditoActionPerformed(java.awt.event.ActionEvent evt) {
+    abrirVentanaPago("Tarjeta de Credito");
+}
 
-    private void btnEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEfectivoActionPerformed
-        if (productosEnCarrito.isEmpty()) { javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío."); return; }
-    
-    // Total, Nombre del Método, ID Usuario (1 por defecto), ID Cliente real, ID Método DB (1 = Efectivo)
-        Metodos_de_pago.VentanaPago modal = new Metodos_de_pago.VentanaPago(
-        this, true, this.montoTotalActual, "Efectivo", 1, this.idClienteSeleccionado, 1, new java.util.ArrayList<>(productosEnCarrito.values())
-        );
-        modal.setLocationRelativeTo(this);
-        modal.setVisible(true);
-    }//GEN-LAST:event_btnEfectivoActionPerformed
+    private void btnEfectivoActionPerformed(java.awt.event.ActionEvent evt) {
+    abrirVentanaPago("Efectivo");
+}
     
    
-public void agregarProductoAVenta(String codigo, String nombre, double precio) {
-    try {
-        // 1. Buscamos el producto para obtener su ID real
-        Producto p = new ProductoDAO().buscarPorCodigoExacto(codigo);
-        int idReal = (p != null) ? p.getId() : 0; 
+    public void agregarProductoAVenta(int idProducto, String nombre, double precio) {
+        CarritoService.Resultado resultado = carritoService.agregarOIncrementar(
+            idProducto, nombre, precio);
 
-        if (productosEnCarrito.containsKey(codigo)) {
-            // Si ya existe, solo incrementamos
-            productosEnCarrito.get(codigo).incrementarDesdeCatálogo();
-        } else {
-            // Si NO existe, creamos la fila y la configuramos
-            FilaCarrito filaNueva = new FilaCarrito();
-            filaNueva.configureFila(this, idReal, codigo, nombre, precio); 
-            
-            productosEnCarrito.put(codigo, filaNueva);
-            panelCarrito.add(filaNueva);
+        switch (resultado) {
+            case STOCK_INSUFICIENTE:
+                int stock = CajeroService.validarStock(idProducto);
+                JOptionPane.showMessageDialog(this,
+                    "Stock insuficiente para \"" + nombre + "\". Disponible: " + stock,
+                    "Sin Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            case SIN_STOCK:
+                JOptionPane.showMessageDialog(this,
+                    "\"" + nombre + "\" no tiene stock disponible.",
+                    "Sin Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            case AGREGADO: {
+                ItemCarrito item = carritoService.getItem(String.valueOf(idProducto));
+                if (item != null) {
+                    FilaCarrito filaUI = new FilaCarrito(item, carritoService,
+                        this::actualizarTotalesGenerales);
+                    panelCarrito.add(filaUI);
+                }
+                break;
+            }
         }
-        
-        // 2. Refrescamos la interfaz
+
+        actualizarTotalesGenerales();
         panelCarrito.revalidate();
         panelCarrito.repaint();
-        actualizarTotalesGenerales();
-
-    } catch (Exception e) {
-        System.out.println("❌ Error en agregarProductoAVenta: " + e.getMessage());
-        e.printStackTrace(); // Esto te ayudará a ver la línea exacta si vuelve a fallar
     }
-}
+
 
     
     
 public void actualizarTotalesGenerales() {
-    int cantidadTotalProductos = 0;
-    double totalConIGV = 0.0;
-
-    for (FilaCarrito fila : productosEnCarrito.values()) {
-        int cantidadFila = fila.getCantidadActual();
-        double precioFila = fila.getPrecioUnitario();
-        cantidadTotalProductos += cantidadFila;
-        totalConIGV += (precioFila * cantidadFila);
+    if (carritoService.isEmpty()) {
+        carritoService.setMontoTotal(0.0);
+        lblSubtotal.setText("S/. 0.00");
+        lblIGV.setText("S/. 0.00");
+        lblTotalVenta.setText("S/. 0.00");
+        jLabel3.setText("0");
+        return;
     }
 
-    // Actualizamos la variable global
-    this.montoTotalActual = totalConIGV; 
+    VentaService.TotalesVenta totales = VentaService.calcularTotales(
+        carritoService.toItemVentaList());
 
-    double subtotal = totalConIGV / 1.18;
-    double igv = totalConIGV - subtotal;
-
-    lblTotalVenta.setText(String.format("S/. %.2f", totalConIGV));
-    lblSubtotal.setText(String.format("S/. %.2f", subtotal));
-    lblIGV.setText(String.format("S/. %.2f", igv));
-    jLabel3.setText(String.valueOf(cantidadTotalProductos));
+    carritoService.setMontoTotal(totales.total);
+    lblSubtotal.setText(util.Formateador.precio(totales.subtotal));
+    lblIGV.setText(util.Formateador.precio(totales.igv));
+    lblTotalVenta.setText(util.Formateador.precio(totales.total));
+    jLabel3.setText(String.valueOf(carritoService.size()));
 }
 
-    
-public void eliminarProductoDeMemoria(String codigoProducto) {
-        if (productosEnCarrito.containsKey(codigoProducto)) {
-            FilaCarrito filaAQuitar = productosEnCarrito.remove(codigoProducto);
-            actualizarTotalesGenerales();
-            
-            java.awt.EventQueue.invokeLater(() -> {
-                if (filaAQuitar != null) panelCarrito.remove(filaAQuitar); 
-                panelCarrito.revalidate();
-                panelCarrito.repaint();
-            });
-        }
+private void abrirVentanaPago(String tipoPago) {
+    if (carritoService.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "El carrito está vacío.");
+        return;
     }
-    
+
+    int idMetodo = CajeroService.obtenerIdMetodo(tipoPago);
+    VentanaPago modal = new VentanaPago(
+        this, true, carritoService.getMontoTotal(), tipoPago, this.idUsuario,
+        this.idClienteSeleccionado, idMetodo,
+        carritoService.toItemVentaList()
+    );
+    modal.setLocationRelativeTo(this);
+    modal.setNumeroVenta(lblNumeroVenta.getText());
+    modal.setVisible(true);
+    if (modal.isExitosa()) {
+        pagoCompletado = true;
+        limpiarCarrito();
+    }
+}
+
 
     
     
@@ -832,16 +746,11 @@ private void generarSiguienteNumeroVenta() {
     }).start();
 }
 
-    // CÓDIGO NUEVO (Copia y pega esto en su lugar)
-        public void actualizarInterfazClienteRegistrado(int idCliente, String nombreCompleto) {
-    // 1. Guardamos el ID devuelto por Azure en la variable de la pantalla
-        this.idClienteSeleccionado = idCliente; 
-    
-    // 2. Pintamos el nombre en el Label del cajero
-        lblNombreCliente.setText("Cliente: " + nombreCompleto); 
-    
-    // Mensaje de control en la consola
-        System.out.println("🚀 [DEBUG] Cliente enlazado al carrito con ID: " + idCliente);
+public void actualizarInterfazClienteRegistrado(int id, String nombre) {
+    this.idClienteSeleccionado = id;
+    lblNombreCliente.setText("Cliente: " + nombre);
+    lblNombreCliente.setForeground(new java.awt.Color(0, 102, 0)); // Color verde al confirmar
+    btnRegistrarCliente.setVisible(false); // Ocultamos el botón si ya está registrado
 }
    
   
@@ -861,7 +770,6 @@ public static void main(String args[]) {
     private javax.swing.JToggleButton btnStock;
     private javax.swing.JButton btnVaciar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

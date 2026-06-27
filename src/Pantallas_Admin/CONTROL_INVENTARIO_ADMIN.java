@@ -4,10 +4,10 @@
  */
 package Pantallas_Admin;
 
-import database.DAOInventario_admin;
+import dao.DAOInventario_admin;
 import javax.swing.JOptionPane;
-import clases.entidad_categoria_inventario;
-import clases.entidad_impuesto_inventario;
+import model.entidad_categoria_inventario;
+import model.entidad_impuesto_inventario;
 
 /**
  *
@@ -22,7 +22,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
     public CONTROL_INVENTARIO_ADMIN() {
         initComponents();
         //imagenes.Usar_imagenes.pintarImagen(lbl_logo, "medicamento.png");
-        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        dao.DAOInventario_admin conectar = new DAOInventario_admin();
         conectar.ListarProductos(jTable1, jTextField1);
         conectar.ListarCategorias(combo_categoria);
         conectar.ListarImpuestos(combo_impuesto); 
@@ -292,12 +292,12 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        dao.DAOInventario_admin conectar = new DAOInventario_admin();
         conectar.ListarProductos(jTable1, jTextField1);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        dao.DAOInventario_admin conectar = new DAOInventario_admin();
         conectar.GuardarProductos(text_nombre, text_descripcion, combo_categoria,combo_impuesto, text_precioventa);
         conectar.ListarProductos(jTable1, jTextField1);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -308,7 +308,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         idProductoSeleccionado = Integer.parseInt(jTable1.getValueAt(fila, 0).toString()
         );
         }
-        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        dao.DAOInventario_admin conectar = new DAOInventario_admin();
         conectar.Seleccionar(jTable1, text_nombre, text_descripcion, text_stockminimo, combo_categoria, combo_impuesto, text_precioventa);
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -317,7 +317,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null,"Seleccione un producto");
         return;
         }
-        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        dao.DAOInventario_admin conectar = new DAOInventario_admin();
         conectar.ModificarProducto(String.valueOf(idProductoSeleccionado), text_nombre, text_descripcion, text_stockminimo, combo_categoria, combo_impuesto, text_precioventa);
         idProductoSeleccionado = 0;
         text_nombre.setText("");
@@ -333,7 +333,7 @@ public class CONTROL_INVENTARIO_ADMIN extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null,"Seleccione un producto");
         return;
         }
-        database.DAOInventario_admin conectar = new DAOInventario_admin();
+        dao.DAOInventario_admin conectar = new DAOInventario_admin();
         conectar.EliminarProducto(String.valueOf(idProductoSeleccionado));
         conectar.ListarProductos(jTable1, jTextField1);
     }//GEN-LAST:event_jButton3ActionPerformed

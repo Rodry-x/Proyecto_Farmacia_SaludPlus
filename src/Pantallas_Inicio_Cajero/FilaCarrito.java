@@ -1,57 +1,45 @@
 package Pantallas_Inicio_Cajero;
 
+import service.CarritoService;
+import model.ItemCarrito;
+import javax.swing.JOptionPane;
 
 public class FilaCarrito extends javax.swing.JPanel {
-    private int idProducto;
-    private String codigoProducto; // 🔑 ¡NUEVO! Almacena la identidad real del producto
-    private double precioUnitario;
-    private int cantidadActual = 1;
-    private PantallaCajero PantallaCajero; // 🔌 Para avisar si modificamos totales generales
-    private String nombreProducto;
 
-    public int getCantidadActual() {
-        return this.cantidadActual;
+    @FunctionalInterface
+    public interface AccionFila {
+        void ejecutar(String codigo);
     }
 
-    // Método público que llamará el catálogo si el producto ya existe en el carrito
-    public void incrementarDesdeCatálogo() {
-        this.cantidadActual++;
-        actualizarValoresFila();
-    }
-    
-    public String getNombreProducto() {
-    return this.nombreProducto; // O como se llame tu variable interna que guarda el nombre
-    }
-    
-    public int getIdProducto() {
-    return this.idProducto;
-   }
-    
-    public void setIdProducto(int id) {
-    this.idProducto = id;
-    }
-    
-    public int getCantidad() {
-    return this.cantidadActual;
-   }
-    
-    public String getName() {
-        return lblNombre.getText();
-    }
-    
-    // 🔑 ¡NUEVO! Getter para que la pantalla pueda verificar el código si lo necesita
-    public String getCodigoProducto() {
-        return this.codigoProducto;
-    }
-    
-    public double getPrecioUnitario() {
-        return this.precioUnitario;
-    }
-   
+    private final String codigoProducto;
+    private final ItemCarrito item;
+    private final CarritoService carritoService;
+    private final Runnable onCambio;
+
+    public String getCodigoProducto() { return codigoProducto; }
+    public int getIdProducto() { return item.getIdProducto(); }
+    public int getCantidad() { return item.getCantidad(); }
+    public String getNombreProducto() { return item.getNombreProducto(); }
+    public double getPrecioUnitario() { return item.getPrecioUnitario(); }
+    public double getTotalFila() { return item.getTotalFila(); }
+
     public FilaCarrito() {
+        this.item = null;
+        this.codigoProducto = null;
+        this.carritoService = null;
+        this.onCambio = null;
         initComponents();
     }
-   
+
+    public FilaCarrito(ItemCarrito item, CarritoService carritoService, Runnable onCambio) {
+        this.item = item;
+        this.codigoProducto = item.getCodigoProducto();
+        this.carritoService = carritoService;
+        this.onCambio = onCambio;
+        initComponents();
+        configureFila(item);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -130,77 +118,63 @@ public class FilaCarrito extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-public void configureFila(PantallaCajero pantalla, int id, String codigo, String nombre, double precio) {
-        this.idProducto = id;
-        this.PantallaCajero = pantalla;
-        this.codigoProducto = codigo; // Enlazamos el código internamente
-        this.precioUnitario = precio;
-        this.cantidadActual = 1;
-        this.nombreProducto = nombre;
-       
-
+public void configureFila(ItemCarrito item) {
         java.awt.Dimension dim = new java.awt.Dimension(596, 60);
         this.setPreferredSize(dim);
         this.setMinimumSize(dim);
         this.setMaximumSize(dim);
         
-        // Pintamos los textos
         if (lblNombre != null && lblPrecio != null && lblCantidad != null && lblSuma != null) {
-            lblNombre.setText(nombre);
-            lblPrecio.setText("S/. " + String.format("%.2f", precio) + " c/u");
-            lblCantidad.setText(String.valueOf(cantidadActual));
-            lblSuma.setText("S/. " + String.format("%.2f", precio));
-            System.out.println("🏷️ Labels de FilaCarrito rellenados exitosamente con texto.");
-        } else {
-            System.out.println("⚠️ ¡ALERTA! Algunos Labels internos de FilaCarrito son NULL.");
+            lblNombre.setText(item.getNombreProducto());
+            lblPrecio.setText(util.Formateador.precio(item.getPrecioUnitario()) + " c/u");
+            lblCantidad.setText(String.valueOf(item.getCantidad()));
+            lblSuma.setText(util.Formateador.precio(item.getPrecioUnitario()));
         }
         
-        // Desactivamos los bordes de los botones
         if (btnRestar != null) btnRestar.setContentAreaFilled(false);
         if (btnSumar != null) btnSumar.setContentAreaFilled(false);
         if (btnEliminar != null) btnEliminar.setContentAreaFilled(false);
     }
     
     private void actualizarValoresFila() {
-        double subtotalFila = precioUnitario * cantidadActual;
-        
-        lblCantidad.setText(String.valueOf(cantidadActual));
-        lblSuma.setText("S/. " + String.format("%.2f", subtotalFila));
-        
-        // Le avisamos a la pantalla del cajero que recalcule el subtotal, igv y total general
-        if (PantallaCajero != null) {
-            PantallaCajero.actualizarTotalesGenerales();
-        }
+        lblCantidad.setText(String.valueOf(item.getCantidad()));
+        lblSuma.setText(util.Formateador.precio(item.getTotalFila()));
+        if (onCambio != null) onCambio.run();
     }
 
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-    java.awt.Container contenedor = this.getParent();
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {
+        java.awt.Container contenedor = this.getParent();
         if (contenedor != null) {
-            // Primero quitamos el componente visual
             contenedor.remove(this);
-            
-            if (PantallaCajero != null) {
-                // ✅ CORREGIDO: Le enviamos el CÓDIGO real a la memoria para que lo remueva con éxito
-                PantallaCajero.eliminarProductoDeMemoria(this.codigoProducto); 
+            if (carritoService != null) {
+                carritoService.eliminar(this.codigoProducto);
             }
-            
+            if (onCambio != null) onCambio.run();
             contenedor.revalidate();
             contenedor.repaint();
         }
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    }
 
-    private void btnSumarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSumarActionPerformed
-        cantidadActual++; // Sumamos 1 a la cantidad
+    private void btnSumarActionPerformed(java.awt.event.ActionEvent evt) {
+        CarritoService.StockInfo info = carritoService.verificarStock(codigoProducto);
+        if (!info.isPuedeIncrementar()) {
+            JOptionPane.showMessageDialog(this,
+                "Stock m\u00E1ximo alcanzado para \"" + item.getNombreProducto()
+                    + "\". Disponible: " + info.getStockDisponible(),
+                "Sin Stock", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        carritoService.incrementar(codigoProducto);
         actualizarValoresFila();
-    }//GEN-LAST:event_btnSumarActionPerformed
+    }
 
-    private void btnRestarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestarActionPerformed
-       if (cantidadActual > 1) { // Evitamos que baje de 1
-            cantidadActual--; // Restamos 1
+    private void btnRestarActionPerformed(java.awt.event.ActionEvent evt) {
+        if (item.getCantidad() > 1) {
+            carritoService.decrementar(codigoProducto);
             actualizarValoresFila();
         }
-    }//GEN-LAST:event_btnRestarActionPerformed
+    }
 
 
 

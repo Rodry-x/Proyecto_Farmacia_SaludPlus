@@ -1,7 +1,7 @@
 
 package Pantallas_Admin;
 
-import clases.ReportesDAO;
+import dao.ReportesDAO;
 import java.util.Calendar;
 import java.util.List;
 import javax.swing.SwingUtilities;
