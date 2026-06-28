@@ -31,6 +31,7 @@ public class VentanaPago extends javax.swing.JDialog {
 
     private JComboBox<String> cmbBilletera;
     private boolean exitosa = false;
+    private int idVentaGenerada = -1;
     private String numeroVenta = "";
 
     private JPanel headerPanel;
@@ -44,6 +45,10 @@ public class VentanaPago extends javax.swing.JDialog {
 
     public boolean isExitosa() {
         return exitosa;
+    }
+
+    public int getIdVentaGenerada() {
+        return idVentaGenerada;
     }
 
     public void setNumeroVenta(String numeroVenta) {
@@ -308,28 +313,11 @@ public class VentanaPago extends javax.swing.JDialog {
 
         if (idVenta > 0) {
             System.out.println("Venta registrada exitosamente. Total: " + util.Formateador.precio(totales.total));
+            this.idVentaGenerada = idVenta;
             this.exitosa = true;
             JOptionPane.showMessageDialog(this,
-                "\u00A1Comprobante generado con \u00E9xito!",
+                "Pago realizado con \u00E9xito.",
                 "Venta Exitosa", JOptionPane.INFORMATION_MESSAGE);
-
-            VentanaVoucher voucher = new VentanaVoucher(
-                (java.awt.Frame) this.getParent(), true, idVenta
-            );
-            if (tipoPago.equals("Efectivo")) {
-                try {
-                    double montoRecibido = Double.parseDouble(entradaDato);
-                    double cambio = montoRecibido - this.total;
-                    voucher.setMontoRecibido(montoRecibido);
-                    if (cambio > 0) {
-                        voucher.setVuelto(cambio);
-                    }
-                } catch (NumberFormatException e) {
-                    // ignorar
-                }
-            }
-            voucher.setVisible(true);
-
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this,

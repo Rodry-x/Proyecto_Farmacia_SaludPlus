@@ -21,7 +21,7 @@ public class ItemCarrito {
     public String getNombreProducto() { return nombreProducto; }
     public double getPrecioUnitario() { return precioUnitario; }
     public int getCantidad() { return cantidad; }
-
     public void setCantidad(int cantidad) { this.cantidad = cantidad; }
+    
     public double getTotalFila() { return precioUnitario * cantidad; }
 }

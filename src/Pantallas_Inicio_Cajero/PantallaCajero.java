@@ -24,6 +24,7 @@ public class PantallaCajero extends javax.swing.JFrame {
     private int idClienteSeleccionado = 9;
     private int idUsuario = 1;
     private boolean pagoCompletado = false;
+    private int ultimaVentaId = -1;
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
@@ -33,7 +34,6 @@ public class PantallaCajero extends javax.swing.JFrame {
         carritoService.limpiar();
         panelCarrito.removeAll();
         this.idClienteSeleccionado = 9;
-        this.pagoCompletado = false;
         lblNombreCliente.setText("Cliente: Genérico");
         lblNombreCliente.setForeground(new java.awt.Color(0, 0, 0));
         actualizarTotalesGenerales();
@@ -277,12 +277,30 @@ public class PantallaCajero extends javax.swing.JFrame {
 
         jLabel5.setText("Metodo de Pago ");
 
+        btnEfectivo.setBackground(new java.awt.Color(46, 125, 50));
+        btnEfectivo.setForeground(new java.awt.Color(255, 255, 255));
+        btnEfectivo.setFocusPainted(false);
+        btnEfectivo.setBorderPainted(false);
+        btnEfectivo.setOpaque(true);
+        btnEfectivo.setContentAreaFilled(true);
         btnEfectivo.setText("Efectivo");
         btnEfectivo.addActionListener(this::btnEfectivoActionPerformed);
 
+        btnCredito.setBackground(new java.awt.Color(21, 101, 192));
+        btnCredito.setForeground(new java.awt.Color(255, 255, 255));
+        btnCredito.setFocusPainted(false);
+        btnCredito.setBorderPainted(false);
+        btnCredito.setOpaque(true);
+        btnCredito.setContentAreaFilled(true);
         btnCredito.setText("Credito");
         btnCredito.addActionListener(this::btnCreditoActionPerformed);
 
+        btnDdebito.setBackground(new java.awt.Color(0, 137, 123));
+        btnDdebito.setForeground(new java.awt.Color(255, 255, 255));
+        btnDdebito.setFocusPainted(false);
+        btnDdebito.setBorderPainted(false);
+        btnDdebito.setOpaque(true);
+        btnDdebito.setContentAreaFilled(true);
         btnDdebito.setText("Debito");
         btnDdebito.addActionListener(this::btnDdebitoActionPerformed);
 
@@ -362,9 +380,21 @@ public class PantallaCajero extends javax.swing.JFrame {
                         .addContainerGap())))
         );
 
+        btnBilleterDigital.setBackground(new java.awt.Color(156, 39, 176));
+        btnBilleterDigital.setForeground(new java.awt.Color(255, 255, 255));
+        btnBilleterDigital.setFocusPainted(false);
+        btnBilleterDigital.setBorderPainted(false);
+        btnBilleterDigital.setOpaque(true);
+        btnBilleterDigital.setContentAreaFilled(true);
         btnBilleterDigital.setText("Billetera Digital");
         btnBilleterDigital.addActionListener(this::btnBilleterDigitalActionPerformed);
 
+        btnCobrar.setBackground(util.Formateador.AZUL_PRINCIPAL);
+        btnCobrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCobrar.setFocusPainted(false);
+        btnCobrar.setBorderPainted(false);
+        btnCobrar.setOpaque(true);
+        btnCobrar.setContentAreaFilled(true);
         btnCobrar.setText("IMPRIMIR");
         btnCobrar.addActionListener(this::btnCobrarActionPerformed);
 
@@ -379,6 +409,11 @@ public class PantallaCajero extends javax.swing.JFrame {
         btnBuscarCliente.addActionListener(this::btnBuscarClienteActionPerformed);
 
         btnRegistrarCliente.setBackground(new java.awt.Color(0, 102, 204));
+        btnRegistrarCliente.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrarCliente.setFocusPainted(false);
+        btnRegistrarCliente.setBorderPainted(false);
+        btnRegistrarCliente.setOpaque(true);
+        btnRegistrarCliente.setContentAreaFilled(true);
         btnRegistrarCliente.setText("Registrar ");
         btnRegistrarCliente.setName("btnRegistrar"); // NOI18N
         btnRegistrarCliente.addActionListener(this::btnRegistrarClienteActionPerformed);
@@ -608,28 +643,21 @@ private void btnBilleterDigitalActionPerformed(java.awt.event.ActionEvent evt) {
 
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
        
-    if (carritoService.isEmpty()) { 
+    if (carritoService.isEmpty() && ultimaVentaId <= 0) { 
         javax.swing.JOptionPane.showMessageDialog(this, "No hay productos en el carrito para visualizar.", "Carrito Vac\u00EDo", javax.swing.JOptionPane.WARNING_MESSAGE); 
         return; 
     }
-    if (!pagoCompletado) {
+    if (ultimaVentaId <= 0) {
         javax.swing.JOptionPane.showMessageDialog(this,
             "Debe seleccionar un m\u00E9todo de pago primero.",
             "Pago requerido", javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
     
-    java.util.List<String[]> listaParaVoucher = carritoService.prepararDatosVoucher();
-    
-    Metodos_de_pago.VentanaVoucher preview = new Metodos_de_pago.VentanaVoucher(
-        this, true, listaParaVoucher, carritoService.getMontoTotal()
+    Metodos_de_pago.VentanaVoucher voucher = new Metodos_de_pago.VentanaVoucher(
+        this, true, ultimaVentaId
     );
-    preview.setNumeroVenta(lblNumeroVenta.getText());
-    String nombreCli = lblNombreCliente.getText().replace("Cliente: ", "");
-    if (nombreCli != null && !nombreCli.isEmpty() && !nombreCli.equals("Gen\u00E9rico")) {
-        preview.setNombreCliente(nombreCli);
-    }
-    preview.setVisible(true);
+    voucher.setVisible(true);
     }//GEN-LAST:event_btnCobrarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -722,8 +750,10 @@ private void abrirVentanaPago(String tipoPago) {
     modal.setVisible(true);
     if (modal.isExitosa()) {
         pagoCompletado = true;
+        ultimaVentaId = modal.getIdVentaGenerada();
         limpiarCarrito();
     }
+
 }
 
 

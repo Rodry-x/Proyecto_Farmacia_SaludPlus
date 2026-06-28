@@ -12,8 +12,7 @@ public class Cliente {
 
     public Cliente() {}
 
-    public Cliente(int id_cliente, String nombre, String apellido, String dni,
-                   int id_genero, LocalDate fecha_nacimiento) {
+    public Cliente(int id_cliente, String nombre, String apellido, String dni, int id_genero, LocalDate fecha_nacimiento) {
         this.id_cliente = id_cliente;
         this.nombre = nombre;
         this.apellido = apellido;

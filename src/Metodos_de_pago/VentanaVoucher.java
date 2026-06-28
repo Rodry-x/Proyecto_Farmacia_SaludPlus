@@ -22,6 +22,7 @@ public class VentanaVoucher extends javax.swing.JDialog {
     private String nombreCajero = "Cajero de Turno";
     private String fecha = "";
     private java.util.List<String[]> listaProductos;
+    private javax.swing.JTextPane papelVoucher;
 
     public void setVuelto(double vuelto) { this.vuelto = vuelto; }
     public void setMontoRecibido(double montoRecibido) { this.montoRecibido = montoRecibido; }
@@ -193,7 +194,7 @@ public class VentanaVoucher extends javax.swing.JDialog {
     private void initComponentesPersonalizados() {
         setLayout(new BorderLayout());
 
-        JTextPane papelVoucher = new JTextPane();
+        papelVoucher = new javax.swing.JTextPane();
         papelVoucher.setContentType("text/html");
         papelVoucher.setText(htmlContenido);
         papelVoucher.setEditable(false);
@@ -213,7 +214,7 @@ public class VentanaVoucher extends javax.swing.JDialog {
         JButton btnImprimir = crearBotonStilizado("Imprimir Ticket", util.Formateador.AZUL_PRINCIPAL);
 
         btnPdf.addActionListener(e -> exportarAPDF());
-        btnImprimir.addActionListener(e -> mandarAImprimir(papelVoucher));
+        btnImprimir.addActionListener(e -> mandarAImprimir());
 
         panelBotones.add(btnPdf);
         panelBotones.add(btnImprimir);
@@ -242,6 +243,10 @@ public class VentanaVoucher extends javax.swing.JDialog {
     }
 
     private void exportarAPDF() {
+        if (htmlContenido == null || htmlContenido.isEmpty()) {
+            construirHTML();
+            papelVoucher.setText(htmlContenido);
+        }
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Guardar Voucher como PDF");
         fileChooser.setSelectedFile(new File("Voucher_SaludPlus.pdf"));
@@ -269,9 +274,13 @@ public class VentanaVoucher extends javax.swing.JDialog {
         }
     }
 
-    private void mandarAImprimir(JTextPane componente) {
+    private void mandarAImprimir() {
+        if (htmlContenido == null || htmlContenido.isEmpty()) {
+            construirHTML();
+            papelVoucher.setText(htmlContenido);
+        }
         try {
-            boolean completado = componente.print(null, null, true, null, null, true);
+            boolean completado = papelVoucher.print(null, null, true, null, null, true);
             if (completado) {
                 JOptionPane.showMessageDialog(this,
                     "Ticket enviado a la cola de impresi\u00F3n.",
