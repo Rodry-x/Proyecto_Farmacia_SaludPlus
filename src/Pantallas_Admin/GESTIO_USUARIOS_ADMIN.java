@@ -4,18 +4,146 @@
  */
 package Pantallas_Admin;
 
-/**
- *
- * @author manue
- */
+import service.UsuarioService;
+import model.Usuario;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 public class GESTIO_USUARIOS_ADMIN extends javax.swing.JPanel {
 
-    /**
-     * Creates new form GESTIO_USUARIOS_ADMIN
-     */
+    private final UsuarioService service = new UsuarioService();
+    private DefaultTableModel modeloTabla;
+
     public GESTIO_USUARIOS_ADMIN() {
         initComponents();
         imagenes.Usar_imagenes.pintarImagen(lbl_logo, "medicamento.png");
+
+        jTextField1.setText("");
+        configurarTabla();
+        cargarUsuarios();
+
+        jButton1.addActionListener(e -> registrar());
+        jButton2.addActionListener(e -> editar());
+        jButton3.addActionListener(e -> eliminar());
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                buscar();
+            }
+        });
+
+        // === ESTILO ===
+        java.awt.Cursor cursorMano = new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR);
+        for (javax.swing.JButton btn : new javax.swing.JButton[]{jButton1, jButton2, jButton3}) {
+            btn.setCursor(cursorMano);
+        }
+
+        jTextField1.setBackground(new java.awt.Color(245, 247, 250));
+        jTextField1.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)),
+            javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)
+        ));
+
+        jTable1.setRowHeight(32);
+        jTable1.setGridColor(new java.awt.Color(230, 230, 230));
+        jTable1.setSelectionBackground(new java.awt.Color(220, 235, 255));
+        jTable1.setShowVerticalLines(false);
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
+    }
+
+    private void configurarTabla() {
+        modeloTabla = new DefaultTableModel(
+            new String[]{"ID", "Nombre", "Apellido", "Usuario", "Rol"}, 0
+        ) {
+            public boolean isCellEditable(int row, int col) { return false; }
+        };
+        jTable1.setModel(modeloTabla);
+        jTable1.getTableHeader().setBackground(util.Formateador.AZUL_PRINCIPAL);
+        jTable1.getTableHeader().setForeground(java.awt.Color.WHITE);
+        jTable1.setRowHeight(30);
+        jTable1.getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    private void cargarUsuarios() {
+        List<Usuario> lista = service.listarTodos();
+        cargarTabla(lista);
+    }
+
+    private void cargarTabla(List<Usuario> lista) {
+        modeloTabla.setRowCount(0);
+        for (Usuario u : lista) {
+            String rol = u.getId_rol() == 1 ? "Administrador" : "Cajero";
+            modeloTabla.addRow(new Object[]{
+                u.getId_usuario(), u.getNombre(), u.getApellido(), u.getUsername(), rol
+            });
+        }
+    }
+
+    private void buscar() {
+        String texto = jTextField1.getText().trim();
+        if (texto.isEmpty()) {
+            cargarUsuarios();
+        } else {
+            List<Usuario> lista = service.buscar(texto);
+            cargarTabla(lista);
+        }
+    }
+
+    private void registrar() {
+        VentanaRegistrarUsuario dlg = new VentanaRegistrarUsuario(
+            javax.swing.SwingUtilities.getWindowAncestor(this)
+        );
+        dlg.setVisible(true);
+        if (dlg.isGuardado()) cargarUsuarios();
+    }
+
+    private void editar() {
+        int fila = jTable1.getSelectedRow();
+        if (fila < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un usuario");
+            return;
+        }
+        int id = (int) modeloTabla.getValueAt(fila, 0);
+        Usuario u = service.buscarPorId(id);
+        if (u == null) return;
+
+        VentanaRegistrarUsuario dlg = new VentanaRegistrarUsuario(
+            javax.swing.SwingUtilities.getWindowAncestor(this), u
+        );
+        dlg.setVisible(true);
+        if (dlg.isGuardado()) cargarUsuarios();
+    }
+
+    private void eliminar() {
+        int fila = jTable1.getSelectedRow();
+        if (fila < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un usuario");
+            return;
+        }
+        int id = (int) modeloTabla.getValueAt(fila, 0);
+        String nombre = (String) modeloTabla.getValueAt(fila, 1);
+
+        int conf = javax.swing.JOptionPane.showConfirmDialog(this,
+            "¿Eliminar usuario " + nombre + "?", "Confirmar",
+            javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (conf == javax.swing.JOptionPane.YES_OPTION) {
+            try {
+                if (service.eliminar(id)) {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                        "Usuario eliminado correctamente");
+                    cargarUsuarios();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                        "No se pudo eliminar el usuario", "Error",
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (RuntimeException ex) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    ex.getMessage(), "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     /**
@@ -102,7 +230,12 @@ public class GESTIO_USUARIOS_ADMIN extends javax.swing.JPanel {
         jPanel5.setRequestFocusEnabled(false);
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
+        jButton1.setBackground(new java.awt.Color(31, 94, 157));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("REGISTRAR USUARIO");
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        jButton1.setFocusPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -110,7 +243,12 @@ public class GESTIO_USUARIOS_ADMIN extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 120, 23, 0);
         jPanel5.add(jButton1, gridBagConstraints);
 
+        jButton2.setBackground(new java.awt.Color(31, 94, 157));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("EDITAR USUARIO");
+        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        jButton2.setFocusPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -118,7 +256,12 @@ public class GESTIO_USUARIOS_ADMIN extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 45, 23, 0);
         jPanel5.add(jButton2, gridBagConstraints);
 
+        jButton3.setBackground(new java.awt.Color(31, 94, 157));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("ELIMINAR USUARIO");
+        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        jButton3.setFocusPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
