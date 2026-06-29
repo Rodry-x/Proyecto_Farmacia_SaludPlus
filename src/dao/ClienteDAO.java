@@ -8,8 +8,10 @@ import java.time.LocalDate;
 public class ClienteDAO {
 
     private Cliente mapear(ResultSet rs) throws SQLException {
+        
         Date sqlDate = rs.getDate("fecha_nacimiento");
         LocalDate fechaNac = sqlDate != null ? sqlDate.toLocalDate() : null;
+        
         return new Cliente(
             rs.getInt("id_cliente"),
             rs.getString("nombre"),
@@ -44,22 +46,6 @@ public class ClienteDAO {
         }
         return -1;
     }
-
-    public Cliente buscarPorId(int id) {
-        String sql = "SELECT * FROM CLIENTES WHERE id_cliente = ?";
-        try (Connection con = ConectarBaseDatos.conectar();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return mapear(rs);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al buscar cliente por id: " + e.getMessage());
-        }
-        return null;
-    }
-
     public boolean insertarTelefono(int idCliente, String telefono) {
         String sql = "INSERT INTO TELEFONO_CLIENTES (id_cliente, telefono) VALUES (?, ?)";
         try (Connection con = ConectarBaseDatos.conectar();
@@ -70,6 +56,20 @@ public class ClienteDAO {
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al insertar teléfono: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean insertarCorreo(int idCliente, String correo) {
+        String sql = "INSERT INTO CORREO_CLIENTES (id_cliente, correo) VALUES (?, ?)";
+        try (Connection con = ConectarBaseDatos.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idCliente);
+            ps.setString(2, correo);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al insertar correo: " + e.getMessage());
         }
         return false;
     }

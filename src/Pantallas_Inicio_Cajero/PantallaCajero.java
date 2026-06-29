@@ -4,8 +4,8 @@ import Metodos_de_pago.VentanaPago;
 import Metodos_de_pago.VentanaVoucher;
 import service.CajeroService;
 import service.CarritoService;
+import service.ClienteService;
 import model.Cliente;
-import dao.ClienteDAO;
 import model.ItemCarrito;
 import model.Producto;
 import dao.ProductoDAO;
@@ -46,11 +46,9 @@ public class PantallaCajero extends javax.swing.JFrame {
     // EL MÉTODO DEBE ESTAR AQUÍ, DENTRO DE LA CLASE
     private void buscarCliente() {
        String documento = txtDniCliente.getText().trim();
-    dao.ClienteDAO clienteDao = new dao.ClienteDAO();
     
     try {
-        // Consultamos a SQL Server usando el DAO
-        model.Cliente cliente = clienteDao.buscarPorDni(documento);
+        Cliente cliente = ClienteService.buscarPorDni(documento);
 
         if (cliente != null) {
             this.idClienteSeleccionado = cliente.getId_cliente();

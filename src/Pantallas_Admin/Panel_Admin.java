@@ -26,7 +26,8 @@ public class Panel_Admin extends javax.swing.JFrame {
         initComponents();
         imagenes.Usar_imagenes.pintarImagen(lbl_usuario, "perfil.png");
         
-        setSize(1200, 800);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        
         
     }
     private void MostrarPanel(JPanel p){
@@ -59,6 +60,7 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         content_ADMIN = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -98,7 +100,7 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton2.setText("GESTION USUARIOS");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton2.addActionListener(this::jButton2ActionPerformed);
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 320, 90));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 320, 50));
 
         jButton3.setBackground(new java.awt.Color(51, 153, 255));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
@@ -106,21 +108,25 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton3.setPreferredSize(new java.awt.Dimension(141, 27));
         jButton3.addActionListener(this::jButton3ActionPerformed);
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 320, 90));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 320, 40));
 
         jButton4.setBackground(new java.awt.Color(51, 153, 255));
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("REPORTE y CIERRE");
         jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton4.addActionListener(this::jButton4ActionPerformed);
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 320, 90));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 320, 30));
 
         jButton5.setBackground(new java.awt.Color(51, 153, 255));
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("PROVEEDORES");
         jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton5.addActionListener(this::jButton5ActionPerformed);
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 320, 90));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 320, 30));
+
+        jButton6.setText("jButton6");
+        jButton6.addActionListener(this::jButton6ActionPerformed);
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, -1, -1));
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -151,6 +157,11 @@ public class Panel_Admin extends javax.swing.JFrame {
         PROVEEDORES_ADMIN p_admin = new PROVEEDORES_ADMIN();
         MostrarPanel(p_admin);
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+           PanelCompras p_compras = new PanelCompras();
+    MostrarPanel(p_compras);
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     public void limpiarPanelCentral() {
         content_ADMIN.removeAll();
@@ -190,6 +201,7 @@ public class Panel_Admin extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;

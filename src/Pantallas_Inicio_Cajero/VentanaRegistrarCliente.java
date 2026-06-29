@@ -1,6 +1,5 @@
 package Pantallas_Inicio_Cajero;
 
-import dao.ClienteDAO;
 import model.Cliente;
 import service.ClienteService;
 import model.Genero;
@@ -43,12 +42,14 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         txtDni = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         txtApellidos = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
         txtFechaNac = new javax.swing.JTextField();
         cmbGenero = new javax.swing.JComboBox<>();
 
@@ -59,10 +60,11 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
 
         jLabel2.setText("DNI:");
         jLabel3.setText("Nombres:");
-        jLabel4.setText("Teléfono:");
+        jLabel4.setText("Telefono:");
         jLabel5.setText("Apellidos:");
-        jLabel6.setText("Género:");
-        jLabel7.setText("Fecha Nac. (YYYY-MM-DD):");
+        jLabel6.setText("Genero:");
+        jLabel7.setText("Fecha Nacimiento:");
+        jLabel8.setText("Correo:");
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(this::btnCancelarActionPerformed);
@@ -79,47 +81,65 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
         txtNombre.addKeyListener(crearFiltroLetras());
         txtApellidos.addKeyListener(crearFiltroLetras());
 
+        txtFechaNac.setText("YYYY-MM-DD");
+        txtFechaNac.setForeground(java.awt.Color.GRAY);
+        txtFechaNac.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if ("YYYY-MM-DD".equals(txtFechaNac.getText())) {
+                    txtFechaNac.setText("");
+                    txtFechaNac.setForeground(java.awt.Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (txtFechaNac.getText().trim().isEmpty()) {
+                    txtFechaNac.setText("YYYY-MM-DD");
+                    txtFechaNac.setForeground(java.awt.Color.GRAY);
+                }
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap(60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(btnCancelar)
-                        .addGap(55, 55, 55)
-                        .addComponent(btnGuardar)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel5)
                             .addComponent(jLabel4)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel7))
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtDni)
                             .addComponent(txtNombre)
                             .addComponent(txtApellidos)
                             .addComponent(txtTelefono)
-                            .addComponent(txtFechaNac)
-                            .addComponent(cmbGenero, 0, 186, Short.MAX_VALUE))))
-                .addContainerGap(20, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(115, 115, 115)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmbGenero, 0, 200, Short.MAX_VALUE)
+                            .addComponent(txtCorreo)
+                            .addComponent(txtFechaNac))
+                        .addContainerGap(60, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnCancelar)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnGuardar))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(10, 10, 10)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -137,13 +157,17 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
                     .addComponent(jLabel4))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(10, 10, 10)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnGuardar))
@@ -158,7 +182,8 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
         String nombres = txtNombre.getText().trim();
         String apellidos = txtApellidos.getText().trim();
         String telefono = txtTelefono.getText().trim();
-        String fechaNac = txtFechaNac.getText().trim();
+        String correo = txtCorreo.getText().trim();
+        String fechaNac = "YYYY-MM-DD".equals(txtFechaNac.getText()) ? "" : txtFechaNac.getText().trim();
         Genero genero = (Genero) cmbGenero.getSelectedItem();
 
         if (dni.isEmpty() || nombres.isEmpty() || apellidos.isEmpty() || telefono.isEmpty()) {
@@ -186,6 +211,11 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
             return;
         }
 
+        if (!correo.isEmpty() && !ClienteService.esCorreoValido(correo)) {
+            JOptionPane.showMessageDialog(this, "El correo ingresado no es válido.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         if (!fechaNac.isEmpty() && !ClienteService.esFechaValida(fechaNac)) {
             JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use YYYY-MM-DD.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
@@ -198,17 +228,12 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
 
         LocalDate fecha = ClienteService.parseFecha(fechaNac);
         Cliente nuevoCliente = new Cliente(0, nombres, apellidos, dni, genero.getId_genero(), fecha);
-        ClienteDAO controlador = new ClienteDAO();
 
         btnGuardar.setEnabled(false);
 
         new Thread(() -> {
             try {
-                int idGenerado = controlador.insertar(nuevoCliente);
-
-                if (idGenerado != -1 && !telefono.isEmpty()) {
-                    controlador.insertarTelefono(idGenerado, telefono);
-                }
+                int idGenerado = ClienteService.registrarCliente(nuevoCliente, telefono, correo);
 
                 int finalId = idGenerado;
                 SwingUtilities.invokeLater(() -> {
@@ -277,7 +302,9 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField txtApellidos;
+    private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDni;
     private javax.swing.JTextField txtFechaNac;
     private javax.swing.JTextField txtNombre;
