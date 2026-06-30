@@ -256,6 +256,7 @@ private void abrirPantallaPrincipal(int idRol) {
 
         // 5. Verificación de acceso
         if (usuarioLogueado != null) {
+            model.SesionUsuario.setUsuario(usuarioLogueado);
             JOptionPane.showMessageDialog(this, "Acceso exitoso. Bienvenido " + usuarioLogueado.getNombre());
             abrirPantallaPrincipal(idRolBuscado); // Llama al método que ya tienes definido
         } else {

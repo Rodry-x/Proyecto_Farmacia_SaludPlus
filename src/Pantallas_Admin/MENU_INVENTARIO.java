@@ -6,6 +6,8 @@ package Pantallas_Admin;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import model.SesionUsuario;
+import model.Usuario;
 
 /**
  *
@@ -18,6 +20,8 @@ public class MENU_INVENTARIO extends javax.swing.JPanel {
      */
     public MENU_INVENTARIO() {
         initComponents();
+        Usuario u = SesionUsuario.getUsuario();
+        jLabel1.setText("BIENVENIDO " + u.getNombreCompleto());
     }
 private void MostrarPanel(JPanel p){
         p.setSize(823, 748);
@@ -37,14 +41,13 @@ private void MostrarPanel(JPanel p){
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -54,23 +57,32 @@ private void MostrarPanel(JPanel p){
 
         jButton1.setText("CATALOGO DE PRODUCTOS");
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        jPanel1.add(jButton1, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jButton1, gridBagConstraints);
 
         jButton2.setText("LOTES");
         jButton2.addActionListener(this::jButton2ActionPerformed);
-        jPanel1.add(jButton2, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jButton2, gridBagConstraints);
 
-        jButton3.setText("jButton3");
-        jPanel1.add(jButton3, new java.awt.GridBagConstraints());
+        jLabel1.setText("jLabel1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.1;
+        jPanel1.add(jLabel1, gridBagConstraints);
 
-        jButton4.setText("jButton4");
-        jPanel1.add(jButton4, new java.awt.GridBagConstraints());
-
-        jButton5.setText("jButton5");
-        jPanel1.add(jButton5, new java.awt.GridBagConstraints());
-
-        jButton6.setText("jButton6");
-        jPanel1.add(jButton6, new java.awt.GridBagConstraints());
+        jButton3.setText("REGISTRO DE MOVIMIENTOS");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jButton3, gridBagConstraints);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -89,14 +101,17 @@ private void MostrarPanel(JPanel p){
         MostrarPanel(listar);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        VISUALIZADOR_LOTES_REGISTROMOVIMIENTOS listar = new VISUALIZADOR_LOTES_REGISTROMOVIMIENTOS();
+        MostrarPanel(listar);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
