@@ -3,33 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/CONTROL_INVENTARIO_ADMIN.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/Panel_Admin.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/CONTROL_LOTES_INVENTARIO.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Inicio_Cajero/login.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/dao/DAOLotes_inventario_admin.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/entidad_producto_inventario.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/entidad_lotes_inventario.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/entidad_impuesto_inventario.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/entidad_categoria_inventario.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/MENU_INVENTARIO.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/dao/UsuarioDAO.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/VISUALIZADOR_LOTES_X_GENERALES.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/Reportes_y_Estadistica.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/entidad_proveedor_inventario.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/Usuario.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/SesionUsuario.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/dao/DAOInventario_admin.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Inicio_Cajero/inicio.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/VISUALIZADOR_LOTES_X_PRODUCTO.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/dao/GeneroDAO.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/VISUALIZADOR_LOTES_REGISTROMOVIMIENTOS.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/database/ConectarBaseDatos.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/acción_registro_movimiento_lotesinventario.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/model/Registro_movimiento_lotes.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/VISUALIZADOR_REGISTROS_X_FECHAS.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/VISUALIZADOR_REGISTROS_X_PRODUCTO.java</file>
-            <file>file:/C:/Users/manue/OneDrive/Desktop/V_FINAL_PROYECTO/Proyecto_Farmacia_SaludPlus/src/Pantallas_Admin/VISUALIZAR_TODOS_REGISTROS.java</file>
         </group>
     </open-files>
 </project-private>

@@ -230,7 +230,9 @@ public class VentanaStock extends javax.swing.JDialog {
             }
             String nombre = tablaStock.getValueAt(fila, 1).toString();
             double precio = Double.parseDouble(
-                tablaStock.getValueAt(fila, 3).toString().replace("S/. ", "")
+                tablaStock.getValueAt(fila, 3).toString()
+                                              .replace("S/. ", "")
+                                              .replace(",", ".")
             );
             PantallaCajero.agregarProductoAVenta(id, nombre, precio);
             dispose();

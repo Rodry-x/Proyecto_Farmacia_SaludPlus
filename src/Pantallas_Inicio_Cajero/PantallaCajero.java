@@ -640,22 +640,46 @@ private void btnBilleterDigitalActionPerformed(java.awt.event.ActionEvent evt) {
 }
 
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
-       
-    if (carritoService.isEmpty() && ultimaVentaId <= 0) { 
-        javax.swing.JOptionPane.showMessageDialog(this, "No hay productos en el carrito para visualizar.", "Carrito Vac\u00EDo", javax.swing.JOptionPane.WARNING_MESSAGE); 
-        return; 
-    }
-    if (ultimaVentaId <= 0) {
+      
+    // Si no se ha completado ningún pago, no hay voucher que imprimir
+    if (!pagoCompletado || ultimaVentaId <= 0) {
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Debe seleccionar un m\u00E9todo de pago primero.",
+            "Debe seleccionar un método de pago y procesarlo primero.",
             "Pago requerido", javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
     
-    Metodos_de_pago.VentanaVoucher voucher = new Metodos_de_pago.VentanaVoucher(
-        this, true, ultimaVentaId
-    );
-    voucher.setVisible(true);
+    try {
+        // 1. Instanciamos y mostramos la ventana del comprobante
+        // Recuerda que en VentanaVoucher (Línea 143) debes usar .replace(",", ".")
+        Metodos_de_pago.VentanaVoucher voucher = new Metodos_de_pago.VentanaVoucher(
+            this, true, ultimaVentaId
+        );
+        voucher.setLocationRelativeTo(this);
+        voucher.setVisible(true);
+        
+        // 2. RECIÉN AQUÍ (Al cerrar o terminar con el voucher), limpiamos el sistema
+        limpiarCarrito();
+        
+        // 3. RESTABLECEMOS la interfaz para la nueva boleta
+        pagoCompletado = false;
+        ultimaVentaId = -1;
+        
+        btnEfectivo.setEnabled(true);
+        btnCredito.setEnabled(true);
+        btnDdebito.setEnabled(true);
+        btnBilleterDigital.setEnabled(true);
+        btnVaciar.setEnabled(true);
+        txtBuscarProducto.setEnabled(true);
+        btnBuscarCliente.setEnabled(true);
+        txtDniCliente.setEnabled(true);
+        txtDniCliente.setText("");
+        
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+            "Error al construir o mostrar el voucher: " + e.getMessage(), 
+            "Error de Impresión", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnCobrarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -746,17 +770,29 @@ private void abrirVentanaPago(String tipoPago) {
     modal.setLocationRelativeTo(this);
     modal.setNumeroVenta(lblNumeroVenta.getText());
     modal.setVisible(true);
+    
     if (modal.isExitosa()) {
         pagoCompletado = true;
         ultimaVentaId = modal.getIdVentaGenerada();
-        limpiarCarrito();
+        
+        // BLOQUEAMOS los botones de pago para congelar la transacción
+        btnEfectivo.setEnabled(false);
+        btnCredito.setEnabled(false);
+        btnDdebito.setEnabled(false);
+        btnBilleterDigital.setEnabled(false);
+        btnVaciar.setEnabled(false);
+        txtBuscarProducto.setEnabled(false);
+        btnBuscarCliente.setEnabled(false);
+        txtDniCliente.setEnabled(false);
+        
+        // Habilitamos o enfocamos el botón de IMPRIMIR
+        btnCobrar.requestFocus();
+        
+        JOptionPane.showMessageDialog(this, "¡Pago recibido con éxito! Proceda a presionar el botón IMPRIMIR.");
     }
-
 }
 
-
-    
-    
+   
 private void generarSiguienteNumeroVenta() {
     VentaDAO ventaDao = new VentaDAO();
     new Thread(() -> {
