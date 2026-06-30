@@ -7,7 +7,7 @@ public class ConectarBaseDatos {
 
    
     private static final String SERVIDOR = "trabajo2026.database.windows.net";
-    private static final String BASE_DATOS = "Trabajo_final";
+    private static final String BASE_DATOS = "Aprobaremos";
     private static final String USUARIO = "Trabajofinal";
     private static final String CLAVE = "Trabajo2026";
     private static final String URL = "jdbc:sqlserver://" + SERVIDOR + ":1433;"

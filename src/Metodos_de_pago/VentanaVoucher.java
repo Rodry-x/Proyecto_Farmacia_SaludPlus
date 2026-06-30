@@ -57,15 +57,16 @@ public class VentanaVoucher extends javax.swing.JDialog {
     }
 
     private void cargarDatosDesdeBD(int idVenta) {
-        VentaDAO dao = new VentaDAO();
+         VentaDAO dao = new VentaDAO();
         Connection con = database.ConectarBaseDatos.conectar();
         if (con == null) return;
 
+        // Usamos LEFT JOIN por si el cliente no existe o es ID 0 / nulo, la consulta no se rompa
         String sqlVenta = "SELECT v.*, u.nombre + ' ' + u.apellido AS cajero, "
-                        + "c.nombre + ' ' + c.apellido AS cliente, mp.nombre AS metodo "
+                        + "c.nombre + ' ' + c.apellido AS cliente_nombre, mp.nombre AS metodo "
                         + "FROM VENTA v "
                         + "JOIN USUARIOS u ON v.id_usuario = u.id_usuario "
-                        + "JOIN CLIENTES c ON v.id_cliente = c.id_cliente "
+                        + "LEFT JOIN CLIENTES c ON v.id_cliente = c.id_cliente "
                         + "JOIN METODO_PAGO mp ON v.id_metodopago = mp.id_metodopago "
                         + "WHERE v.id_venta = ?";
         try (PreparedStatement ps = con.prepareStatement(sqlVenta)) {
@@ -76,9 +77,21 @@ public class VentanaVoucher extends javax.swing.JDialog {
                     this.subtotal = rs.getDouble("subtotal");
                     this.igv = rs.getDouble("igv_total");
                     this.total = rs.getDouble("total_pagar");
-                    this.nombreCliente = rs.getString("cliente");
                     this.nombreCajero = rs.getString("cajero");
                     this.metodoPago = rs.getString("metodo");
+
+                    // --- VALIDACIÓN INTELIGENTE DEL CLIENTE (BLINDADA) ---
+                    String dbCliente = rs.getString("cliente_nombre");
+                    int idClienteBD = rs.getInt("id_cliente"); // Obtenemos el ID real guardado en la venta
+
+                    // Si el ID de la venta es 9 (tu genérico), o si el nombre viene vacío o como "null null"
+                    if (idClienteBD == 9 || dbCliente == null || dbCliente.trim().isEmpty() || dbCliente.equalsIgnoreCase("null null")) {
+                        this.nombreCliente = "Cliente Genérico";
+                    } else {
+                        this.nombreCliente = dbCliente.trim();
+                    }
+                    // ------------------------------------------
+
                     java.sql.Timestamp ts = rs.getTimestamp("fecha");
                     if (ts != null) {
                         this.fecha = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date(ts.getTime()));
@@ -92,11 +105,12 @@ public class VentanaVoucher extends javax.swing.JDialog {
         this.listaProductos = dao.obtenerDetalleVenta(idVenta);
 
         try { if (con != null) con.close(); } catch (SQLException e) { }
-    }
+     }
 
     private void construirHTML() {
         double calcSubtotal = this.subtotal > 0 ? this.subtotal : total / 1.18;
         double calcIgv = this.igv > 0 ? this.igv : total - calcSubtotal;
+        
 
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body style='font-family:monospace; font-size:11px; margin:0; background-color:#F5F7FA;'>");
@@ -140,7 +154,11 @@ public class VentanaVoucher extends javax.swing.JDialog {
             for (String[] prod : this.listaProductos) {
                 String cantidad = prod[0];
                 String descripcion = prod[1];
-                double precioUnit = Double.parseDouble(prod[2]);
+
+                // CORRECCIÓN AQUÍ: Limpiamos la coma decimal por si viene formateada del sistema o BD
+                String precioUnitStr = prod[2] != null ? prod[2].trim().replace(",", ".") : "0.0";
+                double precioUnit = Double.parseDouble(precioUnitStr);
+
                 String precioTotal = prod[3];
 
                 String nombreFila = descripcion.length() > 20 ? descripcion.substring(0, 20) : descripcion;
