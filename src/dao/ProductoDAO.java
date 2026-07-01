@@ -47,16 +47,10 @@ public class ProductoDAO {
 
     public List<Producto> listarConStock() {
         List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT p.id_producto, p.nombre, p.id_categoria, p.precio_venta, "
-                   + "p.stock_general, p.stock_minimo, "
-                   + "ISNULL(CONVERT(VARCHAR, l.fecha_vencimiento, 23), 'Sin lote') AS fecha_vencimiento "
-                   + "FROM PRODUCTOS p "
-                   + "LEFT JOIN LOTES l ON l.id_lote = ("
-                   + "    SELECT TOP 1 id_lote FROM LOTES WHERE id_detalle_compra IN ("
-                   + "        SELECT id_detalle FROM DETALLE_COMPRA WHERE id_producto = p.id_producto"
-                   + "    ) ORDER BY fecha_vencimiento ASC"
-                   + ") "
-                   + "ORDER BY p.nombre";
+        String sql = "SELECT id_producto, nombre, id_categoria, precio_venta, "
+                   + "stock_general, stock_minimo, fecha_vencimiento "
+                   + "FROM V_PRODUCTOS_STOCK "
+                   + "ORDER BY nombre";
         try (Connection con = ConectarBaseDatos.conectar();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
