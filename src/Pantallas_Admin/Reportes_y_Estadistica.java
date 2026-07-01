@@ -2,9 +2,12 @@
 package Pantallas_Admin;
 
 import dao.ReportesDAO;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import util.Graficador;
 
 public class Reportes_y_Estadistica extends javax.swing.JPanel {
 
@@ -36,7 +39,10 @@ public class Reportes_y_Estadistica extends javax.swing.JPanel {
         cmb_fechas = new javax.swing.JComboBox<>();
         btn_Atras = new javax.swing.JButton();
         btn_Limpiar = new javax.swing.JButton();
+        btn_graficoListaVentas = new javax.swing.JButton();
+        btn_graficoCalculoUtilidades = new javax.swing.JButton();
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
         jLabel1.setText("Reportes y Estadistica");
 
         btn_Ranking_Mejores.setText("Ranking 5 Mejores");
@@ -81,74 +87,110 @@ public class Reportes_y_Estadistica extends javax.swing.JPanel {
 
         btn_Limpiar.setText("Limpiar");
 
+        btn_graficoListaVentas.setText("Mostrar Grafico");
+        btn_graficoListaVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_graficoListaVentasActionPerformed(evt);
+            }
+        });
+
+        btn_graficoCalculoUtilidades.setText("Mostrar Grafico");
+        btn_graficoCalculoUtilidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_graficoCalculoUtilidadesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(234, 234, 234)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_Ranking_Mejores)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_Ranking_Peores)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(39, 39, 39)
-                                        .addComponent(cmb_fechas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(5, 5, 5)
-                                        .addComponent(btn_Limpiar)
-                                        .addGap(0, 0, Short.MAX_VALUE)))))))
-                .addGap(34, 34, 34))
+                                .addComponent(jLabel2)
+                                .addGap(86, 86, 86)
+                                .addComponent(btn_graficoListaVentas))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(39, 39, 39)
+                                .addComponent(cmb_fechas, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(89, 89, 89)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(75, 75, 75)
+                                .addComponent(btn_graficoCalculoUtilidades))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(105, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn_Ranking_Mejores, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_Ranking_Peores)
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btn_Atras)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btn_Atras, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(334, 334, 334)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(btn_Limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel1)
-                .addGap(20, 20, 20)
+                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cmb_fechas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_Limpiar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(27, 27, 27)
+                    .addComponent(jLabel3)
+                    .addComponent(btn_graficoListaVentas)
+                    .addComponent(btn_graficoCalculoUtilidades))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_Ranking_Mejores)
-                    .addComponent(btn_Ranking_Peores))
-                .addGap(31, 31, 31)
-                .addComponent(btn_Atras)
+                    .addComponent(btn_Ranking_Mejores, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_Ranking_Peores, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(btn_Atras, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_graficoListaVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_graficoListaVentasActionPerformed
+        JFrame padre = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (modoRanking && !ultimoRanking.isEmpty()) {
+            Graficador.mostrarRankingCajeros(ultimoRanking, "Ranking de Cajeros", padre);
+        } else if (!modoRanking && !ultimasVentas.isEmpty()) {
+            Graficador.mostrarVentasPorFecha(ultimasVentas, "Ventas del Periodo", padre);
+        }
+    }//GEN-LAST:event_btn_graficoListaVentasActionPerformed
+
+    private void btn_graficoCalculoUtilidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_graficoCalculoUtilidadesActionPerformed
+        if (ultimoResumen != null) {
+            JFrame padre = (JFrame) SwingUtilities.getWindowAncestor(this);
+            double ingresos = (Double) ultimoResumen[0];
+            double egresos = (Double) ultimoResumen[1];
+            Graficador.mostrarComparacionIngresosEgresos(ingresos, egresos, "Ingresos vs Egresos", padre);
+        }
+    }//GEN-LAST:event_btn_graficoCalculoUtilidadesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -156,6 +198,8 @@ public class Reportes_y_Estadistica extends javax.swing.JPanel {
     private javax.swing.JButton btn_Limpiar;
     private javax.swing.JButton btn_Ranking_Mejores;
     private javax.swing.JButton btn_Ranking_Peores;
+    private javax.swing.JButton btn_graficoCalculoUtilidades;
+    private javax.swing.JButton btn_graficoListaVentas;
     private javax.swing.JComboBox<String> cmb_fechas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -168,6 +212,10 @@ public class Reportes_y_Estadistica extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private final ReportesDAO reportesDAO = new ReportesDAO();
+    private List<Object[]> ultimasVentas = new ArrayList<>();
+    private Object[] ultimoResumen;
+    private List<Object[]> ultimoRanking = new ArrayList<>();
+    private boolean modoRanking = false;
 
     private void configurarTablas() {
         tabla_Ventas.setModel(new javax.swing.table.DefaultTableModel(
@@ -231,6 +279,9 @@ public class Reportes_y_Estadistica extends javax.swing.JPanel {
             Object[] resumen = reportesDAO.obtenerResumenFinanciero(desde, hasta);
 
             java.awt.EventQueue.invokeLater(() -> {
+                ultimasVentas = ventas;
+                ultimoResumen = resumen;
+                modoRanking = false;
                 configurarTablas();
                 llenarTablaVentas(ventas);
                 llenarTablaUtilidades(resumen);
@@ -239,9 +290,12 @@ public class Reportes_y_Estadistica extends javax.swing.JPanel {
     }
 
     private void cargarRankingCajeros(boolean mejores) {
+        String tipo = mejores ? "Mejores" : "Peores";
         new Thread(() -> {
             List<Object[]> ranking = reportesDAO.obtenerRankingCajeros(mejores, 5);
             java.awt.EventQueue.invokeLater(() -> {
+                ultimoRanking = ranking;
+                modoRanking = true;
                 tabla_Ventas.setModel(new javax.swing.table.DefaultTableModel(
                     new Object[][] {},
                     new String[] {"Cajero", "Ventas Realizadas", "Total Vendido"}
@@ -264,6 +318,10 @@ public class Reportes_y_Estadistica extends javax.swing.JPanel {
         modelVentas.setRowCount(0);
         javax.swing.table.DefaultTableModel modelUtilidades = (javax.swing.table.DefaultTableModel) tabla_Calculo_Utilidades.getModel();
         modelUtilidades.setRowCount(0);
+        ultimasVentas = new ArrayList<>();
+        ultimoResumen = null;
+        ultimoRanking = new ArrayList<>();
+        modoRanking = false;
         cmb_fechas.setSelectedIndex(0);
         configurarTablas();
     }
