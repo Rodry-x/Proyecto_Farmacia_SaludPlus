@@ -10,6 +10,8 @@ import Pantallas_Admin.CONTROL_INVENTARIO_ADMIN;
 import Pantallas_Admin.GESTIO_USUARIOS_ADMIN;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import model.SesionUsuario;
+import model.Usuario;
 
 /**
  *
@@ -43,6 +45,8 @@ public class Panel_Admin extends javax.swing.JFrame {
         }
         
         lbl_usuario.setForeground(java.awt.Color.WHITE);
+        Usuario u = SesionUsuario.getUsuario();
+        lbl_nombre_usuario.setText("BIENVENIDO " + u.getNombreCompleto());
     }
     private void MostrarPanel(JPanel p){
         p.setSize(823, 748);
@@ -69,6 +73,7 @@ public class Panel_Admin extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         lbl_usuario = new javax.swing.JLabel();
+        lbl_nombre_usuario = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -85,7 +90,7 @@ public class Panel_Admin extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setBackground(new java.awt.Color(51, 153, 255));
-        jPanel6.setPreferredSize(new java.awt.Dimension(350, 250));
+        jPanel6.setPreferredSize(new java.awt.Dimension(350, 300));
         jPanel6.setLayout(new java.awt.GridBagLayout());
 
         jButton1.setBackground(new java.awt.Color(31, 94, 157));
@@ -93,7 +98,6 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton1.setText("ATRÁS");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton1.setPreferredSize(new java.awt.Dimension(96, 27));
-        jButton1.addActionListener(this::jButton1ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.ipadx = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -108,6 +112,13 @@ public class Panel_Admin extends javax.swing.JFrame {
         gridBagConstraints.ipady = 150;
         jPanel6.add(lbl_usuario, gridBagConstraints);
 
+        lbl_nombre_usuario.setText("jLabel1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel6.add(lbl_nombre_usuario, gridBagConstraints);
+
         jPanel2.add(jPanel6, java.awt.BorderLayout.PAGE_START);
 
         jPanel1.setBackground(new java.awt.Color(51, 153, 255));
@@ -118,7 +129,7 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton2.setText("GESTION USUARIOS");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton2.addActionListener(this::jButton2ActionPerformed);
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 320, 40));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 320, 40));
 
         jButton3.setBackground(new java.awt.Color(31, 94, 157));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
@@ -126,28 +137,28 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton3.setPreferredSize(new java.awt.Dimension(141, 27));
         jButton3.addActionListener(this::jButton3ActionPerformed);
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 320, 40));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 320, 40));
 
         jButton4.setBackground(new java.awt.Color(31, 94, 157));
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("REPORTE y CIERRE");
         jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton4.addActionListener(this::jButton4ActionPerformed);
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 320, 40));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 320, 40));
 
         jButton5.setBackground(new java.awt.Color(31, 94, 157));
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("PROVEEDORES");
         jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton5.addActionListener(this::jButton5ActionPerformed);
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 320, 40));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 320, 40));
 
         jButton6.setBackground(new java.awt.Color(51, 153, 255));
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("COMPRAS");
         jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton6.addActionListener(this::jButton6ActionPerformed);
-        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 320, 40));
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 320, 40));
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -231,6 +242,7 @@ public class Panel_Admin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel lbl_nombre_usuario;
     private javax.swing.JLabel lbl_usuario;
     // End of variables declaration//GEN-END:variables
 }

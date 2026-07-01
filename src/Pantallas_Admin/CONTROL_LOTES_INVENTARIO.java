@@ -5,7 +5,9 @@
 package Pantallas_Admin;
 
 import dao.DAOLotes_inventario_admin;
+import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -19,9 +21,18 @@ public class CONTROL_LOTES_INVENTARIO extends javax.swing.JPanel {
     public CONTROL_LOTES_INVENTARIO() {
         initComponents();
         DAOLotes_inventario_admin conectar = new DAOLotes_inventario_admin();
-        conectar.Listarlotes(jTable1);
+        
     }
-
+    private void MostrarPanel(JPanel p){
+        p.setSize(823, 748);
+        p.setLocation(0, 0);
+        
+        jPanel2.removeAll();
+        jPanel2.setLayout(new java.awt.BorderLayout());  
+        jPanel2.add(p, BorderLayout.CENTER);
+        jPanel2.revalidate();
+        jPanel2.repaint();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,14 +46,7 @@ public class CONTROL_LOTES_INVENTARIO extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -57,126 +61,35 @@ public class CONTROL_LOTES_INVENTARIO extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         jPanel1.add(jButton1, gridBagConstraints);
 
-        jButton2.setText("VISUALIZAR  LOTES POR CADA PRODUCTO");
+        jButton2.setText("BUSCAR LOTES POR PRODUCTO, PROVEEDOR Y VENCIDOS");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         jPanel1.add(jButton2, gridBagConstraints);
 
-        jButton3.setText("VISUALIZAR LOTES POR CADA PROVEEDOR");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        jPanel1.add(jButton3, gridBagConstraints);
-
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel2.setPreferredSize(new java.awt.Dimension(1500, 800));
-        jPanel2.setLayout(new java.awt.GridBagLayout());
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 700;
-        gridBagConstraints.ipady = 100;
-        jPanel2.add(jScrollPane1, gridBagConstraints);
-
-        jLabel2.setText("PORFAVOR INGRESA LOS DÍAS PARA VISUALIZAR LOTES PROXIMOS A VENCER");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipady = 20;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel2.add(jLabel2, gridBagConstraints);
-
-        jTextField2.setPreferredSize(new java.awt.Dimension(90, 26));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 37;
-        gridBagConstraints.ipady = 4;
-        jPanel2.add(jTextField2, gridBagConstraints);
-
-        jButton5.setText("LISTAR");
-        jButton5.setPreferredSize(new java.awt.Dimension(100, 27));
-        jButton5.addActionListener(this::jButton5ActionPerformed);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel2.add(jButton5, gridBagConstraints);
-
-        jPanel4.setPreferredSize(new java.awt.Dimension(100, 10));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 15, Short.MAX_VALUE)
-        );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipady = 5;
-        jPanel2.add(jPanel4, gridBagConstraints);
-
+        jPanel2.setLayout(new java.awt.BorderLayout());
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        DAOLotes_inventario_admin conectar = new DAOLotes_inventario_admin();
-        conectar.Listarlotes(jTable1);
+       VISUALIZADOR_LOTES_X_GENERALES panel = new VISUALIZADOR_LOTES_X_GENERALES();
+        MostrarPanel(panel); 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        String texto = jTextField2.getText().trim();
-
-    try {
-        int numero = Integer.parseInt(texto);
-
-        if (numero < 0) {
-            JOptionPane.showMessageDialog(null, "Solo se permiten números positivos.");
-            return;
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Ingrese solo números.");
-    }
-    DAOLotes_inventario_admin conectar = new DAOLotes_inventario_admin();
-    conectar.Listarlotes_díasvencimiento(jTable1, jTextField2);
-    jTextField2.setText("");
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        VISUALIZADOR_LOTES_X_PRODUCTO panel = new VISUALIZADOR_LOTES_X_PRODUCTO();
+        MostrarPanel(panel);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

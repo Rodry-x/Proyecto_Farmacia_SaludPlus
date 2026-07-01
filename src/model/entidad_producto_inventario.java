@@ -110,5 +110,8 @@ public class entidad_producto_inventario {
     public void setPrecio_venta(double precio_venta) {
         this.precio_venta = precio_venta;
     }
-    
+    @Override
+    public String toString() {
+        return nombre;
+    } 
 }
