@@ -85,6 +85,7 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton1.setText("ATRÁS");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton1.setPreferredSize(new java.awt.Dimension(96, 27));
+        jButton1.addActionListener(this::jButton1ActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.ipadx = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -182,10 +183,11 @@ public class Panel_Admin extends javax.swing.JFrame {
     MostrarPanel(p_compras);
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
         new Pantallas_Inicio_Cajero.inicio().setVisible(true);
-    }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     public void limpiarPanelCentral() {
         content_ADMIN.removeAll();
