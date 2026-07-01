@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportesDAO {
-    private final ConectarBaseDatos db = new ConectarBaseDatos();
 
     public List<Object[]> obtenerVentasPorFecha(java.util.Date desde, java.util.Date hasta) {
         List<Object[]> lista = new ArrayList<>();
-        String sql = "SELECT v.id_venta, CONCAT(u.nombres, ' ', u.apellidos) AS cajero, "
-                   + "v.fecha_venta, v.total "
-                   + "FROM Ventas v "
-                   + "INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario "
-                   + "WHERE CAST(v.fecha_venta AS DATE) BETWEEN ? AND ? "
-                   + "ORDER BY v.fecha_venta DESC";
+        String sql = "SELECT v.id_venta, CONCAT(u.nombre, ' ', u.apellido) AS cajero, "
+                   + "v.fecha, v.total_pagar "
+                   + "FROM VENTA v "
+                   + "INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario "
+                   + "WHERE CAST(v.fecha AS DATE) BETWEEN ? AND ? "
+                   + "ORDER BY v.fecha DESC";
 
-        try (Connection con = db.conectar()) {
+        try (Connection con = ConectarBaseDatos.conectar()) {
             if (con == null) return lista;
 
             try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -29,8 +28,8 @@ public class ReportesDAO {
                         lista.add(new Object[]{
                             rs.getInt("id_venta"),
                             rs.getString("cajero"),
-                            rs.getTimestamp("fecha_venta"),
-                            rs.getDouble("total")
+                            rs.getTimestamp("fecha"),
+                            rs.getDouble("total_pagar")
                         });
                     }
                 }
@@ -43,14 +42,15 @@ public class ReportesDAO {
 
     public Object[] obtenerResumenFinanciero(java.util.Date desde, java.util.Date hasta) {
         String sql = "SELECT "
-                   + "COALESCE(SUM(v.total), 0) AS ingresos, "
-                   + "COALESCE(SUM(dv.cantidad * p.precio_compra), 0) AS egresos "
-                   + "FROM Ventas v "
-                   + "LEFT JOIN Detalle_Venta dv ON v.id_venta = dv.id_venta "
-                   + "LEFT JOIN Productos p ON dv.id_producto = p.id_producto "
-                   + "WHERE CAST(v.fecha_venta AS DATE) BETWEEN ? AND ?";
+                   + "COALESCE(SUM(v.total_pagar), 0) AS ingresos, "
+                   + "COALESCE(SUM(dv.cantidad * dc.precio_unitario), 0) AS egresos "
+                   + "FROM VENTA v "
+                   + "LEFT JOIN DETALLE_VENTA dv ON v.id_venta = dv.id_venta "
+                   + "LEFT JOIN LOTES l ON dv.id_lote = l.id_lote "
+                   + "LEFT JOIN DETALLE_COMPRA dc ON l.id_detalle_compra = dc.id_detalle "
+                   + "WHERE CAST(v.fecha AS DATE) BETWEEN ? AND ?";
 
-        try (Connection con = db.conectar()) {
+        try (Connection con = ConectarBaseDatos.conectar()) {
             if (con == null) return new Object[]{0.0, 0.0, 0.0, 0.0};
 
             try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -77,12 +77,12 @@ public class ReportesDAO {
         List<Object[]> lista = new ArrayList<>();
         String orden = masVendidos ? "DESC" : "ASC";
         String sql = "SELECT TOP " + limite + " p.nombre, SUM(dv.cantidad) AS total_vendido "
-                   + "FROM Detalle_Venta dv "
-                   + "INNER JOIN Productos p ON dv.id_producto = p.id_producto "
+                   + "FROM DETALLE_VENTA dv "
+                   + "INNER JOIN PRODUCTOS p ON dv.id_producto = p.id_producto "
                    + "GROUP BY p.nombre "
                    + "ORDER BY total_vendido " + orden;
 
-        try (Connection con = db.conectar()) {
+        try (Connection con = ConectarBaseDatos.conectar()) {
             if (con == null) return lista;
 
             try (PreparedStatement ps = con.prepareStatement(sql);
@@ -105,15 +105,15 @@ public class ReportesDAO {
         String orden = mejores ? "DESC" : "ASC";
         String sql = "SELECT TOP " + limite + " "
                    + "u.id_usuario, "
-                   + "CONCAT(u.nombres, ' ', u.apellidos) AS cajero, "
+                   + "CONCAT(u.nombre, ' ', u.apellido) AS cajero, "
                    + "COUNT(v.id_venta) AS cantidad_ventas, "
-                   + "COALESCE(SUM(v.total), 0) AS total_ventas "
-                   + "FROM Ventas v "
-                   + "INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario "
-                   + "GROUP BY u.id_usuario, u.nombres, u.apellidos "
+                   + "COALESCE(SUM(v.total_pagar), 0) AS total_ventas "
+                   + "FROM VENTA v "
+                   + "INNER JOIN USUARIOS u ON v.id_usuario = u.id_usuario "
+                   + "GROUP BY u.id_usuario, u.nombre, u.apellido "
                    + "ORDER BY total_ventas " + orden;
 
-        try (Connection con = db.conectar()) {
+        try (Connection con = ConectarBaseDatos.conectar()) {
             if (con == null) return lista;
 
             try (PreparedStatement ps = con.prepareStatement(sql);

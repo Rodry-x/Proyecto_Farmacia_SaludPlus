@@ -210,7 +210,7 @@ public class Reportes_y_Estadistica extends javax.swing.JPanel {
     }
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {
-        Panel_Admin padre = (Panel_Admin) SwingUtilities.getWindowAncestor(this);
+        Panel_Admin padre = (Panel_Admin) SwingUtilities.getAncestorOfClass(Panel_Admin.class, this);
         if (padre != null) {
             padre.limpiarPanelCentral();
         }
