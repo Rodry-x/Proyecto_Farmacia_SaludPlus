@@ -186,43 +186,9 @@ public class VentanaRegistrarCliente extends javax.swing.JDialog {
         String fechaNac = "YYYY-MM-DD".equals(txtFechaNac.getText()) ? "" : txtFechaNac.getText().trim();
         Genero genero = (Genero) cmbGenero.getSelectedItem();
 
-        if (dni.isEmpty() || nombres.isEmpty() || apellidos.isEmpty() || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos obligatorios deben estar llenos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!ClienteService.esDNIValido(dni)) {
-            JOptionPane.showMessageDialog(this, "El DNI debe tener exactamente 8 dígitos numéricos.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!ClienteService.esNombreValido(nombres)) {
-            JOptionPane.showMessageDialog(this, "Los nombres solo deben contener letras y espacios.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!ClienteService.esApellidoValido(apellidos)) {
-            JOptionPane.showMessageDialog(this, "Los apellidos solo deben contener letras y espacios.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!ClienteService.esTelefonoValido(telefono)) {
-            JOptionPane.showMessageDialog(this, "El teléfono debe tener exactamente 9 dígitos numéricos.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!correo.isEmpty() && !ClienteService.esCorreoValido(correo)) {
-            JOptionPane.showMessageDialog(this, "El correo ingresado no es válido.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!fechaNac.isEmpty() && !ClienteService.esFechaValida(fechaNac)) {
-            JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use YYYY-MM-DD.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (genero == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione un género.", "Error", JOptionPane.WARNING_MESSAGE);
+        String error = ClienteService.validarDatos(dni, nombres, apellidos, fechaNac, genero, telefono, correo);
+        if (error != null) {
+            JOptionPane.showMessageDialog(this, error, "Error de validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
 

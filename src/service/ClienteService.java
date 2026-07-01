@@ -45,6 +45,28 @@ public class ClienteService {
         return LocalDate.parse(fecha.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
+    public static String validarDatos(String dni, String nombres, String apellidos,
+                                        String fechaNac, Object genero,
+                                        String telefono, String correo) {
+        if (dni == null || dni.isEmpty()) return "El DNI es obligatorio.";
+        if (nombres == null || nombres.isEmpty()) return "Los nombres son obligatorios.";
+        if (apellidos == null || apellidos.isEmpty()) return "Los apellidos son obligatorios.";
+        if (fechaNac == null || fechaNac.isEmpty()) return "La fecha de nacimiento es obligatoria.";
+        if (genero == null) return "Seleccione un género.";
+
+        if (!esDNIValido(dni)) return "El DNI debe tener exactamente 8 dígitos numéricos.";
+        if (!esNombreValido(nombres)) return "Los nombres solo deben contener letras y espacios.";
+        if (!esApellidoValido(apellidos)) return "Los apellidos solo deben contener letras y espacios.";
+        if (!esFechaValida(fechaNac)) return "Formato de fecha inválido. Use YYYY-MM-DD.";
+
+        if (telefono != null && !telefono.isEmpty() && !esTelefonoValido(telefono))
+            return "El teléfono debe tener exactamente 9 dígitos numéricos.";
+        if (correo != null && !correo.isEmpty() && !esCorreoValido(correo))
+            return "El correo ingresado no es válido.";
+
+        return null;
+    }
+
     public static Cliente buscarPorDni(String dni) {
         return dao.buscarPorDni(dni);
     }

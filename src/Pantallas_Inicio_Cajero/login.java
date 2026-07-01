@@ -1,22 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package Pantallas_Inicio_Cajero;
 import model.Usuario;
 import dao.UsuarioDAO;
 import javax.swing.JOptionPane;
 
 
-/**
- *
- * @author bmend
- */
+
 public class login extends javax.swing.JPanel {
 
  
    private final String rolRecibido;
-        private final UsuarioDAO usuarioDAO = new UsuarioDAO();
+   private final UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     public login(String rol) { // Constructor que recibe el rol
         initComponents();
@@ -30,16 +24,18 @@ public class login extends javax.swing.JPanel {
     }
     
     // Asegúrate de que este método esté DENTRO de tu clase login
-private void abrirPantallaPrincipal(int idRol) {
-    if (idRol == 1) {
+    private void abrirPantallaPrincipal(int idRol) {
+        if (idRol == 1) {
         new Pantallas_Admin.Panel_Admin().setVisible(true);
-    } else {
-        new Pantallas_Inicio_Cajero.PantallaCajero().setVisible(true);
-    }
+        } else {
+        Pantallas_Inicio_Cajero.PantallaCajero pc = new Pantallas_Inicio_Cajero.PantallaCajero();
+        pc.setIdUsuario(model.SesionUsuario.getUsuario().getId_usuario());
+        pc.setVisible(true);
+        }
     
-    // Cerramos la ventana que contiene al panel
-    java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
-    if (ventana != null) {
+        // Cerramos la ventana que contiene al panel
+        java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) {
         ventana.dispose();
     }
 }
