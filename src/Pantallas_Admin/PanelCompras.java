@@ -5,7 +5,7 @@
  */
 package Pantallas_Admin;
  
-import clases.CompraDao;
+import dao.CompraDao;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;

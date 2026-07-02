@@ -67,6 +67,7 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         content_ADMIN = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -141,12 +142,19 @@ public class Panel_Admin extends javax.swing.JFrame {
         jButton5.addActionListener(this::jButton5ActionPerformed);
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 320, 40));
 
-        jButton6.setBackground(new java.awt.Color(51, 153, 255));
+        jButton6.setBackground(new java.awt.Color(31, 94, 157));
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("COMPRAS");
         jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton6.addActionListener(this::jButton6ActionPerformed);
         jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 320, 40));
+
+        jButton7.setBackground(new java.awt.Color(31, 94, 157));
+        jButton7.setForeground(new java.awt.Color(255, 255, 255));
+        jButton7.setText("REALIZAR COMPRA");
+        jButton7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton7.addActionListener(this::jButton7ActionPerformed);
+        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 320, 40));
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -188,6 +196,11 @@ public class Panel_Admin extends javax.swing.JFrame {
         new Pantallas_Inicio_Cajero.inicio().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        panelRegistrarCompra p_registrar = new panelRegistrarCompra();
+        MostrarPanel(p_registrar);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
 
     public void limpiarPanelCentral() {
         content_ADMIN.removeAll();
@@ -228,6 +241,7 @@ public class Panel_Admin extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
