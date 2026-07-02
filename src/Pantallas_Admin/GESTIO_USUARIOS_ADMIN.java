@@ -234,8 +234,8 @@ public class GESTIO_USUARIOS_ADMIN extends javax.swing.JPanel {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("REGISTRAR USUARIO");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 13));
         jButton1.setFocusPainted(false);
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -247,8 +247,8 @@ public class GESTIO_USUARIOS_ADMIN extends javax.swing.JPanel {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("EDITAR USUARIO");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 13));
         jButton2.setFocusPainted(false);
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -260,8 +260,8 @@ public class GESTIO_USUARIOS_ADMIN extends javax.swing.JPanel {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("ELIMINAR USUARIO");
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 13));
         jButton3.setFocusPainted(false);
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
