@@ -460,9 +460,9 @@ public class DAOLotes_inventario_admin {
               registro.setId_historial(rs.getInt("ID Historial"));
               registro.setId_lote(rs.getInt("ID Lote Asociado"));
               registro.setNombre_producto(rs.getString("Nombre del Producto"));
-              registro.setNombre_accion(rs.getString("Nombre Acción"));
+              registro.setNombre_accion(rs.getString("Tipo Acción"));
               registro.setStock_anterior(rs.getInt("Stock Anterior Registrado"));
-              registro.setStock_nuevo(rs.getInt("Stock Nuevo"));
+              registro.setStock_nuevo(rs.getInt("Stock Nuevo Registrado"));
               registro.setUsuario_responsable(rs.getString("Usuario Responsable"));
               registro.setUsername(rs.getString("username"));
               registro.setFecha_movimiento(rs.getTimestamp("Fecha del Movimiento"));
@@ -503,9 +503,9 @@ public class DAOLotes_inventario_admin {
               registro.setId_historial(rs.getInt("ID Historial"));
               registro.setId_lote(rs.getInt("ID Lote Asociado"));
               registro.setNombre_producto(rs.getString("Nombre del Producto"));
-              registro.setNombre_accion(rs.getString("Nombre Acción"));
+              registro.setNombre_accion(rs.getString("Tipo Acción"));
               registro.setStock_anterior(rs.getInt("Stock Anterior Registrado"));
-              registro.setStock_nuevo(rs.getInt("Stock Nuevo"));
+              registro.setStock_nuevo(rs.getInt("Stock Nuevo Registrado"));
               registro.setUsuario_responsable(rs.getString("Usuario Responsable"));
               registro.setUsername(rs.getString("username"));
               registro.setFecha_movimiento(rs.getTimestamp("Fecha del Movimiento"));
@@ -545,9 +545,9 @@ public class DAOLotes_inventario_admin {
               registro.setId_historial(rs.getInt("ID Historial"));
               registro.setId_lote(rs.getInt("ID Lote Asociado"));
               registro.setNombre_producto(rs.getString("Nombre del Producto"));
-              registro.setNombre_accion(rs.getString("Nombre Acción"));
+              registro.setNombre_accion(rs.getString("Tipo Acción"));
               registro.setStock_anterior(rs.getInt("Stock Anterior Registrado"));
-              registro.setStock_nuevo(rs.getInt("Stock Nuevo"));
+              registro.setStock_nuevo(rs.getInt("Stock Nuevo Registrado"));
               registro.setUsuario_responsable(rs.getString("Usuario Responsable"));
               registro.setUsername(rs.getString("username"));
               registro.setFecha_movimiento(rs.getTimestamp("Fecha del Movimiento"));
